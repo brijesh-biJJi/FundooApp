@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoonotes.dto.UserDto;
+import com.bridgelabz.fundoonotes.response.Response;
 
 @RestController
 public class UserController {
@@ -13,6 +14,8 @@ public class UserController {
 	@PostMapping("/user/registration")
 	public ResponseEntity<Response> register(@RequestBody UserDto info)
 	{
+		
+		return null;
 	
 	}
 }
