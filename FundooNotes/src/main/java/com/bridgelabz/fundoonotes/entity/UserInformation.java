@@ -16,12 +16,19 @@ import lombok.Data;
 public class UserInformation {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	
 	private long userid;
 	private String name;
 	private String password;
 	private long phone;
+	private String email;
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	private boolean isVerified;
 	private LocalDateTime dateTime;
 	public long getUserid() {

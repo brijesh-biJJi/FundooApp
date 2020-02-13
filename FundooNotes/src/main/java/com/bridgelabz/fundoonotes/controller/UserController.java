@@ -16,14 +16,16 @@ public class UserController {
 
 	@Autowired
 	private Services service;
+	
 	@PostMapping("/user/register")
 	public ResponseEntity<Response> register(@RequestBody UserDto info)
 	{
+		System.out.println("Controlreg");
 		boolean result = service.register(info);
 		if(result) {
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("registration successfull", 200, info));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!", 200, info));
 		}
-				return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("user already ", 400, info));
+			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("User Already Exixts...!", 400, info));
 		
 		
 		
