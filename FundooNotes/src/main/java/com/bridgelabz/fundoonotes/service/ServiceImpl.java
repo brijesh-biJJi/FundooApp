@@ -56,8 +56,8 @@ private UserInformation userInfo = new UserInformation();
 		 * Retrieving the UserInformation
 		 */
 		UserInformation user = userRepo.getUser(registerDtoInfo.getEmail());
-		if (user == null) {
-			System.out.println("2nd lin of servimpl");
+		if (user == null) 
+		{
 			userInfo = modelMapper.map(registerDtoInfo, UserInformation.class);
 			userInfo.setDateTime(LocalDateTime.now());
 			String epass = encrypt.encode(registerDtoInfo.getPassword());
@@ -70,19 +70,21 @@ private UserInformation userInfo = new UserInformation();
 			userInfo = userRepo.save(userInfo);
 			
 			
-			String mailResponse = response.fromMsg("http://localhost:8080/verify",jwtGenerate.encryptToken(userInfo.getUserid()));
+			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
 			System.out.println(mailResponse);
 			mailObj.setEmail(registerDtoInfo.getEmail());
 			mailObj.setMessage(mailResponse);
 			mailObj.setSubject("Verification");
 			
 			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
-			System.out.println("inReg");
 			return true;
 		} 
-		System.out.println("outReg");
 		return false;
 	}
+	
+	/**
+	 * login method is used to check whether its a Valid User 
+	 */
 
 	@Transactional
 	@Override
@@ -91,19 +93,33 @@ private UserInformation userInfo = new UserInformation();
 		/**
 		 * Retrieving the UserInformation
 		 */
-		UserInformation userInfo = userRepo.getUser(loginDtoInfo.getEmail());
+		UserInformation userInf = userRepo.getUser(loginDtoInfo.getEmail());
 		if(userInfo != null)
 		{
+			if(userInf.isVerified()==true && (encrypt.matches(loginDtoInfo.getPassword(), userInf.getPassword())))
+				return userInf;
+		}
+		else
+		{
+			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
+			System.out.println(mailResponse);
+			mailObj.setEmail(loginDtoInfo.getEmail());
+			mailObj.setMessage(mailResponse);
+			mailObj.setSubject("Verification");
 			
+			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 		}
 		return null;
 	}
 
+	/**
+	 * updateIsVerify method is used to Update the record in the Database
+	 */
 	@Transactional
 	@Override
 	public boolean updateIsVerify(String token) {
-		System.out.println("Id Verification :"+(long) jwtGenerate.decryptToken(token));
-		Long userId=(long) jwtGenerate.decryptToken(token);
+		System.out.println("After Decrypt Token :"+(long) jwtGenerate.parseToken(token));
+		Long userId=(long) jwtGenerate.parseToken(token);
 		userRepo.updateUserInfoIsVerifiedCol(userId);
 		return true;
 	}

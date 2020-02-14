@@ -33,6 +33,7 @@ public class UserController {
 	private JWTGenerator jwtGenerator;
 	
 	/**
+	 * API for Registration
 	 * register is a Handler method that communicates with Service layer in order to perform Registration Operation
 	 * @param info
 	 * @return
@@ -40,7 +41,6 @@ public class UserController {
 	@PostMapping("/user/register")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
-		System.out.println("Controlreg");
 		boolean result = service.register(registerDtoInfo);
 		if(result) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!", 200, registerDtoInfo));
@@ -52,6 +52,7 @@ public class UserController {
 	}
 	
 	/**
+	 * API for Login
 	 * login is a Handler method that communicates with Service layer in order to perform Login Operation
 	 * @param info
 	 * @return
@@ -59,17 +60,21 @@ public class UserController {
 	@PostMapping("/user/login")
 	public ResponseEntity<Response> login(@RequestBody LoginDto loginDtoInfo)
 	{
-		System.out.println("Controlreg");
 		UserInformation userInfo = service.login(loginDtoInfo);
 		if(userInfo != null) 
 		{
-			String token=jwtGenerator.encryptToken(userInfo.getUserid());
-			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token, 200, loginDtoInfo));
+			String token=jwtGenerator.createToken(userInfo.getUserid());
+			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response("Login Successfully", 200, loginDtoInfo));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!", 400, loginDtoInfo));
 	}
 	
-	@PostMapping("/verify/{token}")
+	/**
+	 * API for Token Verification
+	 * @param token
+	 * @return
+	 */
+	@GetMapping("/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
 		boolean updateUserInfo=service.updateIsVerify(token);

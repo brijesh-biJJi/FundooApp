@@ -4,6 +4,11 @@ import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 public interface Services {
 
 	boolean register(RegisterDto info);

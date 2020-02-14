@@ -14,12 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Component
 public class MailServiceProvider {
 
 	@Autowired
 	private static JavaMailSender javaMailSender;
 	
+	/**
+	 * This method used to create a Session by passing Properties and Authenticator as an argument 
+	 * @param toEmail
+	 * @param subject
+	 * @param msg
+	 */
 	public static void sendEmail(String toEmail, String subject, String msg) {
 		sendEmail sendEmail = new sendEmail();
 		String myEmail = sendEmail.getEmail();
@@ -33,6 +44,9 @@ public class MailServiceProvider {
 		
 		Authenticator auth = new Authenticator() 
 		{
+			/**
+			 * Authenticating the password
+			 */
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(myEmail, password);
@@ -44,8 +58,18 @@ public class MailServiceProvider {
 		send(ses, myEmail, toEmail, subject, msg);
 	}
 	
-	private static void send(Session session, String fromEmail, String toEmail, String subject, String msg) {
-		try {
+	/**
+	 * This method is used to Send the Email to the specified User
+	 * @param session
+	 * @param fromEmail
+	 * @param toEmail
+	 * @param subject
+	 * @param msg
+	 */
+	private static void send(Session session, String fromEmail, String toEmail, String subject, String msg) 
+	{
+		try 
+		{
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(fromEmail, "Brijesh Kanchan"));
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
@@ -53,9 +77,10 @@ public class MailServiceProvider {
 			message.setText(msg);
 			System.out.println("Mime Message: "+message);
 			Transport.send(message);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Exception..!");
+		}
+		catch (Exception e) 
+		{
+			System.out.println(e.getMessage());
 		}
 	}
 }

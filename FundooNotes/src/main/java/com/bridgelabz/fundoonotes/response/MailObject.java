@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Data
 @Component
 public class MailObject implements Serializable {
@@ -13,6 +18,7 @@ public class MailObject implements Serializable {
 	private String email;
 	private String subject;
 	private  String message;
+	
 	public String getEmail() {
 		return email;
 	}

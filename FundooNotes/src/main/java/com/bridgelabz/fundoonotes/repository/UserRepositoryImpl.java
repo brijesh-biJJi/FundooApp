@@ -24,6 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	/**
+	 * This method is used to save the UserDetails into the Database
+	 */
 	@Override
 	public UserInformation save(UserInformation info) {
 		Session ses=entityManager.unwrap(Session.class);
@@ -31,6 +34,9 @@ public class UserRepositoryImpl implements UserRepository {
 		return info;
 	}
 
+	/**
+	 * This method is used to retrieve the user details from the Database based on specified user email
+	 */
 	@Override
 	public UserInformation getUser(String email) {
 		Session session = entityManager.unwrap(Session.class);
@@ -39,6 +45,9 @@ public class UserRepositoryImpl implements UserRepository {
 		return (UserInformation) q.uniqueResult();
 	}
 
+	/**
+	 * This method is used to Update the particular record from the Database
+	 */
 	@Override
 	public boolean updateUserInfoIsVerifiedCol(Long userId) {
 		Session session = entityManager.unwrap(Session.class);

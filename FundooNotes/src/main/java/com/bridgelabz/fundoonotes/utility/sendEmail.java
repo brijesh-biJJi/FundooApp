@@ -1,5 +1,10 @@
 package com.bridgelabz.fundoonotes.utility;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 public class sendEmail {
 
 	private String email = "brijeshkanchan7@gmail.com";

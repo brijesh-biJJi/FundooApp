@@ -2,6 +2,11 @@ package com.bridgelabz.fundoonotes.response;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Data
 public class Response {
 
