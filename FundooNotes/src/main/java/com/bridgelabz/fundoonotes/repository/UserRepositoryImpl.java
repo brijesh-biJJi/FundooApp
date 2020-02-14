@@ -39,28 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public UserInformation getUserById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updateUserInfoIsVerifiedCol(Long userId) {
+		
 	}
-
-	@Override
-	public boolean updatePassword(PasswordUpdate info, Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean verify(Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public List<UserInformation> getUsers() {
-		Session ses = entityManager.unwrap(Session.class);
-		List usersList = ses.createQuery("from UserInformation").getResultList();
-		return usersList;
-	}
-
 }

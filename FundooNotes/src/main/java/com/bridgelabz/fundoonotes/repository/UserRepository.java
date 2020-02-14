@@ -12,11 +12,5 @@ public interface UserRepository {
 	
 	UserInformation getUser(String name);
 
-	UserInformation getUserById(Long id);
-
-	boolean updatePassword(PasswordUpdate info, Long id);
-
-	boolean verify(Long id);
-
-	List<UserInformation> getUsers();
+	void updateUserInfoIsVerifiedCol(Long userId);
 }

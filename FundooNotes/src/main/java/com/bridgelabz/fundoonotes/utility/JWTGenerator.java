@@ -13,15 +13,15 @@ private static final String SECRET = "thedoctor46";
 		String token = null;
 		
 		token = JWT.create().withClaim("id", l).sign(Algorithm.HMAC512(SECRET));
-		System.out.println(token);
+		System.out.println("Generated Token :"+token);
 		return token;
 	}
 	
-	public long decryptToken(String jwt)
+	public long decryptToken(String jwtToken)
 	{
 		Long userId = (long) 0;
-		if (jwt != null) {
-			userId = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwt).getClaim("id").asLong();
+		if (jwtToken != null) {
+			userId = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id").asLong();
 		}
 		return userId;
 		
