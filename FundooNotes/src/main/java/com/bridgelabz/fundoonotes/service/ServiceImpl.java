@@ -84,10 +84,18 @@ private UserInformation userInfo = new UserInformation();
 		return false;
 	}
 
-
+	@Transactional
 	@Override
-	public UserInformation login(LoginDto info) {
-		// TODO Auto-generated method stub
+	public UserInformation login(LoginDto loginDtoInfo) 
+	{
+		/**
+		 * Retrieving the UserInformation
+		 */
+		UserInformation userInfo = userRepo.getUser(loginDtoInfo.getEmail());
+		if(userInfo != null)
+		{
+			
+		}
 		return null;
 	}
 

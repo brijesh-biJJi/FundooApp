@@ -9,6 +9,8 @@ public interface Services {
 	boolean register(RegisterDto info);
 	
 	UserInformation login(LoginDto info);
+
+	boolean updateIsVerify(String token);
 	
 	
 }
