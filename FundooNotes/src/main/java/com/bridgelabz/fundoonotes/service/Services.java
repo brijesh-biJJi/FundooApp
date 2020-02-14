@@ -1,14 +1,14 @@
 package com.bridgelabz.fundoonotes.service;
 
-import com.bridgelabz.fundoonotes.dto.LoginInformation;
-import com.bridgelabz.fundoonotes.dto.UserDto;
+import com.bridgelabz.fundoonotes.dto.LoginDto;
+import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 
 public interface Services {
 
-	boolean register(UserDto info);
+	boolean register(RegisterDto info);
 	
-	UserInformation login(LoginInformation info);
+	UserInformation login(LoginDto info);
 	
 	
 }

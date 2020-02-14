@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bridgelabz.fundoonotes.dto.LoginInformation;
-import com.bridgelabz.fundoonotes.dto.UserDto;
+import com.bridgelabz.fundoonotes.dto.LoginDto;
+import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
@@ -18,13 +18,19 @@ import com.bridgelabz.fundoonotes.response.MailResponse;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 import com.bridgelabz.fundoonotes.utility.MailServiceProvider;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
+
 @Service
 public class ServiceImpl implements Services {
 
 private UserInformation userInfo = new UserInformation();
 	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepo;
 	
 	@Autowired
 	private JWTGenerator jwtGenerate;
@@ -35,36 +41,52 @@ private UserInformation userInfo = new UserInformation();
 	@Autowired
 	private MailResponse response;
 	@Autowired
-	private MailObject mailObject;
+	private MailObject mailObj;
 
 	
+	/**
+	 * register method is used to Register the user
+	 */
 	@Transactional
 	@Override
-	public boolean register(UserDto info) {
+	public boolean register(RegisterDto registerDtoInfo) {
 		System.out.println("1st lin of servimpl");
-		UserInformation user = repository.getUser(info.getEmail());
+		
+		/**
+		 * Retrieving the UserInformation
+		 */
+		UserInformation user = userRepo.getUser(registerDtoInfo.getEmail());
 		if (user == null) {
 			System.out.println("2nd lin of servimpl");
-			userInfo = modelMapper.map(info, UserInformation.class);
+			userInfo = modelMapper.map(registerDtoInfo, UserInformation.class);
 			userInfo.setDateTime(LocalDateTime.now());
-			String epass = encrypt.encode(info.getPassword());
+			String epass = encrypt.encode(registerDtoInfo.getPassword());
 			userInfo.setPassword(epass);
 			userInfo.setVerified(false);
-			userInfo = repository.save(userInfo);
+			
+			/**
+			 * Saving the USer Information into DB
+			 */
+			userInfo = userRepo.save(userInfo);
+			
+			
 			String mailResponse = response.fromMsg("http://localhost:8080/verify",jwtGenerate.encryptToken(userInfo.getUserid()));
-
-			mailObject.setEmail(info.getEmail());
-			mailObject.setMessage(mailResponse);
-			mailObject.setSubject("Verification");
-			MailServiceProvider.sendEmail(mailObject.getEmail(), mailObject.getSubject(), mailObject.getMessage());
+			System.out.println(mailResponse);
+			mailObj.setEmail(registerDtoInfo.getEmail());
+			mailObj.setMessage(mailResponse);
+			mailObj.setSubject("Verification");
+			
+			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 			System.out.println("inReg");
+			return true;
 		} 
 		System.out.println("outReg");
-		return true;
+		return false;
 	}
 
+
 	@Override
-	public UserInformation login(LoginInformation info) {
+	public UserInformation login(LoginDto info) {
 		// TODO Auto-generated method stub
 		return null;
 	}

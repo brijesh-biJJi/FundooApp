@@ -2,6 +2,7 @@ package com.bridgelabz.fundoonotes.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
+
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 
 @Data
 @Entity
@@ -23,14 +30,16 @@ public class UserInformation {
 	private String password;
 	private long phone;
 	private String email;
+	@Column(columnDefinition = "boolean Default false", nullable=false)
+	private boolean isVerified;
+	private LocalDateTime dateTime;
+	
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	private boolean isVerified;
-	private LocalDateTime dateTime;
 	public long getUserid() {
 		return userid;
 	}

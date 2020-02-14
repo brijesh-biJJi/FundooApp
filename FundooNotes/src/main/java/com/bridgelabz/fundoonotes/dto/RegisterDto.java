@@ -6,12 +6,13 @@ import lombok.Data;
 
 @Data
 @Component
-public class UserDto {
+public class RegisterDto {
 
 	private String name;
 	private String email;
 	private String password;
 	private long phone;
+	
 	public String getName() {
 		return name;
 	}

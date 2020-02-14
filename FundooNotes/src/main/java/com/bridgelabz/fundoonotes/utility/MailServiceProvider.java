@@ -21,15 +21,15 @@ public class MailServiceProvider {
 	private static JavaMailSender javaMailSender;
 	
 	public static void sendEmail(String toEmail, String subject, String msg) {
-		Gmail gmail = new Gmail();
-		String myEmail = gmail.getEmail();
-		String password = gmail.getPass();
+		sendEmail sendEmail = new sendEmail();
+		String myEmail = sendEmail.getEmail();
+		String password = sendEmail.getPass();
 		
-		Properties properties = new Properties();
-		properties.put("mail.smtp.auth", "true");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.host", "smtp.gmail.com");
-		properties.put("mail.smtp.port", "587");
+		Properties prop = new Properties();
+		prop.put("mail.smtp.host", "smtp.gmail.com");
+		prop.put("mail.smtp.port", "587");
+		prop.put("mail.smtp.auth", "true");
+		prop.put("mail.smtp.starttls.enable", "true");
 		
 		Authenticator auth = new Authenticator() 
 		{
@@ -40,18 +40,19 @@ public class MailServiceProvider {
 
 		};
 		
-		Session ses = Session.getInstance(properties, auth);
+		Session ses = Session.getInstance(prop, auth);
 		send(ses, myEmail, toEmail, subject, msg);
 	}
 	
 	private static void send(Session session, String fromEmail, String toEmail, String subject, String msg) {
 		try {
-			MimeMessage mimeMessage = new MimeMessage(session);
-			mimeMessage.setFrom(new InternetAddress(fromEmail, "BrijeshKanchan"));
-			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-			mimeMessage.setSubject(subject);
-			mimeMessage.setText(msg);
-			Transport.send(mimeMessage);
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(fromEmail, "Brijesh Kanchan"));
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+			message.setSubject(subject);
+			message.setText(msg);
+			System.out.println("Mime Message"+message);
+			Transport.send(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Exception..!");

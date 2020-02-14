@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 import com.bridgelabz.fundoonotes.dto.PasswordUpdate;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 

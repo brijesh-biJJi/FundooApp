@@ -13,7 +13,7 @@ private static final String SECRET = "thedoctor46";
 		String token = null;
 		
 		token = JWT.create().withClaim("id", l).sign(Algorithm.HMAC512(SECRET));
-		
+		System.out.println(token);
 		return token;
 	}
 	
