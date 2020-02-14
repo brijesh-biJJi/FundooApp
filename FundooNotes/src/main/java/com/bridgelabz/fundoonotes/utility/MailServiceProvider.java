@@ -51,7 +51,7 @@ public class MailServiceProvider {
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 			message.setSubject(subject);
 			message.setText(msg);
-			System.out.println("Mime Message"+message);
+			System.out.println("Mime Message: "+message);
 			Transport.send(message);
 		} catch (Exception e) {
 			e.printStackTrace();

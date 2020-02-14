@@ -102,7 +102,7 @@ private UserInformation userInfo = new UserInformation();
 	@Transactional
 	@Override
 	public boolean updateIsVerify(String token) {
-		System.out.println("Id Verification"+(long) jwtGenerate.decryptToken(token));
+		System.out.println("Id Verification :"+(long) jwtGenerate.decryptToken(token));
 		Long userId=(long) jwtGenerate.decryptToken(token);
 		userRepo.updateUserInfoIsVerifiedCol(userId);
 		return true;

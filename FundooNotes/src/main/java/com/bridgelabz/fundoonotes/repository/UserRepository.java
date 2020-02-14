@@ -12,5 +12,5 @@ public interface UserRepository {
 	
 	UserInformation getUser(String name);
 
-	void updateUserInfoIsVerifiedCol(Long userId);
+	boolean updateUserInfoIsVerifiedCol(Long userId);
 }

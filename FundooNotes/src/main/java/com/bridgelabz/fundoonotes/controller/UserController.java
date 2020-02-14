@@ -69,7 +69,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!", 400, loginDtoInfo));
 	}
 	
-	@GetMapping("/verify/{token}")
+	@PostMapping("/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
 		boolean updateUserInfo=service.updateIsVerify(token);
