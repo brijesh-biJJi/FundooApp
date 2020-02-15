@@ -2,7 +2,7 @@ package com.bridgelabz.fundoonotes.repository;
 
 import java.util.List;
 
-import com.bridgelabz.fundoonotes.dto.PasswordUpdate;
+import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 
 /**
@@ -18,4 +18,10 @@ public interface UserRepository {
 	UserInformation getUser(String name);
 
 	boolean updateUserInfoIsVerifiedCol(Long userId);
+	
+	UserInformation fingUserById(Long id);
+
+	List<UserInformation> getUsers();
+
+	boolean updatePass(UpdatePassword passwordUpdateInfo, Long id);
 }

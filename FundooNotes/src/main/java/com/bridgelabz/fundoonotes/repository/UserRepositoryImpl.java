@@ -10,7 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.bridgelabz.fundoonotes.dto.PasswordUpdate;
+import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 
 /**
@@ -63,5 +63,35 @@ public class UserRepositoryImpl implements UserRepository {
 			
 		}
 		return false;
+	}
+
+	@Override
+	public UserInformation fingUserById(Long id) {
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery("FROM UserInformation where id=:id");
+		q.setParameter("id", id);
+		return (UserInformation) q.uniqueResult();
+	}
+
+	@Override
+	public List<UserInformation> getUsers() {
+		Session session = entityManager.unwrap(Session.class);
+		List usersList = session.createQuery("from UserInformation").getResultList();
+		return usersList;
+	}
+
+	@Override
+	public boolean updatePass(UpdatePassword passwordUpdateInfo, Long id) {
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery("update UserInformation set password =:pass" + " " + " " + "where id=:i");
+		q.setParameter("pass", passwordUpdateInfo.getConfirmPassword());
+		q.setParameter("i", id);
+		int status = q.executeUpdate();
+		if (status > 0) {
+			return true;
+
+		} else {
+			return false;
+		}
 	}
 }

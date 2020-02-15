@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
+import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
@@ -126,4 +128,43 @@ private UserInformation userInfo = new UserInformation();
 		return true;
 	}
 
+	@Transactional
+	@Override
+	public List<UserInformation> getUsers() {
+		List<UserInformation> usersList = userRepo.getUsers();
+		return usersList;
+	}
+
+	@Override
+	public boolean isUserExist(String email) {
+		try {
+			UserInformation userInfo = userRepo.getUser(email);
+			if (userInfo.isVerified() == true) 
+			{
+				String mailResposne = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
+				MailServiceProvider.sendEmail(userInfo.getEmail(), "Verification", mailResposne);
+				return true;
+			} 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+
+	@Transactional
+	@Override
+	public boolean updatePassword(UpdatePassword passwordUpdateInfo, String token) {
+		Long id = null;
+		try {
+			id = (long)jwtGenerate.parseToken(token);
+			System.out.println("UserImpl Id : "+id);
+			String epassword = encrypt.encode(passwordUpdateInfo.getConfirmPassword());
+			passwordUpdateInfo.setConfirmPassword(epassword);
+			return userRepo.updatePass(passwordUpdateInfo, id);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
 }

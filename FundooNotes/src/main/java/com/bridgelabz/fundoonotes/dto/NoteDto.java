@@ -1,8 +1,10 @@
 package com.bridgelabz.fundoonotes.dto;
 
-public class NoteDto {
+public class NoteDto 
+{
+	
 	private String title;
-	private String desc;
+	private String description;
 	
 	
 	public String getTitle() {
@@ -11,12 +13,13 @@ public class NoteDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescription() {
+		return description;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
+	
 	
 	
 }
