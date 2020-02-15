@@ -25,7 +25,7 @@ import com.bridgelabz.fundoonotes.utility.MailServiceProvider;
  */
 
 @Service
-public class ServiceImpl implements Services {
+public class UserServiceImpl implements IUserServices {
 
 private UserInformation userInfo = new UserInformation();
 	
@@ -73,8 +73,9 @@ private UserInformation userInfo = new UserInformation();
 			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
 			System.out.println(mailResponse);
 			mailObj.setEmail(registerDtoInfo.getEmail());
-			mailObj.setMessage(mailResponse);
 			mailObj.setSubject("Verification");
+			mailObj.setMessage(mailResponse);
+			
 			
 			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 			return true;
@@ -104,8 +105,9 @@ private UserInformation userInfo = new UserInformation();
 			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
 			System.out.println(mailResponse);
 			mailObj.setEmail(loginDtoInfo.getEmail());
-			mailObj.setMessage(mailResponse);
 			mailObj.setSubject("Verification");
+			mailObj.setMessage(mailResponse);
+			
 			
 			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 		}

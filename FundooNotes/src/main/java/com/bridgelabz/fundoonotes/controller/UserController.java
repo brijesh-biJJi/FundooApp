@@ -13,7 +13,7 @@ import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 import com.bridgelabz.fundoonotes.response.Response;
-import com.bridgelabz.fundoonotes.service.Services;
+import com.bridgelabz.fundoonotes.service.IUserServices;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
 
@@ -27,7 +27,7 @@ import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 public class UserController {
 
 	@Autowired
-	private Services service;
+	private IUserServices userService;
 	
 	@Autowired
 	private JWTGenerator jwtGenerator;
@@ -41,7 +41,7 @@ public class UserController {
 	@PostMapping("/user/register")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
-		boolean result = service.register(registerDtoInfo);
+		boolean result = userService.register(registerDtoInfo);
 		if(result) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!", 200, registerDtoInfo));
 		}
@@ -60,11 +60,11 @@ public class UserController {
 	@PostMapping("/user/login")
 	public ResponseEntity<Response> login(@RequestBody LoginDto loginDtoInfo)
 	{
-		UserInformation userInfo = service.login(loginDtoInfo);
+		UserInformation userInfo = userService.login(loginDtoInfo);
 		if(userInfo != null) 
 		{
 			String token=jwtGenerator.createToken(userInfo.getUserid());
-			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response("Login Successfully", 200, loginDtoInfo));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token, 200, loginDtoInfo));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!", 400, loginDtoInfo));
 	}
@@ -77,7 +77,7 @@ public class UserController {
 	@GetMapping("/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
-		boolean updateUserInfo=service.updateIsVerify(token);
+		boolean updateUserInfo=userService.updateIsVerify(token);
 		if(updateUserInfo)
 		{
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(token, 200, "VERIFIED"));

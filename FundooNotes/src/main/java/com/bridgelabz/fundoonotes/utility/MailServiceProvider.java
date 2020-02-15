@@ -31,10 +31,11 @@ public class MailServiceProvider {
 	 * @param subject
 	 * @param msg
 	 */
+	
+	
 	public static void sendEmail(String toEmail, String subject, String msg) {
-		sendEmail sendEmail = new sendEmail();
-		String myEmail = sendEmail.getEmail();
-		String password = sendEmail.getPass();
+		String fromEmail = System.getenv("Email");
+		String password = System.getenv("Password");
 		
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -49,13 +50,11 @@ public class MailServiceProvider {
 			 */
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(myEmail, password);
+				return new PasswordAuthentication(fromEmail, password);
 			}
-
 		};
-		
 		Session ses = Session.getInstance(prop, auth);
-		send(ses, myEmail, toEmail, subject, msg);
+		send(ses, fromEmail, toEmail, subject, msg);
 	}
 	
 	/**

@@ -9,7 +9,7 @@ import com.bridgelabz.fundoonotes.entity.UserInformation;
  * @author Brijesh A Kanchan
  *
  */
-public interface Services {
+public interface IUserServices {
 
 	boolean register(RegisterDto info);
 	
