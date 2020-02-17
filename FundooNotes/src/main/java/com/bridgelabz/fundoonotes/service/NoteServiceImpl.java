@@ -102,4 +102,23 @@ public class NoteServiceImpl implements INoteService {
 		}
 	}
 
+	@Transactional
+	@Override
+	public void archiveNote(Long id, String token) {
+		try
+		{
+			Long userId=jwtGenerate.parseToken(token);
+			NoteInformation noteInfo=noteRepo.findNoteById(id);
+			if(noteInfo !=null)
+			{
+				noteInfo.setPinned(false);
+				noteInfo.setArchieved(!noteInfo.isArchieved());
+				noteRepo.saveNote(noteInfo);
+			}
+		}catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+	}
+
 }

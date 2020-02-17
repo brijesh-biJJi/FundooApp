@@ -10,4 +10,6 @@ public interface INoteService {
 	void updateNote(UpdateNotes updateNoteinfo, String token);
 
 	void pinNote(Long id, String token);
+
+	void archiveNote(Long id, String token);
 }
