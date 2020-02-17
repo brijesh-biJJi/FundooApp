@@ -2,12 +2,15 @@ package com.bridgelabz.fundoonotes.service;
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonotes.dto.NoteDto;
+import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
@@ -29,12 +32,14 @@ public class NoteServiceImpl implements INoteService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	UserInformation userInfo=new UserInformation();
 	
+	@Transactional
 	@Override
 	public NoteInformation createNote(NoteDto noteDtoInfo, String token)
 	{
 		Long userId = (Long) jwtGenerate.parseToken(token);
-		UserInformation userInfo = userRepo.findUserById(userId);
+		userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
 		{
 			noteInfo = modelMapper.map(noteDtoInfo, NoteInformation.class);
@@ -51,6 +56,31 @@ public class NoteServiceImpl implements INoteService {
 			}
 		}
 		return noteInfo;
+	}
+
+	@Transactional
+	@Override
+	public void updateNote(UpdateNotes updateNoteinfo, String token) 
+	{
+		try {
+			Long userid = (Long) jwtGenerate.parseToken(token);
+
+			userInfo = userRepo.findUserById(userid);
+			NoteInformation noteInfo = noteRepo.findNoteById(updateNoteinfo.getNoteid());
+			if (noteInfo != null) {
+				noteInfo.setNoteid(updateNoteinfo.getNoteid());
+				noteInfo.setDescription(updateNoteinfo.getDescription());
+				noteInfo.setTitle(updateNoteinfo.getTitle());
+				noteInfo.setPinned(updateNoteinfo.isPinned());
+				noteInfo.setTrashed(updateNoteinfo.isTrashed());
+				noteInfo.setArchieved(updateNoteinfo.isArchieved());
+				noteInfo.setUpdatedAt(updateNoteinfo.getUpdatedAt());
+				noteRepo.saveNote(noteInfo);
+
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

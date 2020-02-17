@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
@@ -20,6 +21,14 @@ public class NoteRepoImpl implements INoteRepo {
 		Session session = entityManager.unwrap(Session.class);
 		session.saveOrUpdate(noteInfo);
 		return noteInfo;
+	}
+
+	@Override
+	public NoteInformation findNoteById(Long noteid) {
+		Session session = entityManager.unwrap(Session.class);
+		Query q = session.createQuery("from NoteInformation where id=:id");
+		q.setParameter("id", noteid);
+		return (NoteInformation) q.uniqueResult();
 	}
 
 }
