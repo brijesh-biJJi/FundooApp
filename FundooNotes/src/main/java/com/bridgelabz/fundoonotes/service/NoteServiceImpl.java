@@ -17,6 +17,12 @@ import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
+
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Service
 public class NoteServiceImpl implements INoteService {
 
@@ -34,6 +40,9 @@ public class NoteServiceImpl implements INoteService {
 	
 	UserInformation userInfo=new UserInformation();
 	
+	/**
+	 * Method is used to create a Note
+	 */
 	@Transactional
 	@Override
 	public NoteInformation createNote(NoteDto noteDtoInfo, String token)
@@ -58,6 +67,9 @@ public class NoteServiceImpl implements INoteService {
 		return noteInfo;
 	}
 
+	/**
+	 * Method is used to update a Note
+	 */
 	@Transactional
 	@Override
 	public void updateNote(UpdateNotes updateNoteinfo, String token) 
@@ -83,6 +95,10 @@ public class NoteServiceImpl implements INoteService {
 		}
 	}
 
+	
+	/**
+	 * Method is used to Pin a Note
+	 */
 	@Transactional
 	@Override
 	public void pinNote(Long id, String token) {
@@ -102,6 +118,10 @@ public class NoteServiceImpl implements INoteService {
 		}
 	}
 
+	
+	/**
+	 * Method is used to Archive a Note
+	 */
 	@Transactional
 	@Override
 	public void archiveNote(Long id, String token) {
@@ -117,6 +137,48 @@ public class NoteServiceImpl implements INoteService {
 			}
 		}catch(Exception e)
 		{
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Method is used to move a Note to Trash
+	 */
+	@Transactional
+	@Override
+	public void moveToTrash(Long id, String token) 
+	{
+		try
+		{
+			Long userId=jwtGenerate.parseToken(token);
+			NoteInformation noteInfo=noteRepo.findNoteById(id);
+			if(noteInfo != null)
+			{
+				noteInfo.setTrashed(!noteInfo.isTrashed());
+				noteRepo.saveNote(noteInfo);
+			}
+		}catch(Exception e) {
+		System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Method is used to delete the Note Permamnently
+	 */
+	@Transactional
+	@Override
+	public void deleteNotePermanently(Long id, String token) {
+		try
+		{
+			Long userId=jwtGenerate.parseToken(token);
+			NoteInformation noteInfo=noteRepo.findNoteById(id);
+			if(noteInfo != null)
+			{
+				boolean res=noteRepo.deleteNotePermanently(id);
+				if(res)
+					System.out.println("Note Deleted Successfully");
+			}
+		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}

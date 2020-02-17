@@ -12,4 +12,8 @@ public interface INoteService {
 	void pinNote(Long id, String token);
 
 	void archiveNote(Long id, String token);
+
+	void moveToTrash(Long id, String token);
+
+	void deleteNotePermanently(Long id, String token);
 }

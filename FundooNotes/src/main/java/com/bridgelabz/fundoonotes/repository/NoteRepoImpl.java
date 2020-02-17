@@ -26,9 +26,22 @@ public class NoteRepoImpl implements INoteRepo {
 	@Override
 	public NoteInformation findNoteById(Long noteid) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("from NoteInformation where id=:id");
-		q.setParameter("id", noteid);
-		return (NoteInformation) q.uniqueResult();
+		Query qry = session.createQuery("from NoteInformation where id=:id");
+		qry.setParameter("id", noteid);
+		return (NoteInformation) qry.uniqueResult();
+	}
+
+	@Override
+	public boolean deleteNotePermanently(Long noteid) {
+		Session session=entityManager.unwrap(Session.class);
+		Query qry=session.createQuery("delete from NoteInformation where id=:id");
+		qry.setParameter("id", noteid);
+		int result = qry.executeUpdate();
+		if (result >= 1) {
+			return true;
+
+		}
+		return false;
 	}
 
 }

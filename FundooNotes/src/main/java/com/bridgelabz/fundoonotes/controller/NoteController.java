@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -68,9 +69,35 @@ public class NoteController {
 	@PutMapping("note/archive/{id}")
 	public ResponseEntity<Response> archiveNote(@PathVariable Long id,@RequestHeader("token") String token )
 	{
-		noteService.archiveNote(id,token);
+		noteService.archiveNote(id, token);
 		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note Archived Successfully....!", 201, token));
-		
 	}
 	
+	
+	/**
+	 * API for moving Note into Trash
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	@DeleteMapping("note/delete/{id}")
+	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token)
+	{
+		noteService.moveToTrash(id,token);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note moved to Trash successfull..!!", 201,token));
+	}
+	
+	/**
+	 * API for Deleting the Note Permanently
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	 @DeleteMapping("note/deletepermanently/{id}")
+	 public ResponseEntity<Response> deleteNotePermanently(@PathVariable Long id,@RequestHeader("token") String token)
+	 {
+		 noteService.deleteNotePermanently(id,token);
+		 return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Deleted Permanently..!", 200, token));
+	 }
 }
+

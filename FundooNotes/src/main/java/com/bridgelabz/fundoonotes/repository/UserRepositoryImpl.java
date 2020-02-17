@@ -65,6 +65,9 @@ public class UserRepositoryImpl implements UserRepository {
 		return false;
 	}
 
+	/**
+	 * This method is used to retrieve user from the Database by UserId
+	 */
 	@Override
 	public UserInformation findUserById(Long id) {
 		Session session = entityManager.unwrap(Session.class);
@@ -73,6 +76,9 @@ public class UserRepositoryImpl implements UserRepository {
 		return (UserInformation) q.uniqueResult();
 	}
 
+	/**
+	 * This method is used to retrieve all the users from the Database
+	 */
 	@Override
 	public List<UserInformation> getUsers() {
 		Session session = entityManager.unwrap(Session.class);
@@ -80,6 +86,9 @@ public class UserRepositoryImpl implements UserRepository {
 		return usersList;
 	}
 
+	/**
+	 * This method is used to update the password of specified user
+	 */
 	@Override
 	public boolean updatePass(UpdatePassword passwordUpdateInfo, Long id) {
 		Session session = entityManager.unwrap(Session.class);

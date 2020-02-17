@@ -6,4 +6,6 @@ public interface INoteRepo {
 	NoteInformation saveNote(NoteInformation noteInfo);
 
 	NoteInformation findNoteById(Long noteid);
+
+	boolean deleteNotePermanently(Long noteid);
 }
