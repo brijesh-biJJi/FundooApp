@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +44,20 @@ public class NoteController {
 	@PutMapping("/note/update")
 	public ResponseEntity<Response> updateNote(@RequestBody UpdateNotes updateNoteinfo, @RequestHeader("token") String token) {
 		noteService.updateNote(updateNoteinfo, token);
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Updated Sucessfully..!", 201, updateNoteinfo));
+		return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Updated successfully..!", 201, updateNoteinfo));
 	}
+	
+	/**
+	 * API for pin a Note
+	 * @param id
+	 * @param token
+	 * @return
+	 */
+	@PutMapping("/note/pin/{id}")
+	public ResponseEntity<Response> pin(@PathVariable Long id, @RequestHeader("token") String token) {
+		noteService.pinNote(id, token);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note pinned successfully", 200,token));
+	}
+	
+	
 }

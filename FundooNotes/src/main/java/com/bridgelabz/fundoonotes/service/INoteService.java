@@ -8,4 +8,6 @@ public interface INoteService {
 	NoteInformation createNote(NoteDto information, String token);
 
 	void updateNote(UpdateNotes updateNoteinfo, String token);
+
+	void pinNote(Long id, String token);
 }
