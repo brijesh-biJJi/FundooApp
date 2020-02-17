@@ -16,4 +16,6 @@ public interface INoteService {
 	boolean moveToTrash(Long id, String token);
 
 	boolean deleteNotePermanently(Long id, String token);
+
+	boolean changeColor(Long id, String color, String token);
 }

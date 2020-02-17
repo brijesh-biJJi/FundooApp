@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoonotes.dto.NoteDto;
@@ -102,6 +103,21 @@ public class NoteController {
 		 boolean res=noteService.deleteNotePermanently(id,token);
 		 return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is deleted permanently", 200,token))
 					  : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("The note is not available", 400,token));
+	 }
+	 
+	 /**
+	  * API for Changing the Note Color
+	  * @param noteId
+	  * @param color
+	  * @param token
+	  * @return
+	  */
+	 @PutMapping("note/changecolor")
+	 public ResponseEntity<Response> changeColor(@RequestParam("noteId") Long noteId,@RequestParam("color") String color,@RequestHeader("token") String token)
+	 {
+		boolean res=noteService.changeColor(noteId,color,token);
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Color is added successfully", 200,token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Color is not changed", 200,token));
 	 }
 }
 

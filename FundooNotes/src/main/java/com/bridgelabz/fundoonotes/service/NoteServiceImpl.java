@@ -13,6 +13,8 @@ import com.bridgelabz.fundoonotes.dto.NoteDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
@@ -193,4 +195,29 @@ public class NoteServiceImpl implements INoteService {
 		return false;
 	}
 
+	/**
+	 * Method is used to change the color ofNote
+	 * @return 
+	 */
+	@Transactional
+	@Override
+	public boolean changeColor(Long noteId, String color, String token) 
+	{
+		Long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo != null)
+			{
+				noteInfo.setColour(color);
+				noteRepo.saveNote(noteInfo);
+				return true;
+			}
+			else
+				throw new NoteIdNotFoundException("Note Id is not found");
+		}
+		else 
+			throw new UserNotFoundException("User not found..!");
+	}
 }
