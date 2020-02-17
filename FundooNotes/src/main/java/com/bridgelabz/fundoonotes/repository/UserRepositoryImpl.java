@@ -66,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public UserInformation fingUserById(Long id) {
+	public UserInformation findUserById(Long id) {
 		Session session = entityManager.unwrap(Session.class);
 		Query q = session.createQuery("FROM UserInformation where id=:id");
 		q.setParameter("id", id);

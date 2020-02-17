@@ -28,13 +28,13 @@ public class NoteServiceImpl implements INoteService {
 	private BCryptPasswordEncoder encrypt;
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	
 	@Override
-	
-	
 	public NoteInformation createNote(NoteDto noteDtoInfo, String token)
 	{
 		Long userId = (Long) jwtGenerate.parseToken(token);
-		UserInformation userInfo = userRepo.fingUserById(userId);
+		UserInformation userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
 		{
 			noteInfo = modelMapper.map(noteDtoInfo, NoteInformation.class);

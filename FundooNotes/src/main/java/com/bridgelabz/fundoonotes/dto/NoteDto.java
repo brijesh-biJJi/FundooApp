@@ -18,8 +18,5 @@ public class NoteDto
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	
-	
-	
+	}	
 }

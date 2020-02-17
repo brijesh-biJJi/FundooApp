@@ -19,7 +19,7 @@ public interface UserRepository {
 
 	boolean updateUserInfoIsVerifiedCol(Long userId);
 	
-	UserInformation fingUserById(Long id);
+	UserInformation findUserById(Long id);
 
 	List<UserInformation> getUsers();
 
