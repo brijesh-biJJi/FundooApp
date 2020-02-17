@@ -98,10 +98,11 @@ public class NoteServiceImpl implements INoteService {
 	
 	/**
 	 * Method is used to Pin a Note
+	 * @return 
 	 */
 	@Transactional
 	@Override
-	public void pinNote(Long id, String token) {
+	public boolean pinNote(Long id, String token) {
 		try {
 
 			Long userid = (Long) jwtGenerate.parseToken(token);
@@ -112,19 +113,22 @@ public class NoteServiceImpl implements INoteService {
 				noteInfo.setArchieved(false);
 				noteInfo.setPinned(!noteInfo.isPinned());
 				noteRepo.saveNote(noteInfo);
+				return true;
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return false;
 	}
 
 	
 	/**
 	 * Method is used to Archive a Note
+	 * @return 
 	 */
 	@Transactional
 	@Override
-	public void archiveNote(Long id, String token) {
+	public boolean archiveNote(Long id, String token) {
 		try
 		{
 			Long userId=jwtGenerate.parseToken(token);
@@ -134,19 +138,22 @@ public class NoteServiceImpl implements INoteService {
 				noteInfo.setPinned(false);
 				noteInfo.setArchieved(!noteInfo.isArchieved());
 				noteRepo.saveNote(noteInfo);
+				return true;
 			}
 		}catch(Exception e)
 		{
 			System.out.println(e.getMessage());
 		}
+		return false;
 	}
 
 	/**
 	 * Method is used to move a Note to Trash
+	 * @return 
 	 */
 	@Transactional
 	@Override
-	public void moveToTrash(Long id, String token) 
+	public boolean moveToTrash(Long id, String token) 
 	{
 		try
 		{
@@ -156,31 +163,34 @@ public class NoteServiceImpl implements INoteService {
 			{
 				noteInfo.setTrashed(!noteInfo.isTrashed());
 				noteRepo.saveNote(noteInfo);
+				return true;
 			}
 		}catch(Exception e) {
 		System.out.println(e.getMessage());
 		}
+		return false;
 	}
 
 	/**
 	 * Method is used to delete the Note Permamnently
+	 * @return 
 	 */
 	@Transactional
 	@Override
-	public void deleteNotePermanently(Long id, String token) {
+	public boolean deleteNotePermanently(Long id, String token) {
 		try
 		{
 			Long userId=jwtGenerate.parseToken(token);
 			NoteInformation noteInfo=noteRepo.findNoteById(id);
 			if(noteInfo != null)
 			{
-				boolean res=noteRepo.deleteNotePermanently(id);
-				if(res)
-					System.out.println("Note Deleted Successfully");
+				noteRepo.deleteNotePermanently(id);
+				return true;
 			}
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
+		return false;
 	}
 
 }

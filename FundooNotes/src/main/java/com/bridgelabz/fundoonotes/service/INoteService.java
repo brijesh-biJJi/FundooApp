@@ -9,11 +9,11 @@ public interface INoteService {
 
 	void updateNote(UpdateNotes updateNoteinfo, String token);
 
-	void pinNote(Long id, String token);
+	boolean pinNote(Long id, String token);
 
-	void archiveNote(Long id, String token);
+	boolean archiveNote(Long id, String token);
 
-	void moveToTrash(Long id, String token);
+	boolean moveToTrash(Long id, String token);
 
-	void deleteNotePermanently(Long id, String token);
+	boolean deleteNotePermanently(Long id, String token);
 }

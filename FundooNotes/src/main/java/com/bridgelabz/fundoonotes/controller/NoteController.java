@@ -56,8 +56,9 @@ public class NoteController {
 	 */
 	@PutMapping("/note/pin/{id}")
 	public ResponseEntity<Response> pinNote(@PathVariable Long id, @RequestHeader("token") String token) {
-		noteService.pinNote(id, token);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note pinned successfully", 201,token));
+		boolean res=noteService.pinNote(id, token);
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is pinned successfully....!", 200, token))
+				 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Pinned...!", 400, token));
 	}
 	
 	/**
@@ -69,8 +70,9 @@ public class NoteController {
 	@PutMapping("note/archive/{id}")
 	public ResponseEntity<Response> archiveNote(@PathVariable Long id,@RequestHeader("token") String token )
 	{
-		noteService.archiveNote(id, token);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note Archived Successfully....!", 201, token));
+		boolean res=noteService.archiveNote(id, token);
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is Archived Successfully....!", 200, token))
+					 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Archived...!", 400, token));
 	}
 	
 	
@@ -81,10 +83,11 @@ public class NoteController {
 	 * @return
 	 */
 	@DeleteMapping("note/delete/{id}")
-	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token)
+	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token) throws Exception
 	{
-		noteService.moveToTrash(id,token);
-		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note moved to Trash successfull..!!", 201,token));
+		boolean res=noteService.moveToTrash(id,token);
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note successfull moved to the Trash ..!!", 200,token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Note ID is not Available..!!", 400,token));	
 	}
 	
 	/**
@@ -96,8 +99,9 @@ public class NoteController {
 	 @DeleteMapping("note/deletepermanently/{id}")
 	 public ResponseEntity<Response> deleteNotePermanently(@PathVariable Long id,@RequestHeader("token") String token)
 	 {
-		 noteService.deleteNotePermanently(id,token);
-		 return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Deleted Permanently..!", 200, token));
+		 boolean res=noteService.deleteNotePermanently(id,token);
+		 return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is deleted permanently", 200,token))
+					  : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("The note is not available", 400,token));
 	 }
 }
 

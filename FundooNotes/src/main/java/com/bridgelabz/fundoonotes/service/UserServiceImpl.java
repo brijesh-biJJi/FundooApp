@@ -14,6 +14,8 @@ import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.exceptions.EmailNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.UserNotVerifiedException;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
 import com.bridgelabz.fundoonotes.response.MailResponse;
@@ -87,6 +89,7 @@ private UserInformation userInfo = new UserInformation();
 	
 	/**
 	 * login method is used to check whether its a Valid User 
+	 * @throws EmailNotFoundException 
 	 */
 
 	@Transactional
@@ -101,19 +104,24 @@ private UserInformation userInfo = new UserInformation();
 		{
 			if(userInf.isVerified()==true && (encrypt.matches(loginDtoInfo.getPassword(), userInf.getPassword())))
 				return userInf;
+			else
+			{
+				String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
+				System.out.println(mailResponse);
+				mailObj.setEmail(loginDtoInfo.getEmail());
+				mailObj.setSubject("Verification");
+				mailObj.setMessage(mailResponse);
+				
+				
+				MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
+				
+				throw new UserNotVerifiedException("Invalid credentials..");
+			}
 		}
 		else
 		{
-			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
-			System.out.println(mailResponse);
-			mailObj.setEmail(loginDtoInfo.getEmail());
-			mailObj.setSubject("Verification");
-			mailObj.setMessage(mailResponse);
-			
-			
-			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
+			throw new EmailNotFoundException(loginDtoInfo.getEmail()+" Please register before login");
 		}
-		return null;
 	}
 
 	/**
