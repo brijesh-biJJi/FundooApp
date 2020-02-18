@@ -49,9 +49,6 @@ public class NoteInformation {
 
 	private LocalDateTime reminder;
 
-
-	
-
 	public long getNoteid() {
 		return noteid;
 	}

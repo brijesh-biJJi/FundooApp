@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -54,12 +55,12 @@ public class NoteServiceImpl implements INoteService {
 		if (userInfo != null)
 		{
 			noteInfo = modelMapper.map(noteDtoInfo, NoteInformation.class);
+			userInfo.getNoteList().add(noteInfo);
 			noteInfo.setCreatedAt(LocalDateTime.now());
 			noteInfo.setArchieved(false);
 			noteInfo.setPinned(false);
 			noteInfo.setTrashed(false);
 			noteInfo.setColour("white");
-			//userInfo.getNote().add(noteInfo);
 			NoteInformation note = noteRepo.saveNote(noteInfo);
 			if (note != null) 
 			{

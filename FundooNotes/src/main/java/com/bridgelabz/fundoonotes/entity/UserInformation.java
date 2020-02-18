@@ -39,7 +39,16 @@ public class UserInformation {
 	private boolean isVerified;
 	private LocalDateTime dateTime;
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "userId")
+	private List<NoteInformation> noteList;
 
+	public List<NoteInformation> getNoteList() {
+		return noteList;
+	}
+	public void setNoteList(List<NoteInformation> noteList) {
+		this.noteList = noteList;
+	}
 	public String getEmail() {
 		return email;
 	}
