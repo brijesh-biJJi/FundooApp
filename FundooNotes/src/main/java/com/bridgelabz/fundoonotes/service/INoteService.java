@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.service;
 import java.util.List;
 
 import com.bridgelabz.fundoonotes.dto.NoteDto;
+import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 
@@ -28,4 +29,6 @@ public interface INoteService {
 	List<NoteInformation> getArchivedNotes(String token);
 
 	List<NoteInformation> getPinnedNotes(String token);
+
+	boolean addReminder(String token, long noteId,ReminderDto reminderDtoInfo);
 }

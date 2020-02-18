@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.fundoonotes.dto.NoteDto;
+import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
@@ -184,6 +185,14 @@ public class NoteController {
 			else
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, noteList)); 
 	  
+	 }
+	 
+	 @PutMapping("note/addReminder")
+	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
+	 {
+		 boolean res=noteService.addReminder(token,noteId,reminderDtoInfo);
+			return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder added successfully", 200,token))
+						 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not added", 400,token));
 	 }
 }
 

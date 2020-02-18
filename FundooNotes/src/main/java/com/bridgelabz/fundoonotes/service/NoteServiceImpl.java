@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.fundoonotes.dto.NoteDto;
+import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
@@ -162,7 +163,7 @@ public class NoteServiceImpl implements INoteService {
 		try
 		{
 			long userId=jwtGenerate.parseToken(token);
-			NoteInformation noteInfo=noteRepo.findNoteById(id);
+			NoteInformation nnoteId,color,oteInfo=noteRepo.findNoteById(id);
 			if(noteInfo != null)
 			{
 				noteInfo.setTrashed(!noteInfo.isTrashed());
@@ -289,6 +290,25 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean addReminder(String token,long noteId, ReminderDto reminderDtoInfo) 
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo != null)
+			{
+				System.out.println(reminderDtoInfo.getReminder());
+				noteInfo.setReminder(reminderDtoInfo.getReminder());
+				noteRepo.saveNote(noteInfo);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	
