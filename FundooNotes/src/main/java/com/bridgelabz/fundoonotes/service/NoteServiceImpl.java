@@ -275,6 +275,21 @@ public class NoteServiceImpl implements INoteService {
 		}
 		return null;
 	}
+
+	/**
+	 * Method is used to return the list of Pinned Notes
+	 */
+	@Override
+	public List<NoteInformation> getPinnedNotes(String token) {
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			List<NoteInformation> noteList=noteRepo.getPinnedNotes(userId);
+			return noteList;
+		}
+		return null;
+	}
 	
 	
 }

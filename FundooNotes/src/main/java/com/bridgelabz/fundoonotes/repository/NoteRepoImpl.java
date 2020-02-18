@@ -12,11 +12,15 @@ import org.springframework.stereotype.Repository;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 
 @Repository
-public class NoteRepoImpl implements INoteRepo {
+public class NoteRepoImpl implements INoteRepo 
+{
 
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	/**
+	 * Method is used to save the NOtes
+	 */
 	@Override
 	public NoteInformation saveNote(NoteInformation noteInfo) 
 	{
@@ -25,6 +29,9 @@ public class NoteRepoImpl implements INoteRepo {
 		return noteInfo;
 	}
 
+	/**
+	 * Method is used to find Note based on given NoteId 
+	 */
 	@Override
 	public NoteInformation findNoteById(Long noteid) {
 		Session session = entityManager.unwrap(Session.class);
@@ -33,6 +40,9 @@ public class NoteRepoImpl implements INoteRepo {
 		return (NoteInformation) qry.uniqueResult();
 	}
 
+	/**
+	 * Method is used to delete Note permanently based on given NoteId 
+	 */
 	@Override
 	public boolean deleteNotePermanently(Long noteid) {
 		Session session=entityManager.unwrap(Session.class);
@@ -46,6 +56,9 @@ public class NoteRepoImpl implements INoteRepo {
 		return false;
 	}
 
+	/**
+	 * Method is used retrieve all the NOtes based on given UserId 
+	 */
 	@Override
 	public List<NoteInformation> getAllNotes(long userId) 
 	{
@@ -55,6 +68,9 @@ public class NoteRepoImpl implements INoteRepo {
 		
 	}
 
+	/**
+	 * Method is used to retrieve all the Trashed Notes based on given UserId 
+	 */
 	@Override
 	public List<NoteInformation> getTrashedNotes(long userId)
 	{
@@ -62,11 +78,23 @@ public class NoteRepoImpl implements INoteRepo {
 		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_trashed=true").getResultList();
 	}
 
+	/**
+	 * Method is used to retrieve all the Archived Notes based on given UserId 
+	 */
 	@Override
 	public List<NoteInformation> getArchivedNotes(long userId) 
 	{
 		Session session=entityManager.unwrap(Session.class);
 		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_archieved=true").getResultList();
+	}
+
+	/**
+	 * Method is used to retrieve all the Pinned Notes based on given UserId 
+	 */
+	@Override
+	public List<NoteInformation> getPinnedNotes(long userId) {
+		Session session=entityManager.unwrap(Session.class);
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_pinned=true").getResultList();
 	}
 
 }

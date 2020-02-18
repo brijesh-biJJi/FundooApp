@@ -170,5 +170,20 @@ public class NoteController {
 	  
 	 }
 	 
+	 /**
+	  * API for retrieving all the Pinned Notes
+	  * @param token
+	  * @return
+	  */
+	 @GetMapping("note/getPinnedNotes")
+	 public ResponseEntity<Response> getPinnedNote(@RequestHeader("token") String token)
+	 {
+		 List<NoteInformation> noteList=noteService.getPinnedNotes(token);
+		 if(noteList !=null)
+			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Pinned notes are", 200, noteList));
+			else
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, noteList)); 
+	  
+	 }
 }
 

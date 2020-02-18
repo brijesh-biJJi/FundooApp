@@ -16,4 +16,6 @@ public interface INoteRepo {
 	List<NoteInformation> getTrashedNotes(long userId);
 
 	List<NoteInformation> getArchivedNotes(long userId);
+
+	List<NoteInformation> getPinnedNotes(long userId);
 }

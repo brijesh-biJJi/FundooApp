@@ -26,4 +26,6 @@ public interface INoteService {
 	List<NoteInformation> getTrashedNotes(String token);
 
 	List<NoteInformation> getArchivedNotes(String token);
+
+	List<NoteInformation> getPinnedNotes(String token);
 }
