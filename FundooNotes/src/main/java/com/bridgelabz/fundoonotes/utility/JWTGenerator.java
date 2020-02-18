@@ -35,7 +35,7 @@ private static final String SECRET = "thedoctor46";
 	 */
 	public long parseToken(String jwtToken)
 	{
-		Long userId = (long) 0;
+		long userId = (long) 0;
 		if (jwtToken != null) {
 			userId = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id").asLong();
 		}

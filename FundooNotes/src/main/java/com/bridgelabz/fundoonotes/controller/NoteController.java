@@ -138,5 +138,37 @@ public class NoteController {
 		else
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, notesList));
 	 }
+	 
+	 /**
+	  * API for retrieving all Trashed Notes
+	  * @param token
+	  * @return
+	  */
+	 @GetMapping("note/getTrashedNotes")
+	 public ResponseEntity<Response> getTrashedNote(@RequestHeader("token") String token)
+	 {
+		 List<NoteInformation> notesList = noteService.getTrashedNotes(token);
+		 if(notesList != null)
+				return ResponseEntity.status(HttpStatus.OK).body(new Response("Trashed notes are", 200, notesList));
+			else
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, notesList)); 
+	 }
+	 
+	 /**
+	  * API for retrieving all the Archived Notes
+	  * @param token
+	  * @return
+	  */
+	 @GetMapping("note/getArchivedNotes")
+	 public ResponseEntity<Response> getArchivedNote(@RequestHeader("token") String token)
+	 {
+		 List<NoteInformation> noteList=noteService.getArchivedNotes(token);
+		 if(noteList !=null)
+			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Archived notes are", 200, noteList));
+			else
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, noteList)); 
+	  
+	 }
+	 
 }
 

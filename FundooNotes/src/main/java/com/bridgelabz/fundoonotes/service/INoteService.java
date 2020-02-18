@@ -22,4 +22,8 @@ public interface INoteService {
 	boolean changeColor(Long id, String color, String token);
 
 	List<NoteInformation> getAllNotes(String token);
+
+	List<NoteInformation> getTrashedNotes(String token);
+
+	List<NoteInformation> getArchivedNotes(String token);
 }

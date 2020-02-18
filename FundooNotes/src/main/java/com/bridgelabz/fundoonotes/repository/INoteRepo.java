@@ -12,4 +12,8 @@ public interface INoteRepo {
 	boolean deleteNotePermanently(Long noteid);
 
 	List<NoteInformation> getAllNotes(long userId);
+
+	List<NoteInformation> getTrashedNotes(long userId);
+
+	List<NoteInformation> getArchivedNotes(long userId);
 }

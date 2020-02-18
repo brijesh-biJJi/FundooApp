@@ -55,4 +55,18 @@ public class NoteRepoImpl implements INoteRepo {
 		
 	}
 
+	@Override
+	public List<NoteInformation> getTrashedNotes(long userId)
+	{
+		Session session=entityManager.unwrap(Session.class);
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_trashed=true").getResultList();
+	}
+
+	@Override
+	public List<NoteInformation> getArchivedNotes(long userId) 
+	{
+		Session session=entityManager.unwrap(Session.class);
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_archieved=true").getResultList();
+	}
+
 }

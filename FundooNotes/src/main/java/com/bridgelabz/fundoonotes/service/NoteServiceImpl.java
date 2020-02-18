@@ -161,7 +161,7 @@ public class NoteServiceImpl implements INoteService {
 	{
 		try
 		{
-			Long userId=jwtGenerate.parseToken(token);
+			long userId=jwtGenerate.parseToken(token);
 			NoteInformation noteInfo=noteRepo.findNoteById(id);
 			if(noteInfo != null)
 			{
@@ -184,7 +184,7 @@ public class NoteServiceImpl implements INoteService {
 	public boolean deleteNotePermanently(Long id, String token) {
 		try
 		{
-			Long userId=jwtGenerate.parseToken(token);
+			long userId=jwtGenerate.parseToken(token);
 			NoteInformation noteInfo=noteRepo.findNoteById(id);
 			if(noteInfo != null)
 			{
@@ -205,7 +205,7 @@ public class NoteServiceImpl implements INoteService {
 	@Override
 	public boolean changeColor(Long noteId, String color, String token) 
 	{
-		Long userId=jwtGenerate.parseToken(token);
+		long userId=jwtGenerate.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
 		if(userInfo != null)
 		{
@@ -229,7 +229,7 @@ public class NoteServiceImpl implements INoteService {
 	@Override
 	public List<NoteInformation> getAllNotes(String token) 
 	{
-		Long userId=jwtGenerate.parseToken(token);
+		long userId=jwtGenerate.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
 		if(userInfo != null)
 		{
@@ -237,8 +237,44 @@ public class NoteServiceImpl implements INoteService {
 			List<NoteInformation> noteList=noteRepo.getAllNotes(userId);
 			return noteList;
 		}
-		return null;
+		else
+			//throw new UserNotFoundException("User not found..!");
+			return null;
 		
 		
 	}
+
+	/**
+	 * Method is used to return list of Trashed Notes
+	 */
+	@Override
+	public List<NoteInformation> getTrashedNotes(String token)
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			List<NoteInformation> noteList=noteRepo.getTrashedNotes(userId);
+			return noteList;
+		}
+		return null;
+	}
+
+	/**
+	 * Method is used to return the list of Archived Notes
+	 */
+	@Override
+	public List<NoteInformation> getArchivedNotes(String token)
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			List<NoteInformation> noteList=noteRepo.getArchivedNotes(userId);
+			return noteList;
+		}
+		return null;
+	}
+	
+	
 }
