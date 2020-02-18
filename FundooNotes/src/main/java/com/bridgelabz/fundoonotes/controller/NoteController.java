@@ -1,9 +1,12 @@
 package com.bridgelabz.fundoonotes.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -97,7 +100,7 @@ public class NoteController {
 	 * @param token
 	 * @return
 	 */
-	 @DeleteMapping("note/deletepermanently/{id}")
+	 @DeleteMapping("note/deletePermanently/{id}")
 	 public ResponseEntity<Response> deleteNotePermanently(@PathVariable Long id,@RequestHeader("token") String token)
 	 {
 		 boolean res=noteService.deleteNotePermanently(id,token);
@@ -117,7 +120,23 @@ public class NoteController {
 	 {
 		boolean res=noteService.changeColor(noteId,color,token);
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Color is added successfully", 200,token))
-					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Color is not changed", 200,token));
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Color is not changed", 400,token));
+	 }
+	 
+	 /**
+	  * API for retrieving all the Notes
+	  * @param token
+	  * @return
+	  */
+	 @GetMapping("/note/getAllNotes")
+	 public ResponseEntity<Response> getAllNotes(@RequestHeader("token") String token)
+	 {
+
+		List<NoteInformation> notesList = noteService.getAllNotes(token);
+		if(notesList != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("The notes are", 200, notesList));
+		else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, notesList));
 	 }
 }
 

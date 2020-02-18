@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonotes.service;
 
+import java.util.List;
+
 import com.bridgelabz.fundoonotes.dto.NoteDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
@@ -18,4 +20,6 @@ public interface INoteService {
 	boolean deleteNotePermanently(Long id, String token);
 
 	boolean changeColor(Long id, String color, String token);
+
+	List<NoteInformation> getAllNotes(String token);
 }

@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -220,5 +221,24 @@ public class NoteServiceImpl implements INoteService {
 		}
 		else 
 			throw new UserNotFoundException("User not found..!");
+	}
+
+	/**
+	 * Method is used to return list of Notes
+	 */
+	@Override
+	public List<NoteInformation> getAllNotes(String token) 
+	{
+		Long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			
+			List<NoteInformation> noteList=noteRepo.getAllNotes(userId);
+			return noteList;
+		}
+		return null;
+		
+		
 	}
 }
