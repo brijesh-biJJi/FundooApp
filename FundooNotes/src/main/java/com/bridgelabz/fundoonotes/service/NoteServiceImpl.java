@@ -324,9 +324,24 @@ public class NoteServiceImpl implements INoteService {
 	 */
 	@Transactional
 	@Override
-	public boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo) 
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo !=null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo !=null)
+			{
+				noteInfo.setReminder(null);
+				noteRepo.saveNote(noteInfo);
+				return true;
+			}
+			else
+				throw new NoteIdNotFoundException("Not not found..!");
+		}
+		else
+			throw new UserNotFoundException("User Not Found....!");
 	}
 	
 	
