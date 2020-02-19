@@ -64,10 +64,6 @@ public class NoteServiceImpl implements INoteService {
 			noteInfo.setTrashed(false);
 			noteInfo.setColour("white");
 			NoteInformation note = noteRepo.saveNote(noteInfo);
-			if (note != null) 
-			{
-				final String key = userInfo.getEmail();
-			}
 		}
 		return noteInfo;
 	}
