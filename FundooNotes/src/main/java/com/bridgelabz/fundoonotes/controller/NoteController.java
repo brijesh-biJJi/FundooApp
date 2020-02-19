@@ -22,6 +22,11 @@ import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.INoteService;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @RestController
 public class NoteController {
 	@Autowired
@@ -36,7 +41,7 @@ public class NoteController {
 	{
 		NoteInformation noteInfo=noteService.createNote(noteDtoInfo, token);
 		if(noteInfo != null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("Note is created successfully", 200, noteDtoInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note is created successfully", 200, noteDtoInfo));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Something went wrong", 400,noteInfo));
 	}
