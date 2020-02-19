@@ -292,11 +292,16 @@ public class NoteServiceImpl implements INoteService {
 		return null;
 	}
 
+	/**
+	 * Method is used to add reminder to specified  Note
+	 */
+	@Transactional
 	@Override
 	public boolean addReminder(String token,long noteId, ReminderDto reminderDtoInfo) 
 	{
 		long userId=jwtGenerate.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
+		
 		if(userInfo != null)
 		{
 			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
@@ -307,7 +312,20 @@ public class NoteServiceImpl implements INoteService {
 				noteRepo.saveNote(noteInfo);
 				return true;
 			}
+			else
+				throw new NoteIdNotFoundException("Note Id Not Found..");
 		}
+		else
+			throw new UserNotFoundException("User Not Found..!");
+	}
+
+	/**
+	 * Method is used to remove reminder of specified  Note
+	 */
+	@Transactional
+	@Override
+	public boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	

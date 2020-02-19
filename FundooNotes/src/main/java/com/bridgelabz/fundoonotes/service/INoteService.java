@@ -31,4 +31,6 @@ public interface INoteService {
 	List<NoteInformation> getPinnedNotes(String token);
 
 	boolean addReminder(String token, long noteId,ReminderDto reminderDtoInfo);
+
+	boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo);
 }

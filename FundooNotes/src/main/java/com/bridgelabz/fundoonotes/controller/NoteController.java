@@ -187,12 +187,34 @@ public class NoteController {
 	  
 	 }
 	 
+	 /**
+	  * API for adding Reminder for Note 
+	  * @param token
+	  * @param noteId
+	  * @param reminderDtoInfo
+	  * @return
+	  */
 	 @PutMapping("note/addReminder")
 	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		 boolean res=noteService.addReminder(token,noteId,reminderDtoInfo);
 			return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder added successfully", 200,token))
 						 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not added", 400,token));
+	 }
+	 
+	 /**
+	  * API for removing Reminder for Note 
+	  * @param token
+	  * @param noteId
+	  * @param reminderDtoInfo
+	  * @return
+	  */
+	 @PutMapping("note/removeReminder")
+	 public ResponseEntity<Response> removeReminder(@RequestHeader("token") String token, @RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
+	 {
+		boolean res=noteService.removeReminder(token,noteId,reminderDtoInfo);
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder removed successfully", 200,token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", 400,token));
 	 }
 }
 
