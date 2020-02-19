@@ -17,13 +17,13 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="lableinfo")
+@Table(name="labelinfo")
 public class LabelInformation {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int lableId;
-	private String lableName;
+	private int labelId;
+	private String labelName;
 	private long userId;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -32,20 +32,22 @@ public class LabelInformation {
 	@JsonBackReference
 	private List<NoteInformation> notelist;
 
-	public int getLableId() {
-		return lableId;
+
+
+	public int getLabelId() {
+		return labelId;
 	}
 
-	public void setLableId(int lableId) {
-		this.lableId = lableId;
+	public void setLabelId(int labelId) {
+		this.labelId = labelId;
 	}
 
-	public String getLableName() {
-		return lableName;
+	public String getLabelName() {
+		return labelName;
 	}
 
-	public void setLableName(String lableName) {
-		this.lableName = lableName;
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
 	}
 
 	public long getUserId() {
