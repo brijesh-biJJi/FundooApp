@@ -1,6 +1,7 @@
 package com.bridgelabz.fundoonotes.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -48,6 +49,21 @@ public class NoteInformation {
 	private String colour;
 
 	private LocalDateTime reminder;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "Label_Note", joinColumns = { @JoinColumn(name = "note_id") }, 
+									inverseJoinColumns = { @JoinColumn(name = "label_id") })
+	private List<LabelInformation> labelList;
+
+	
+	
+	public List<LabelInformation> getLabelList() {
+		return labelList;
+	}
+
+	public void setLabelList(List<LabelInformation> labelList) {
+		this.labelList = labelList;
+	}
 
 	public long getNoteid() {
 		return noteid;

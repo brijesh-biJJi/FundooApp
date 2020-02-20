@@ -28,7 +28,6 @@ public class UserInformation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private long userid;
 	private String name;
 	private String password;
