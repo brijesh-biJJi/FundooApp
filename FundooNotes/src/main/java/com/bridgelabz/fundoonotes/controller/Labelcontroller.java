@@ -61,5 +61,21 @@ public class Labelcontroller {
 	
 	}
 	
+	/**
+	 * API for removing Label from Note
+	 * @param token
+	 * @param labelDtoInfo
+	 * @param noteId
+	 * @return
+	 */
+	@PutMapping("label/removeLabel")
+	public ResponseEntity<Response> removeNoteLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
+	{
+		LabelInformation labelInfo=labelService.removeNoteLabel(token,labelDtoInfo,noteId);
+		if(labelInfo != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label successfully removed from Note", 200, labelInfo));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
 	
+	} 
 }

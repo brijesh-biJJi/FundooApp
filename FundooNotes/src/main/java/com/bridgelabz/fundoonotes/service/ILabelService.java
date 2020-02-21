@@ -14,4 +14,6 @@ public interface ILabelService {
 
 	LabelInformation addMapLabel(String token, LabelDto labelDtoInfo, long noteId);
 
+	LabelInformation removeNoteLabel(String token, LabelDto labelDtoInfo, long noteId);
+
 }

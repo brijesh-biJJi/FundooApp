@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonotes.service;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import com.bridgelabz.fundoonotes.utility.JWTGenerator;
  *
  */
 @Service
+@Transactional
 public class LabelServiceImpl implements ILabelService {
 
 	@Autowired
@@ -99,6 +102,7 @@ public class LabelServiceImpl implements ILabelService {
 				{
 //					noteInfo.getLabelList().add(labelInfo);
 //					noteRepo.saveNote(noteInfo);
+					
 					labelInfo.getNotelist().add(noteInfo);
 					labelJpaRepo.save(labelInfo);
 					return labelInfo;
@@ -113,7 +117,6 @@ public class LabelServiceImpl implements ILabelService {
 					
 					noteInfo.getLabelList().add(labelInfo);
 					noteRepo.saveNote(noteInfo);
-					System.out.println("After add to list");
 					labelJpaRepo.save(labelInfo);
 					System.out.println("AFter save ");
 					return labelInfo;
@@ -126,5 +129,41 @@ public class LabelServiceImpl implements ILabelService {
 			throw new UserNotFoundException("User not found..!");
 		
 	}
+
+
+	/**
+	 * Method is used to remove the Label from Note
+	 */
+	@Override
+	public LabelInformation removeNoteLabel(String token, LabelDto labelDtoInfo, long noteId) {
+		
+		long userId=jwtGenerator.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo != null)
+			{
+				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
+				if(labelInfo!=null)
+				{
+					noteInfo.getLabelList().remove(labelInfo);
+					noteRepo.saveNote(noteInfo);
+					return labelInfo;
+				}
+				else
+				{
+					return labelInfo;
+				}
+			}
+			else
+				throw new NoteIdNotFoundException("Note Id is not found");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
+		
+	}
+	
+	
 
 }

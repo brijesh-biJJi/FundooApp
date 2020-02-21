@@ -32,5 +32,8 @@ public class LabelRepoImpl implements ILabelRepo{
 		session.saveOrUpdate(labelInfo);
 		return labelInfo;
 	}
+	
+	
+	
 
 }
