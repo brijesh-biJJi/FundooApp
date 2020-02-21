@@ -303,7 +303,6 @@ public class NoteServiceImpl implements INoteService {
 			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 			if(noteInfo != null)
 			{
-				System.out.println(reminderDtoInfo.getReminder());
 				noteInfo.setReminder(reminderDtoInfo.getReminder());
 				noteRepo.saveNote(noteInfo);
 				return true;

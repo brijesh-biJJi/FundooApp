@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -22,7 +23,7 @@ public class LabelInformation {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int labelId;
+	private long labelId;
 	private String labelName;
 	private long userId;
 	
@@ -33,12 +34,11 @@ public class LabelInformation {
 	private List<NoteInformation> notelist;
 
 
-
-	public int getLabelId() {
+	public long getLabelId() {
 		return labelId;
 	}
 
-	public void setLabelId(int labelId) {
+	public void setLabelId(long labelId) {
 		this.labelId = labelId;
 	}
 
