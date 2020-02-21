@@ -3,6 +3,7 @@ package com.bridgelabz.fundoonotes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,7 +69,7 @@ public class Labelcontroller {
 	 * @param noteId
 	 * @return
 	 */
-	@PutMapping("label/removeLabel")
+	@PutMapping("label/removeNoteLabel")
 	public ResponseEntity<Response> removeNoteLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
 	{
 		LabelInformation labelInfo=labelService.removeNoteLabel(token,labelDtoInfo,noteId);
@@ -78,4 +79,22 @@ public class Labelcontroller {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
 	
 	} 
+	
+	/**
+	 * API for deleting the Label from User as well as from Note
+	 * @param token
+	 * @param labelDtoInfo
+	 * @param noteId
+	 * @return
+	 */
+	@DeleteMapping("label/deleteUserLabel")
+	public ResponseEntity<Response> deleteUserLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
+	{
+		LabelInformation labelInfo=labelService.deleteUserLabel(token,labelDtoInfo,noteId);
+		if(labelInfo != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label deleted successfully...", 200, labelInfo));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
+	
+	}
 }

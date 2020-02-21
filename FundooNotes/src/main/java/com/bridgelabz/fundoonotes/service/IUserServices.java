@@ -14,7 +14,7 @@ import com.bridgelabz.fundoonotes.entity.UserInformation;
  */
 public interface IUserServices {
 
-	boolean register(RegisterDto info);
+	UserInformation register(RegisterDto info);
 	
 	UserInformation login(LoginDto info);
 

@@ -53,7 +53,7 @@ private UserInformation userInfo = new UserInformation();
 	 */
 	@Transactional
 	@Override
-	public boolean register(RegisterDto registerDtoInfo) {
+	public UserInformation register(RegisterDto registerDtoInfo) {
 		System.out.println("1st lin of servimpl");
 		
 		/**
@@ -82,9 +82,9 @@ private UserInformation userInfo = new UserInformation();
 			
 			
 			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
-			return true;
+			return userInfo;
 		} 
-		return false;
+		return userInfo;
 	}
 	
 	/**

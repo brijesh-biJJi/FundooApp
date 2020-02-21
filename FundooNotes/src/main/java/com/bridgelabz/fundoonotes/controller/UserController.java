@@ -46,11 +46,11 @@ public class UserController {
 	@PostMapping("/user/register")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
-		boolean result = userService.register(registerDtoInfo);
-		if(result) {
+		UserInformation userInfo = userService.register(registerDtoInfo);
+		if(userInfo != null) {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!", 200, registerDtoInfo));
 		}
-		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("User Already Exixts...!", 208, registerDtoInfo));
+		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("User Already Exists...!", 208, registerDtoInfo));
 		
 
 		//return ResponseEntity.status(HttpStatus.OK).body(new Response("Hello ", 200, info));
