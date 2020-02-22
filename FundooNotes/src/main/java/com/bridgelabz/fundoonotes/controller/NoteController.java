@@ -234,7 +234,7 @@ public class NoteController {
 	{
 		List<LabelInformation> labelList=noteService.retrieveLabels(token,noteId);
 		if(labelList!=null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with this Note...", 200, labelList));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the Note...", 200, labelList));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Labels not Found", 400,labelList));
 		

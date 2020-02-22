@@ -27,4 +27,6 @@ public interface ILabelService {
 
 	List<NoteInformation> retrieveNotes(String token, String labelName);
 
+	List<LabelInformation> getLabelsWrtUser(String token);
+
 }

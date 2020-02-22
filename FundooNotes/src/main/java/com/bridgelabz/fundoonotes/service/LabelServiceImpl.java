@@ -257,4 +257,19 @@ public class LabelServiceImpl implements ILabelService {
 		else
 			throw new UserNotFoundException("User not found..!");
 	}
+
+
+	@Override
+	public List<LabelInformation> getLabelsWrtUser(String token)
+	{
+		long userId=jwtGenerator.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			List<LabelInformation> labelList=labelJpaRepo.findLabelsByUserId(userId);
+			return labelList;
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
+	}
 }

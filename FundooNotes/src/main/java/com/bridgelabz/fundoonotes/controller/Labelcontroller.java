@@ -134,7 +134,23 @@ public class Labelcontroller {
 		if(noteList!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Notes Associated with "+labelName +" Label...", 200, noteList));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", 400,noteList));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("No Notes Found", 400,noteList));
+	
+	}
+	
+	/**
+	 * API for retrieving List of Labels associated with respect to User
+	 * @param token
+	 * @return
+	 */
+	@GetMapping("label/getLabelsWrtUser")
+	public ResponseEntity<Response> getLabelsWrtUser(@RequestHeader("token") String token)
+	{
+		List<LabelInformation> labelList=labelService.getLabelsWrtUser(token);
+		if(labelList !=null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the User...", 200, labelList));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Found", 400,labelList));
 	
 	}
 }
