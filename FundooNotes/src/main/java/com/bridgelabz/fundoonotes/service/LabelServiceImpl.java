@@ -201,9 +201,11 @@ public class LabelServiceImpl implements ILabelService {
 			throw new UserNotFoundException("User not found..!");
 	}
 
-
+	/**
+	 * Method is used to edit Label Information 
+	 */
 	@Override
-	public Optional<LabelInformation> editLabel(String token, EditLabel editLabelInfo) 
+	public LabelInformation editLabel(String token, EditLabel editLabelInfo) 
 	{
 		long userId=jwtGenerator.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
@@ -212,8 +214,14 @@ public class LabelServiceImpl implements ILabelService {
 			Optional<LabelInformation> labelInfo=labelJpaRepo.findById(editLabelInfo.getLabelId());
 			if(labelInfo.isPresent())
 			{
-				
-				return labelInfo;
+				int val=labelJpaRepo.updateById(editLabelInfo.getLabelId(),editLabelInfo.getLabelName());
+				if(val > 0) {
+					LabelInformation labelInf=modelMapper.map(editLabelInfo, LabelInformation.class);
+					labelInf.getLabelId();
+					labelInf.getLabelName();
+					labelInf.setUserId(userInfo.getUserid());
+					return labelInf;
+				}
 			}
 			else
 				throw new LabelNotFoundException("Label Not Found...");
@@ -221,5 +229,6 @@ public class LabelServiceImpl implements ILabelService {
 		}
 		else
 			throw new UserNotFoundException("User not found..!");
+		return null;
 	}
 }

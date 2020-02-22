@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonotes.repository;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +21,9 @@ public interface ILabelJpaRepo extends JpaRepository<LabelInformation, Long>
 	@Modifying
 	@Query("delete from LabelInformation where label_name=:name")
 	void deleteByName(String name);
+
+	@Modifying
+	@Query("update from LabelInformation set label_name=:name where label_id=:id")
+	public int updateById(long id, String name);
 
 }
