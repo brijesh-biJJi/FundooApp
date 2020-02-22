@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import com.bridgelabz.fundoonotes.dto.NoteDto;
 import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
+import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
@@ -338,6 +340,23 @@ public class NoteServiceImpl implements INoteService {
 		else
 			throw new UserNotFoundException("User Not Found....!");
 	}
-	
-	
+
+	@Override
+	public List<LabelInformation> retrieveNotes(String token, long noteId) {
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo !=null)
+			{
+				List<LabelInformation> listLabels=noteInfo.getLabelList();
+				return listLabels;
+			}
+			else
+				throw new NoteIdNotFoundException("Not not found..!");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
+	}
 }

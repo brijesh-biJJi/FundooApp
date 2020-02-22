@@ -1,5 +1,6 @@
 package com.bridgelabz.fundoonotes.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -230,5 +231,27 @@ public class LabelServiceImpl implements ILabelService {
 		else
 			throw new UserNotFoundException("User not found..!");
 		return null;
+		
+	}
+
+
+	@Override
+	public List<NoteInformation> retrieveNotes(String token, String labelName) {
+		
+		long userId=jwtGenerator.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			LabelInformation labelInfo=labelJpaRepo.findByName(labelName,userInfo.getUserid());
+			if(labelInfo !=null)
+			{
+				List<NoteInformation> noteList=labelInfo.getNotelist();
+				return noteList;
+			}
+			else
+				throw new LabelNotFoundException("Label Not Found...");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoonotes.dto.NoteDto;
 import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
+import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.INoteService;
@@ -221,5 +222,6 @@ public class NoteController {
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder removed successfully", 200,token))
 					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", 400,token));
 	 }
+	 
 }
 

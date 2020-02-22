@@ -1,11 +1,13 @@
 package com.bridgelabz.fundoonotes.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoonotes.dto.EditLabel;
 import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
+import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.ILabelService;
 
@@ -115,6 +118,23 @@ public class Labelcontroller {
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...", 200, labelInfo));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", 400,labelInfo));
+	
+	}
+	
+	/**
+	 * API for Retrieving all Notes associated with particular Label
+	 * @param token
+	 * @param labelName
+	 * @return
+	 */
+	@GetMapping("label/retrieveNotes")
+	public ResponseEntity<Response> retrieveNotes(@RequestHeader("token") String token,@RequestParam String labelName)
+	{
+		List<NoteInformation> noteList=labelService.retrieveNotes(token,labelName);
+		if(noteList!=null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Notes Associated with "+labelName +" Label...", 200, noteList));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", 400,noteList));
 	
 	}
 }

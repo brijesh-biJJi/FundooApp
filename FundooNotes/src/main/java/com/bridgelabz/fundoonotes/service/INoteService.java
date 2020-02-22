@@ -5,6 +5,7 @@ import java.util.List;
 import com.bridgelabz.fundoonotes.dto.NoteDto;
 import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
+import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 
 public interface INoteService {
@@ -33,4 +34,6 @@ public interface INoteService {
 	boolean addReminder(String token, long noteId,ReminderDto reminderDtoInfo);
 
 	boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo);
+
+	List<LabelInformation> retrieveNotes(String token, long noteId);
 }
