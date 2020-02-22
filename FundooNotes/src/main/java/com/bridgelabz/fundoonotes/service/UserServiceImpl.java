@@ -137,6 +137,9 @@ private UserInformation userInfo = new UserInformation();
 		return true;
 	}
 
+	/**
+	 * This method is used to retrieve Users from Database
+	 */
 	@Transactional
 	@Override
 	public List<UserInformation> getUsers() {
@@ -144,6 +147,9 @@ private UserInformation userInfo = new UserInformation();
 		return usersList;
 	}
 
+	/**
+	 * This method is used to check whether User Exists or not
+	 */
 	@Override
 	public boolean isUserExist(String email) {
 		try {
@@ -160,6 +166,9 @@ private UserInformation userInfo = new UserInformation();
 		return false;
 	}
 
+	/**
+	 * Method is used to Update the Password
+	 */
 	@Transactional
 	@Override
 	public boolean updatePassword(UpdatePassword passwordUpdateInfo, String token) {

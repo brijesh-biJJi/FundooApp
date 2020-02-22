@@ -7,7 +7,11 @@ import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
-
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 public interface INoteService {
 	NoteInformation createNote(NoteDto information, String token);
 

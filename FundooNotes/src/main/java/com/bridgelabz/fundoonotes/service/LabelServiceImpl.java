@@ -259,6 +259,9 @@ public class LabelServiceImpl implements ILabelService {
 	}
 
 
+	/**
+	 * Method is used to retrieve all Label with respect to UserID
+	 */
 	@Override
 	public List<LabelInformation> getLabelsWrtUser(String token)
 	{

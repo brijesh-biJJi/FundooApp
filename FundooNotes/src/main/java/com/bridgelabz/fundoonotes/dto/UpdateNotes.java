@@ -7,6 +7,11 @@ import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Data
 public class UpdateNotes {
 

@@ -11,7 +11,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
-
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Repository
 public interface ILabelJpaRepo extends JpaRepository<LabelInformation, Long>
 {

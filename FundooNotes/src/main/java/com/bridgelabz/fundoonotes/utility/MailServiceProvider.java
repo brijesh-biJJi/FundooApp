@@ -22,8 +22,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailServiceProvider {
 
-	@Autowired
-	private static JavaMailSender javaMailSender;
 	
 	/**
 	 * This method used to create a Session by passing Properties and Authenticator as an argument 
@@ -31,12 +29,9 @@ public class MailServiceProvider {
 	 * @param subject
 	 * @param msg
 	 */
-	
-	
 	public static void sendEmail(String toEmail, String subject, String msg) {
 		String fromEmail = System.getenv("Email");
 		String password = System.getenv("Password");
-		
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");
 		prop.put("mail.smtp.port", "587");
