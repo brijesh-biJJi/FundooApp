@@ -18,4 +18,6 @@ public interface ILabelService {
 
 	LabelInformation deleteUserLabel(String token, LabelDto labelDtoInfo, long noteId);
 
+	LabelInformation editLabel(String token, LabelDto labelDtoInfo);
+
 }

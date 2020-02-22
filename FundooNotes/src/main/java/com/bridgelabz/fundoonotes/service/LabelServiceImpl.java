@@ -10,6 +10,7 @@ import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.repository.ILabelJpaRepo;
@@ -177,21 +178,39 @@ public class LabelServiceImpl implements ILabelService {
 				{
 					
 					noteInfo.getLabelList().remove(labelInfo);
+					//delete from label_note where (label_id) in (select label_id from labelinfo where label_name=?)
 					noteRepo.saveNote(noteInfo);
 					System.out.println("Label Check 1 "+labelInfo);
-					//labelJpaRepo.delete(labelInfo);
-					//labelJpaRepo.deleteById(labelInfo.getLabelId());
 					labelJpaRepo.deleteByName(labelInfo.getLabelName());
-					System.out.println("Label Check 2 "+labelInfo);
 					return labelInfo;
 				}
 				else
-				{
-					return labelInfo;
-				}
+					throw new LabelNotFoundException("Label Not Found...");
 			}
 			else
 				throw new NoteIdNotFoundException("Note Id is not found");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
+	}
+
+
+	@Override
+	public LabelInformation editLabel(String token, LabelDto labelDtoInfo) 
+	{
+		long userId=jwtGenerator.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(), userId);
+			if(labelInfo != null)
+			{
+				
+				return labelInfo;
+			}
+			else
+				throw new LabelNotFoundException("Label Not Found...");
+			
 		}
 		else
 			throw new UserNotFoundException("User not found..!");

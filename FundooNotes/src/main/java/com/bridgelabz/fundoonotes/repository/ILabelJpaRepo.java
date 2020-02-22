@@ -19,4 +19,5 @@ public interface ILabelJpaRepo extends JpaRepository<LabelInformation, Long>
 	@Modifying
 	@Query("delete from LabelInformation where label_name=:name")
 	void deleteByName(String name);
+
 }

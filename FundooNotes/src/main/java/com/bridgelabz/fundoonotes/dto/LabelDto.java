@@ -7,6 +7,7 @@ package com.bridgelabz.fundoonotes.dto;
  */
 public class LabelDto {
 	private String name;
+	
 
 	public String getName() {
 		return name;

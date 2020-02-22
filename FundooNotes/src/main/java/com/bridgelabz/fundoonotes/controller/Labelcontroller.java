@@ -97,4 +97,22 @@ public class Labelcontroller {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
 	
 	}
+	
+	/**
+	 * API for Editing the Label
+	 * @param token
+	 * @param labelDtoInfo
+	 * @return
+	 */
+	@PutMapping("label/editLabel")
+	public ResponseEntity<Response> editLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo)
+	{
+		LabelInformation labelInfo=labelService.editLabel(token,labelDtoInfo);
+		System.out.println("Check null "+labelInfo);
+		if(labelInfo != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...", 200, labelInfo));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", 400,labelInfo));
+	
+	}
 }
