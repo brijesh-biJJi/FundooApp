@@ -235,6 +235,9 @@ public class LabelServiceImpl implements ILabelService {
 	}
 
 
+	/**
+	 * Method is used to retrieve all Notes associated with Particular Label
+	 */
 	@Override
 	public List<NoteInformation> retrieveNotes(String token, String labelName) {
 		

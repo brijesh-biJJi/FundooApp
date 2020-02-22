@@ -341,8 +341,11 @@ public class NoteServiceImpl implements INoteService {
 			throw new UserNotFoundException("User Not Found....!");
 	}
 
+	/**
+	 * Method is used to retrieve all Labels Associated with particular Note
+	 */
 	@Override
-	public List<LabelInformation> retrieveNotes(String token, long noteId) {
+	public List<LabelInformation> retrieveLabels(String token, long noteId) {
 		long userId=jwtGenerate.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
 		if(userInfo != null)

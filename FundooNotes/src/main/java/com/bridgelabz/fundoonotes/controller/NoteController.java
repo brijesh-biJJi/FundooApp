@@ -223,5 +223,21 @@ public class NoteController {
 					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", 400,token));
 	 }
 	 
+	 /**
+	  * API for Retrieving All the Labels associated with particular Note
+	  * @param token
+	  * @param noteId
+	  * @return
+	  */
+	 @GetMapping("note/retrieveLabels")
+	 public ResponseEntity<Response> retrieveLabels(@RequestHeader("token") String token,@RequestParam long noteId)
+	{
+		List<LabelInformation> labelList=noteService.retrieveLabels(token,noteId);
+		if(labelList!=null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with this Note...", 200, labelList));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Labels not Found", 400,labelList));
+		
+	}
 }
 

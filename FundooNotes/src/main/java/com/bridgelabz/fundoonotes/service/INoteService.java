@@ -35,5 +35,5 @@ public interface INoteService {
 
 	boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo);
 
-	List<LabelInformation> retrieveNotes(String token, long noteId);
+	List<LabelInformation> retrieveLabels(String token, long noteId);
 }
