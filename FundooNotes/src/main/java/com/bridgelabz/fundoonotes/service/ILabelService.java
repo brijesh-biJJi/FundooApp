@@ -1,5 +1,8 @@
 package com.bridgelabz.fundoonotes.service;
 
+import java.util.Optional;
+
+import com.bridgelabz.fundoonotes.dto.EditLabel;
 import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 
@@ -18,6 +21,6 @@ public interface ILabelService {
 
 	LabelInformation deleteUserLabel(String token, LabelDto labelDtoInfo, long noteId);
 
-	LabelInformation editLabel(String token, LabelDto labelDtoInfo);
+	Optional<LabelInformation> editLabel(String token, EditLabel editlabelInfo);
 
 }

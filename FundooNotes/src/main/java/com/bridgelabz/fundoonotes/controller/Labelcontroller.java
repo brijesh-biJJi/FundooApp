@@ -1,5 +1,7 @@
 package com.bridgelabz.fundoonotes.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.fundoonotes.dto.EditLabel;
 import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.response.Response;
@@ -105,9 +108,9 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@PutMapping("label/editLabel")
-	public ResponseEntity<Response> editLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo)
+	public ResponseEntity<Response> editLabel(@RequestHeader("token") String token,@RequestBody EditLabel editlabelInfo)
 	{
-		LabelInformation labelInfo=labelService.editLabel(token,labelDtoInfo);
+		Optional<LabelInformation> labelInfo=labelService.editLabel(token,editlabelInfo);
 		System.out.println("Check null "+labelInfo);
 		if(labelInfo != null)
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...", 200, labelInfo));

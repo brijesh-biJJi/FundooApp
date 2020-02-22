@@ -22,12 +22,14 @@ import com.bridgelabz.fundoonotes.response.MailResponse;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 import com.bridgelabz.fundoonotes.utility.MailServiceProvider;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author Brijesh A Kanchan
  *
  */
-
+@Slf4j
 @Service
 public class UserServiceImpl implements IUserServices {
 
@@ -54,8 +56,6 @@ private UserInformation userInfo = new UserInformation();
 	@Transactional
 	@Override
 	public UserInformation register(RegisterDto registerDtoInfo) {
-		System.out.println("1st lin of servimpl");
-		
 		/**
 		 * Retrieving the UserInformation
 		 */
@@ -75,7 +75,8 @@ private UserInformation userInfo = new UserInformation();
 			
 			
 			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
-			System.out.println(mailResponse);
+			log.info(mailResponse);
+
 			mailObj.setEmail(registerDtoInfo.getEmail());
 			mailObj.setSubject("Verification");
 			mailObj.setMessage(mailResponse);
@@ -107,7 +108,7 @@ private UserInformation userInfo = new UserInformation();
 			else
 			{
 				String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
-				System.out.println(mailResponse);
+				log.info(mailResponse);
 				mailObj.setEmail(loginDtoInfo.getEmail());
 				mailObj.setSubject("Verification");
 				mailObj.setMessage(mailResponse);
@@ -130,7 +131,7 @@ private UserInformation userInfo = new UserInformation();
 	@Transactional
 	@Override
 	public boolean updateIsVerify(String token) {
-		System.out.println("After Decrypt Token :"+(long) jwtGenerate.parseToken(token));
+		log.info("After Decrypt Token :"+(long) jwtGenerate.parseToken(token));
 		Long userId=(long) jwtGenerate.parseToken(token);
 		userRepo.updateUserInfoIsVerifiedCol(userId);
 		return true;
@@ -154,7 +155,7 @@ private UserInformation userInfo = new UserInformation();
 				return true;
 			} 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());;
 		}
 		return false;
 	}
@@ -165,13 +166,12 @@ private UserInformation userInfo = new UserInformation();
 		Long id = null;
 		try {
 			id = (long)jwtGenerate.parseToken(token);
-			System.out.println("UserImpl Id : "+id);
 			String epassword = encrypt.encode(passwordUpdateInfo.getConfirmPassword());
 			passwordUpdateInfo.setConfirmPassword(epassword);
 			return userRepo.updatePass(passwordUpdateInfo, id);
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return false;
 	}

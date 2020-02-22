@@ -1,11 +1,14 @@
 package com.bridgelabz.fundoonotes.service;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bridgelabz.fundoonotes.dto.EditLabel;
 import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
@@ -19,11 +22,14 @@ import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author Brijesh A Kanchan
  *
  */
+@Slf4j
 @Service
 @Transactional
 public class LabelServiceImpl implements ILabelService {
@@ -56,6 +62,7 @@ public class LabelServiceImpl implements ILabelService {
 	@Override
 	public LabelInformation createLabel(String token, LabelDto labelDtoInfo)
 	{
+		log.info("hello inside creatte");
 		long userId=jwtGenerator.parseToken(token);
 		userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
@@ -196,14 +203,14 @@ public class LabelServiceImpl implements ILabelService {
 
 
 	@Override
-	public LabelInformation editLabel(String token, LabelDto labelDtoInfo) 
+	public Optional<LabelInformation> editLabel(String token, EditLabel editLabelInfo) 
 	{
 		long userId=jwtGenerator.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
 		if(userInfo != null)
 		{
-			LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(), userId);
-			if(labelInfo != null)
+			Optional<LabelInformation> labelInfo=labelJpaRepo.findById(editLabelInfo.getLabelId());
+			if(labelInfo.isPresent())
 			{
 				
 				return labelInfo;
