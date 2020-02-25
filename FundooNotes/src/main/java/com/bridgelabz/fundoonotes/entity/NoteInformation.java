@@ -61,4 +61,10 @@ public class NoteInformation {
 									inverseJoinColumns = { @JoinColumn(name = "label_id") })
 	private List<LabelInformation> labelList;
 
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "collaborator_Note", joinColumns = { @JoinColumn(name = "note_id") }, 
+									inverseJoinColumns = { @JoinColumn(name = "user_id") })
+	@JsonIgnore
+	private List<User> collabList;
 }

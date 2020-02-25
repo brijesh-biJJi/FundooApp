@@ -22,6 +22,7 @@ import com.bridgelabz.fundoonotes.exceptions.UserAlreadyExistsException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotVerifiedException;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
+import com.bridgelabz.fundoonotes.repository.IUserJpaRepo;
 import com.bridgelabz.fundoonotes.repository.NoteRepoImpl;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
@@ -44,6 +45,9 @@ private User userInfo = new User();
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private IUserJpaRepo userJpaRepo;
 	
 	@Autowired
 	private INoteRepo noteRepo;
@@ -199,8 +203,9 @@ private User userInfo = new User();
 	/**
 	 * Method is used to collaborate the User
 	 */
+	@Transactional
 	@Override
-	public User addCollab(String token, String email, long noteId)
+	public NoteInformation addCollab(String token, String email, long noteId)
 	{
 		long userId=jwtGenerate.parseToken(token);
 		userInfo = userRepo.findUserById(userId);
@@ -212,10 +217,9 @@ private User userInfo = new User();
 				NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 				if(noteInfo != null)
 				{
-					collabUser.getCollabList().add(noteInfo);
-					User s=userRepo.save(collabUser);
-					System.out.println("UserColab "+s.getName());
-					return collabUser;
+					//collabUser.getCollabList().add(noteInfo);
+					noteInfo.getCollabList().add(collabUser);
+					return noteInfo;
 				}
 				else 
 					throw new NoteIdNotFoundException("Note Id Not Found..!");
@@ -226,5 +230,28 @@ private User userInfo = new User();
 		else
 			throw new UserNotFoundException("User not found..!");
 	}
+
+	@Transactional
+	@Override
+	public List<User> getCollab(String token,long noteId) 
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
+			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+			if(noteInfo !=null)
+			{
+				List<User> collabList=noteInfo.getCollabList();
+				return collabList;
+			}
+			else 
+				throw new NoteIdNotFoundException("Note Id Not Found..!");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
+	
+	}
+
 
 }

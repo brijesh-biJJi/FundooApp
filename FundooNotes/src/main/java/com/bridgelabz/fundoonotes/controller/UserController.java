@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
+import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.IUserServices;
@@ -141,13 +142,23 @@ public class UserController {
 	 * @param noteId
 	 * @return
 	 */
-	@PostMapping("collaborators/add")
+	@PostMapping("collaborator/add")
 	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
-		User collabInfo=userService.addCollab(token,email,noteId);
-		if(collabInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabInfo));
+		NoteInformation noteInfo=userService.addCollab(token,email,noteId);
+		if(noteInfo != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  noteInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",collabInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",noteInfo));
+	
+	}
+	
+	@GetMapping("collaborators")
+	public ResponseEntity<Response> getCollab(@RequestHeader("token") String token,@RequestParam("noteid") long noteId){
+		List<User> collabList=userService.getCollab(token,noteId);
+		if(collabList != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabList));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",collabList));
 	
 	}
 }

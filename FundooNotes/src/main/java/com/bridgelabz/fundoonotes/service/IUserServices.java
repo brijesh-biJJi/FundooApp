@@ -5,6 +5,7 @@ import java.util.List;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
+import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 
 /**
@@ -26,7 +27,9 @@ public interface IUserServices {
 
 	boolean updatePassword(UpdatePassword passwordUpdateInfo, String token);
 
-	User addCollab(String token, String email, long noteId);
+	NoteInformation addCollab(String token, String email, long noteId);
+
+	List<User> getCollab(String token, long noteId);
 
 	
 	
