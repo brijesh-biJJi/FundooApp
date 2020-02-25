@@ -42,9 +42,9 @@ public class NoteController {
 	{
 		NoteInformation noteInfo=noteService.createNote(noteDtoInfo, token);
 		if(noteInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note is created successfully", 200, noteDtoInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note is created successfully",  noteDtoInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Something went wrong", 400,noteInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Something went wrong", noteInfo));
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class NoteController {
 	@PutMapping("/note/update")
 	public ResponseEntity<Response> updateNote(@RequestBody UpdateNotes updateNoteinfo, @RequestHeader("token") String token) {
 		noteService.updateNote(updateNoteinfo, token);
-		return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Updated successfully..!", 200, updateNoteinfo));
+		return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Updated successfully..!", updateNoteinfo));
 	}
 	
 	/**
@@ -68,8 +68,8 @@ public class NoteController {
 	@PutMapping("/note/pin/{id}")
 	public ResponseEntity<Response> pinNote(@PathVariable Long id, @RequestHeader("token") String token) {
 		boolean res=noteService.pinNote(id, token);
-		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is pinned successfully....!", 200, token))
-				 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Pinned...!", 400, token));
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is pinned successfully....!", token))
+				 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Pinned...!",  token));
 	}
 	
 	/**
@@ -82,8 +82,8 @@ public class NoteController {
 	public ResponseEntity<Response> archiveNote(@PathVariable Long id,@RequestHeader("token") String token )
 	{
 		boolean res=noteService.archiveNote(id, token);
-		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is Archived Successfully....!", 200, token))
-					 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Archived...!", 400, token));
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is Archived Successfully....!",  token))
+					 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Archived...!",  token));
 	}
 	
 	
@@ -97,8 +97,8 @@ public class NoteController {
 	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token) throws Exception
 	{
 		boolean res=noteService.moveToTrash(id,token);
-		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note successfull moved to the Trash ..!!", 200,token))
-					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Note ID is not Available..!!", 400,token));	
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note successfull moved to the Trash ..!!", token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Note ID is not Available..!!", token));	
 	}
 	
 	/**
@@ -111,8 +111,8 @@ public class NoteController {
 	 public ResponseEntity<Response> deleteNotePermanently(@PathVariable Long id,@RequestHeader("token") String token)
 	 {
 		 boolean res=noteService.deleteNotePermanently(id,token);
-		 return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is deleted permanently", 200,token))
-					  : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("The note is not available", 400,token));
+		 return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is deleted permanently",token))
+					  : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("The note is not available", token));
 	 }
 	 
 	 /**
@@ -126,8 +126,8 @@ public class NoteController {
 	 public ResponseEntity<Response> changeColor(@RequestParam("noteId") Long noteId,@RequestParam("color") String color,@RequestHeader("token") String token)
 	 {
 		boolean res=noteService.changeColor(noteId,color,token);
-		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Color is added successfully", 200,token))
-					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Color is not changed", 400,token));
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Color is added successfully",token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Color is not changed", token));
 	 }
 	 
 	 /**
@@ -141,9 +141,9 @@ public class NoteController {
 
 		List<NoteInformation> notesList = noteService.getAllNotes(token);
 		if(notesList != null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("The notes are", 200, notesList));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("The notes are",  notesList));
 		else
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, notesList));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!",  notesList));
 	 }
 	 
 	 /**
@@ -156,9 +156,9 @@ public class NoteController {
 	 {
 		 List<NoteInformation> notesList = noteService.getTrashedNotes(token);
 		 if(notesList != null)
-				return ResponseEntity.status(HttpStatus.OK).body(new Response("Trashed notes are", 200, notesList));
+				return ResponseEntity.status(HttpStatus.OK).body(new Response("Trashed notes are",  notesList));
 			else
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, notesList)); 
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!",  notesList)); 
 	 }
 	 
 	 /**
@@ -171,9 +171,9 @@ public class NoteController {
 	 {
 		 List<NoteInformation> noteList=noteService.getArchivedNotes(token);
 		 if(noteList !=null)
-			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Archived notes are", 200, noteList));
+			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Archived notes are", noteList));
 			else
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, noteList)); 
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!",  noteList)); 
 	  
 	 }
 	 
@@ -187,9 +187,9 @@ public class NoteController {
 	 {
 		 List<NoteInformation> noteList=noteService.getPinnedNotes(token);
 		 if(noteList !=null)
-			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Pinned notes are", 200, noteList));
+			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Pinned notes are",  noteList));
 			else
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", 400, noteList)); 
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!", noteList)); 
 	  
 	 }
 	 
@@ -204,8 +204,8 @@ public class NoteController {
 	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		 boolean res=noteService.addReminder(token,noteId,reminderDtoInfo);
-			return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder added successfully", 200,token))
-						 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not added", 400,token));
+			return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder added successfully", token))
+						 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not added", token));
 	 }
 	 
 	 /**
@@ -219,8 +219,8 @@ public class NoteController {
 	 public ResponseEntity<Response> removeReminder(@RequestHeader("token") String token, @RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		boolean res=noteService.removeReminder(token,noteId,reminderDtoInfo);
-		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder removed successfully", 200,token))
-					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", 400,token));
+		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder removed successfully", token))
+					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", token));
 	 }
 	 
 	 /**
@@ -234,9 +234,9 @@ public class NoteController {
 	{
 		List<LabelInformation> labelList=noteService.retrieveLabels(token,noteId);
 		if(labelList!=null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the Note...", 200, labelList));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the Note...", labelList));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Labels not Found", 400,labelList));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Labels not Found", labelList));
 		
 	}
 }

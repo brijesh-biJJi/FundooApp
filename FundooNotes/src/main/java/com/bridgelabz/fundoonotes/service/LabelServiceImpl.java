@@ -13,7 +13,7 @@ import com.bridgelabz.fundoonotes.dto.EditLabel;
 import com.bridgelabz.fundoonotes.dto.LabelDto;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
@@ -53,7 +53,7 @@ public class LabelServiceImpl implements ILabelService {
 	@Autowired
 	private INoteRepo noteRepo;
 	
-	private UserInformation userInfo=new UserInformation();
+	private User userInfo=new User();
 	
 	private NoteInformation noteInfo=new NoteInformation();
 	

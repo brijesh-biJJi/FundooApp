@@ -10,13 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.fundoonotes.dto.CollaboratorDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.CollaboratorInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.IUserServices;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
@@ -43,14 +46,14 @@ public class UserController {
 	 * @param info
 	 * @return
 	 */
-	@PostMapping("/user/register")
+	@PostMapping("/users/register")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
-		UserInformation userInfo = userService.register(registerDtoInfo);
+		User userInfo = userService.register(registerDtoInfo);
 		if(userInfo != null) {
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!", 200, registerDtoInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Registration Successfull...!",  registerDtoInfo));
 		}
-		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("User Already Exists...!", 208, registerDtoInfo));
+		return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new Response("User Already Exists...!",  registerDtoInfo));
 		
 
 		//return ResponseEntity.status(HttpStatus.OK).body(new Response("Hello ", 200, info));
@@ -62,16 +65,16 @@ public class UserController {
 	 * @param info
 	 * @return
 	 */
-	@PostMapping("/user/login")
+	@PostMapping("/users/login")
 	public ResponseEntity<Response> login(@RequestBody LoginDto loginDtoInfo)
 	{
-		UserInformation userInfo = userService.login(loginDtoInfo);
+		User userInfo = userService.login(loginDtoInfo);
 		if(userInfo != null) 
 		{
 			String token=jwtGenerator.createToken(userInfo.getUserid());
-			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token, 200, loginDtoInfo));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token,  loginDtoInfo));
 		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!", 400, loginDtoInfo));
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!",  loginDtoInfo));
 	}
 	
 	/**
@@ -79,15 +82,15 @@ public class UserController {
 	 * @param token
 	 * @return
 	 */
-	@GetMapping("/verify/{token}")
+	@GetMapping("users/verify/{token}")
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
 		boolean updateUserInfo=userService.updateIsVerify(token);
 		if(updateUserInfo)
 		{
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(token, 200, "VERIFIED"));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("VERIFIED",updateUserInfo));
 		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response(token, 401, "Not Verified. Unauthorized Client...!"));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Not Verified. Unauthorized Client...!",updateUserInfo));
 	}
 	
 	/**
@@ -95,14 +98,14 @@ public class UserController {
 	 * @param email
 	 * @return
 	 */
-	@PostMapping("user/forgotpass")
+	@PostMapping("users/forgotpassword")
 	public ResponseEntity<Response> forgotPassword(@RequestParam("email") String email)
 	{
 		boolean res = userService.isUserExist(email);
 		if (res) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User Exist", 200, email));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User Exist", email));
 		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User does not Exist", 400, email));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User does not Exist", email));
 
 	}
 	
@@ -112,24 +115,41 @@ public class UserController {
 	 * @param update
 	 * @return
 	 */
-	@PutMapping("user/update/{token}")
+	@PutMapping("users/updatePassword/{token}")
 	public ResponseEntity<Response> update(@PathVariable("token") String token, @RequestBody UpdatePassword passwordUpdateInfo) {
 		boolean res = userService.updatePassword(passwordUpdateInfo, token);
 		if (res) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED)
-					.body(new Response("Password Updated Successfully...!", 200, passwordUpdateInfo));
+					.body(new Response("Password Updated Successfully...!",  passwordUpdateInfo));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-				.body(new Response("Entered Password  doesn't Match...!", 402, passwordUpdateInfo));
+				.body(new Response("Entered Password  doesn't Match...!",  passwordUpdateInfo));
 	}
 	
 	/**
 	 * API for getting all user details
 	 * @return
 	 */
-	@GetMapping("user/getusers")
+	@GetMapping("users")
 	public ResponseEntity<Response> getUsers() {
-		List<UserInformation> userList = userService.getUsers();
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", 200, userList));
+		List<User> userList = userService.getUsers();
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));
+	}
+	
+	/**
+	 * API for adding collaborator
+	 * @param token
+	 * @param collabDtoInfo
+	 * @param noteId
+	 * @return
+	 */
+	@PostMapping("collaborators/add")
+	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
+		CollaboratorInformation collabInfo=userService.addCollab(token,email,noteId);
+		if(collabInfo != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabInfo));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",collabInfo));
+	
 	}
 }

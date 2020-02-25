@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
 import lombok.Data;
 
 /**
@@ -24,7 +26,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="userinfo")
-public class UserInformation {
+@Component
+public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

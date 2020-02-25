@@ -10,13 +10,18 @@ import lombok.Data;
 @Data
 public class Response {
 
-	private String token;
-	private int statuscode;
+	private String message;
+	//private int statuscode;
 	private Object obj;
-	public Response(String token, int statuscode, Object obj) {
+//	public Response(String token, int statuscode, Object obj) {
+//		super();
+//		this.token = token;
+//		this.statuscode = statuscode;
+//		this.obj = obj;
+//	}
+	public Response(String msg, Object obj) {
 		super();
-		this.token = token;
-		this.statuscode = statuscode;
+		this.message = msg;
 		this.obj = obj;
 	}
 }

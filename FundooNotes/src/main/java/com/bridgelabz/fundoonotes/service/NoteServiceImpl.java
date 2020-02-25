@@ -16,7 +16,7 @@ import com.bridgelabz.fundoonotes.dto.ReminderDto;
 import com.bridgelabz.fundoonotes.dto.UpdateNotes;
 import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
@@ -45,7 +45,7 @@ public class NoteServiceImpl implements INoteService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	UserInformation userInfo=new UserInformation();
+	User userInfo=new User();
 	
 	/**
 	 * Method is used to create a Note

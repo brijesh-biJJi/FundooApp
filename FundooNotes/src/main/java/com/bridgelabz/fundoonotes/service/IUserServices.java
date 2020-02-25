@@ -2,10 +2,12 @@ package com.bridgelabz.fundoonotes.service;
 
 import java.util.List;
 
+import com.bridgelabz.fundoonotes.dto.CollaboratorDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.CollaboratorInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 
 /**
  * 
@@ -14,17 +16,19 @@ import com.bridgelabz.fundoonotes.entity.UserInformation;
  */
 public interface IUserServices {
 
-	UserInformation register(RegisterDto info);
+	User register(RegisterDto info);
 	
-	UserInformation login(LoginDto info);
+	User login(LoginDto info);
 
 	boolean updateIsVerify(String token);
 
-	List<UserInformation> getUsers();
+	List<User> getUsers();
 
 	boolean isUserExist(String email);
 
 	boolean updatePassword(UpdatePassword passwordUpdateInfo, String token);
+
+	CollaboratorInformation addCollab(String token, String email, long noteId);
 	
 	
 }

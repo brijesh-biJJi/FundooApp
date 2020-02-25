@@ -3,7 +3,7 @@ package com.bridgelabz.fundoonotes.repository;
 import java.util.List;
 
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 
 /**
  * 
@@ -13,15 +13,15 @@ import com.bridgelabz.fundoonotes.entity.UserInformation;
 public interface UserRepository {
 
 
-	UserInformation save(UserInformation info);
+	User save(User info);
 	
-	UserInformation getUser(String name);
+	User getUser(String name);
 
 	boolean updateUserInfoIsVerifiedCol(Long userId);
 	
-	UserInformation findUserById(Long id);
+	User findUserById(Long id);
 
-	List<UserInformation> getUsers();
+	List<User> getUsers();
 
 	boolean updatePass(UpdatePassword passwordUpdateInfo, Long id);
 }

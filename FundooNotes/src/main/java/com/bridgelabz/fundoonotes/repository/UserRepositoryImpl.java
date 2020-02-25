@@ -11,7 +11,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.UserInformation;
+import com.bridgelabz.fundoonotes.entity.User;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
 	 * This method is used to save the UserDetails into the Database
 	 */
 	@Override
-	public UserInformation save(UserInformation info) {
+	public User save(User info) {
 		Session ses=entityManager.unwrap(Session.class);
 		ses.saveOrUpdate(info);
 		return info;
@@ -38,11 +38,11 @@ public class UserRepositoryImpl implements UserRepository {
 	 * This method is used to retrieve the user details from the Database based on specified user email
 	 */
 	@Override
-	public UserInformation getUser(String email) {
+	public User getUser(String email) {
 		Session session = entityManager.unwrap(Session.class);
 		Query q = session.createQuery("FROM UserInformation where email =:email");
 		q.setParameter("email", email);
-		return (UserInformation) q.uniqueResult();
+		return (User) q.uniqueResult();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public boolean updateUserInfoIsVerifiedCol(Long userId) {
 		Session session = entityManager.unwrap(Session.class);
-		TypedQuery<UserInformation> q = session.createQuery("update UserInformation set is_verified =:true where userid =:userid");
+		TypedQuery<User> q = session.createQuery("update UserInformation set is_verified =:true where userid =:userid");
 		q.setParameter("true", true);
 		q.setParameter("userid", userId);
 		try {
@@ -69,18 +69,18 @@ public class UserRepositoryImpl implements UserRepository {
 	 * This method is used to retrieve user from the Database by UserId
 	 */
 	@Override
-	public UserInformation findUserById(Long id) {
+	public User findUserById(Long id) {
 		Session session = entityManager.unwrap(Session.class);
 		Query q = session.createQuery("FROM UserInformation where id=:id");
 		q.setParameter("id", id);
-		return (UserInformation) q.uniqueResult();
+		return (User) q.uniqueResult();
 	}
 
 	/**
 	 * This method is used to retrieve all the users from the Database
 	 */
 	@Override
-	public List<UserInformation> getUsers() {
+	public List<User> getUsers() {
 		Session session = entityManager.unwrap(Session.class);
 		List usersList = session.createQuery("from UserInformation").getResultList();
 		return usersList;

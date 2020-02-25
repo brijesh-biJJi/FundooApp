@@ -44,9 +44,9 @@ public class Labelcontroller {
 	{
 		LabelInformation labelInfo=labelService.createLabel(token,labelDtoInfo);
 		if(labelInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Label is created successfully", 200, labelInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Label is created successfully",  labelInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label already exists", 400,labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label already exists", labelInfo));
 	
 	}
 	
@@ -62,9 +62,9 @@ public class Labelcontroller {
 	{
 		LabelInformation labelInfo=labelService.addMapLabel(token,labelDtoInfo,noteId);
 		if(labelInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Label added successfully", 200, labelInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Label added successfully",  labelInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not added", 400,labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not added", labelInfo));
 	
 	}
 	
@@ -80,9 +80,9 @@ public class Labelcontroller {
 	{
 		LabelInformation labelInfo=labelService.removeNoteLabel(token,labelDtoInfo,noteId);
 		if(labelInfo != null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label successfully removed from Note", 200, labelInfo));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label successfully removed from Note",  labelInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", labelInfo));
 	
 	} 
 	
@@ -98,9 +98,9 @@ public class Labelcontroller {
 	{
 		LabelInformation labelInfo=labelService.deleteUserLabel(token,labelDtoInfo,noteId);
 		if(labelInfo != null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label deleted successfully...", 200, labelInfo));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label deleted successfully...",  labelInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", 400,labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", labelInfo));
 	
 	}
 	
@@ -115,9 +115,9 @@ public class Labelcontroller {
 	{
 		LabelInformation labelInfo=labelService.editLabel(token,editlabelInfo);
 		if(labelInfo!=null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...", 200, labelInfo));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...",  labelInfo));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", 400,labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Edited", labelInfo));
 	
 	}
 	
@@ -132,10 +132,10 @@ public class Labelcontroller {
 	{
 		List<NoteInformation> noteList=labelService.retrieveNotes(token,labelName);
 		if(noteList!=null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Notes Associated with "+labelName +" Label...", 200, noteList));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Notes Associated with "+labelName +" Label...",  noteList));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("No Notes Found", 400,noteList));
-	
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("No Notes Found", noteList));
+
 	}
 	
 	/**
@@ -148,9 +148,9 @@ public class Labelcontroller {
 	{
 		List<LabelInformation> labelList=labelService.getLabelsWrtUser(token);
 		if(labelList !=null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the User...", 200, labelList));
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("List of Labels Associated with the User...",  labelList));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Found", 400,labelList));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label not Found", labelList));
 	
 	}
 }
