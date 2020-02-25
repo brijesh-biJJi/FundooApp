@@ -231,6 +231,9 @@ private User userInfo = new User();
 			throw new UserNotFoundException("User not found..!");
 	}
 
+	/**
+	 * Method is used to get Collaborator List
+	 */
 	@Transactional
 	@Override
 	public List<User> getCollab(String token,long noteId) 
@@ -251,6 +254,33 @@ private User userInfo = new User();
 		else
 			throw new UserNotFoundException("User not found..!");
 	
+	}
+
+	@Transactional
+	@Override
+	public NoteInformation removeCollab(String token, String email, long noteId) {
+		long userId=jwtGenerate.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
+			User collabUser=userRepo.getUser(email);
+			if(collabUser != null)
+			{
+				NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+				if(noteInfo != null)
+				{
+					//collabUser.getCollabList().add(noteInfo);
+					noteInfo.getCollabList().remove(collabUser);
+					return noteInfo;
+				}
+				else 
+					throw new NoteIdNotFoundException("Note Id Not Found..!");
+			}
+			else
+				throw new UserNotFoundException("User not found..!");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
 
 

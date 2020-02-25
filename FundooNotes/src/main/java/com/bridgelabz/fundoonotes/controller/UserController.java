@@ -152,6 +152,12 @@ public class UserController {
 	
 	}
 	
+	/**
+	 * API for retrieving Collaborator List
+	 * @param token
+	 * @param noteId
+	 * @return
+	 */
 	@GetMapping("collaborators")
 	public ResponseEntity<Response> getCollab(@RequestHeader("token") String token,@RequestParam("noteid") long noteId){
 		List<User> collabList=userService.getCollab(token,noteId);
@@ -159,6 +165,16 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabList));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",collabList));
+	
+	}
+	
+	@PutMapping("collaborators/remove")
+	public ResponseEntity<Response> removeCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
+		NoteInformation noteInfo=userService.removeCollab(token,email,noteId);
+		if(noteInfo != null)
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  noteInfo));
+		else
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",noteInfo));
 	
 	}
 }

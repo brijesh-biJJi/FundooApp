@@ -31,6 +31,8 @@ public interface IUserServices {
 
 	List<User> getCollab(String token, long noteId);
 
+	NoteInformation removeCollab(String token, String email,long noteId);
+
 	
 	
 	
