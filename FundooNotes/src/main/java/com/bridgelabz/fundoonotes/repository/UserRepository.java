@@ -15,7 +15,7 @@ public interface UserRepository {
 
 	User save(User info);
 	
-	User getUser(String name);
+	User getUser(String email);
 
 	boolean updateUserInfoIsVerifiedCol(Long userId);
 	

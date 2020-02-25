@@ -2,11 +2,9 @@ package com.bridgelabz.fundoonotes.service;
 
 import java.util.List;
 
-import com.bridgelabz.fundoonotes.dto.CollaboratorDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.CollaboratorInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 
 /**
@@ -28,7 +26,9 @@ public interface IUserServices {
 
 	boolean updatePassword(UpdatePassword passwordUpdateInfo, String token);
 
-	CollaboratorInformation addCollab(String token, String email, long noteId);
+	User addCollab(String token, String email, long noteId);
+
+	
 	
 	
 }

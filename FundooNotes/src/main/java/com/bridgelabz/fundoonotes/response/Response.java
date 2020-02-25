@@ -11,14 +11,13 @@ import lombok.Data;
 public class Response {
 
 	private String message;
-	//private int statuscode;
+	private String token;
 	private Object obj;
-//	public Response(String token, int statuscode, Object obj) {
-//		super();
-//		this.token = token;
-//		this.statuscode = statuscode;
-//		this.obj = obj;
-//	}
+	public Response(String msg,String token) {
+		super();
+		this.message = msg;
+		this.token = token;
+	}
 	public Response(String msg, Object obj) {
 		super();
 		this.message = msg;

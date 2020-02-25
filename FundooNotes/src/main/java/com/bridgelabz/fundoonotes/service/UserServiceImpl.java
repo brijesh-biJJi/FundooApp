@@ -11,14 +11,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bridgelabz.fundoonotes.dto.CollaboratorDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.CollaboratorInformation;
+import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.EmailNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.UserAlreadyExistsException;
+import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotVerifiedException;
+import com.bridgelabz.fundoonotes.repository.INoteRepo;
+import com.bridgelabz.fundoonotes.repository.NoteRepoImpl;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
 import com.bridgelabz.fundoonotes.response.MailResponse;
@@ -40,6 +44,9 @@ private User userInfo = new User();
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private INoteRepo noteRepo;
 	
 	@Autowired
 	private JWTGenerator jwtGenerate;
@@ -77,7 +84,7 @@ private User userInfo = new User();
 			userInfo = userRepo.save(userInfo);
 			
 			
-			String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
+			String mailResponse = response.mergeMsg("http://localhost:8080/users/verify",jwtGenerate.createToken(userInfo.getUserid()));
 			log.info(mailResponse);
 
 			mailObj.setEmail(registerDtoInfo.getEmail());
@@ -88,7 +95,8 @@ private User userInfo = new User();
 			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 			return userInfo;
 		} 
-		return userInfo;
+		else
+			throw new UserAlreadyExistsException("User Already Exists..");
 	}
 	
 	/**
@@ -110,7 +118,7 @@ private User userInfo = new User();
 				return userInf;
 			else
 			{
-				String mailResponse = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInf.getUserid()));
+				String mailResponse = response.mergeMsg("http://localhost:8080/users/verify",jwtGenerate.createToken(userInf.getUserid()));
 				log.info(mailResponse);
 				mailObj.setEmail(loginDtoInfo.getEmail());
 				mailObj.setSubject("Verification");
@@ -188,10 +196,35 @@ private User userInfo = new User();
 		return false;
 	}
 
+	/**
+	 * Method is used to collaborate the User
+	 */
 	@Override
-	public CollaboratorInformation addCollab(String token, String email, long noteId)
+	public User addCollab(String token, String email, long noteId)
 	{
-		
-		return null;
+		long userId=jwtGenerate.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
+			User collabUser=userRepo.getUser(email);
+			if(collabUser != null)
+			{
+				NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+				if(noteInfo != null)
+				{
+					collabUser.getCollabList().add(noteInfo);
+					User s=userRepo.save(collabUser);
+					System.out.println("UserColab "+s.getName());
+					return collabUser;
+				}
+				else 
+					throw new NoteIdNotFoundException("Note Id Not Found..!");
+			}
+			else
+				throw new UserNotFoundException("User not found..!");
+		}
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
+
 }

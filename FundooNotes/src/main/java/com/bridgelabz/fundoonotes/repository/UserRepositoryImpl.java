@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User getUser(String email) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("FROM UserInformation where email =:email");
+		Query q = session.createQuery("FROM User where email =:email");
 		q.setParameter("email", email);
 		return (User) q.uniqueResult();
 	}
@@ -51,7 +51,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public boolean updateUserInfoIsVerifiedCol(Long userId) {
 		Session session = entityManager.unwrap(Session.class);
-		TypedQuery<User> q = session.createQuery("update UserInformation set is_verified =:true where userid =:userid");
+		TypedQuery<User> q = session.createQuery("update User set is_verified =:true where userid =:userid");
 		q.setParameter("true", true);
 		q.setParameter("userid", userId);
 		try {
@@ -71,7 +71,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public User findUserById(Long id) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("FROM UserInformation where id=:id");
+		Query q = session.createQuery("FROM User where id=:id");
 		q.setParameter("id", id);
 		return (User) q.uniqueResult();
 	}
@@ -82,7 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public List<User> getUsers() {
 		Session session = entityManager.unwrap(Session.class);
-		List usersList = session.createQuery("from UserInformation").getResultList();
+		List usersList = session.createQuery("from User").getResultList();
 		return usersList;
 	}
 
@@ -92,7 +92,7 @@ public class UserRepositoryImpl implements UserRepository {
 	@Override
 	public boolean updatePass(UpdatePassword passwordUpdateInfo, Long id) {
 		Session session = entityManager.unwrap(Session.class);
-		Query q = session.createQuery("update UserInformation set password =:pass" + " " + " " + "where id=:i");
+		Query q = session.createQuery("update User set password =:pass" + " " + " " + "where id=:i");
 		q.setParameter("pass", passwordUpdateInfo.getConfirmPassword());
 		q.setParameter("i", id);
 		int status = q.executeUpdate();

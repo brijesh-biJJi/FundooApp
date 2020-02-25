@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bridgelabz.fundoonotes.dto.CollaboratorDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
-import com.bridgelabz.fundoonotes.entity.CollaboratorInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.IUserServices;
@@ -88,7 +86,7 @@ public class UserController {
 		boolean updateUserInfo=userService.updateIsVerify(token);
 		if(updateUserInfo)
 		{
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("VERIFIED",updateUserInfo));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("VERIFIED",token));
 		}
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("Not Verified. Unauthorized Client...!",updateUserInfo));
 	}
@@ -145,7 +143,7 @@ public class UserController {
 	 */
 	@PostMapping("collaborators/add")
 	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
-		CollaboratorInformation collabInfo=userService.addCollab(token,email,noteId);
+		User collabInfo=userService.addCollab(token,email,noteId);
 		if(collabInfo != null)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabInfo));
 		else
