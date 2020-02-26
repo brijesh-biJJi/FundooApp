@@ -14,11 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author Brijesh A Kanchan
  *
  */
+@Slf4j
 @Component
 public class MailServiceProvider {
 
@@ -69,12 +72,12 @@ public class MailServiceProvider {
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 			message.setSubject(subject);
 			message.setText(msg);
-			System.out.println("Mime Message: "+message);
+			log.info("Mime Message: "+message);
 			Transport.send(message);
 		}
 		catch (Exception e) 
 		{
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 	}
 }

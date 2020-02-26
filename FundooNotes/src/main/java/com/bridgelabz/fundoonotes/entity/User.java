@@ -47,10 +47,4 @@ public class User {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	private List<NoteInformation> noteList;
-	
-//	@ManyToMany(cascade = CascadeType.ALL)
-//	@JoinTable(name = "collaborator_Note", joinColumns = { @JoinColumn(name = "user_id") }, 
-//									inverseJoinColumns = { @JoinColumn(name = "note_id") })
-//	private List<NoteInformation> collabList;
-
 }

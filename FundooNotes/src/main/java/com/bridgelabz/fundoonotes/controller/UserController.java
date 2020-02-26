@@ -168,6 +168,13 @@ public class UserController {
 	
 	}
 	
+	/**
+	 * API for removing specified Collaborator
+	 * @param token
+	 * @param email
+	 * @param noteId
+	 * @return
+	 */
 	@PutMapping("collaborators/remove")
 	public ResponseEntity<Response> removeCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
 		NoteInformation noteInfo=userService.removeCollab(token,email,noteId);

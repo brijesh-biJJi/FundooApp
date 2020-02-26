@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.bridgelabz.fundoonotes.config.RabbitMQSender;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
@@ -63,7 +64,8 @@ private User userInfo = new User();
 	@Autowired
 	private MailObject mailObj;
 
-	
+	@Autowired
+	private RabbitMQSender rabbitMqSender;
 	/**
 	 * register method is used to Register the user
 	 */
@@ -95,8 +97,8 @@ private User userInfo = new User();
 			mailObj.setSubject("Verification");
 			mailObj.setMessage(mailResponse);
 			
-			
-			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
+			rabbitMqSender.send(mailObj);
+			//MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 			return userInfo;
 		} 
 		else
@@ -256,6 +258,10 @@ private User userInfo = new User();
 	
 	}
 
+	
+	/**
+	 * Method is used to remove the specified Collaborator
+	 */
 	@Transactional
 	@Override
 	public NoteInformation removeCollab(String token, String email, long noteId) {
@@ -269,7 +275,6 @@ private User userInfo = new User();
 				NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 				if(noteInfo != null)
 				{
-					//collabUser.getCollabList().add(noteInfo);
 					noteInfo.getCollabList().remove(collabUser);
 					return noteInfo;
 				}
