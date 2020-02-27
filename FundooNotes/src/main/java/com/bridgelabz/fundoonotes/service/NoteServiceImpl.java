@@ -202,6 +202,7 @@ public class NoteServiceImpl implements INoteService {
 			if(noteInfo != null)
 			{
 				noteRepo.deleteNotePermanently(id);
+				elasticSearchService.deleteNote(noteInfo);
 				return true;
 			}
 		}catch(Exception e) {
@@ -375,5 +376,19 @@ public class NoteServiceImpl implements INoteService {
 		}
 		else
 			throw new UserNotFoundException("User not found..!");
+	}
+
+	/**
+	 * Method is used to Search the Note by title
+	 */
+	@Override
+	public List<NoteInformation> searchByTitle(String title) {
+		List<NoteInformation> notes=elasticSearchService.searchByTitle(title);
+		if(notes!=null) {
+		return notes;
+		}
+		else {
+			return null;
+		}
 	}
 }

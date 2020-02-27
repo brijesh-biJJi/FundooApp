@@ -8,4 +8,8 @@ public interface IElasticSearchService {
 
 	String createNote(NoteInformation note);
 
+	List<NoteInformation> searchByTitle(String title);
+
+	String deleteNote(NoteInformation noteInfo);
+
 }

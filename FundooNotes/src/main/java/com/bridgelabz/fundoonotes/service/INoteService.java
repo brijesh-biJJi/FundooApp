@@ -40,4 +40,6 @@ public interface INoteService {
 	boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo);
 
 	List<LabelInformation> retrieveLabels(String token, long noteId);
+
+	List<NoteInformation> searchByTitle(String title);
 }

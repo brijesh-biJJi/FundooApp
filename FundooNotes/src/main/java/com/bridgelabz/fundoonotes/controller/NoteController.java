@@ -239,5 +239,20 @@ public class NoteController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Labels not Found", labelList));
 		
 	}
+	 
+	 /**
+	  * API for Searching the Note by title
+	  * @param title
+	  * @param token
+	  * @return
+	  */
+	@GetMapping("/note/search")
+	public ResponseEntity<Response> search(@RequestParam("title") String title,
+				 @RequestHeader("token") String token)
+	{
+		List<NoteInformation> notesInfo=noteService.searchByTitle(title);
+		return ResponseEntity.status(HttpStatus.CREATED).body(new Response("The note you are looking for is",  notesInfo));
+
+	}
 }
 
