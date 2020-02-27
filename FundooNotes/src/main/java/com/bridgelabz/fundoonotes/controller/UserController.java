@@ -3,6 +3,8 @@ package com.bridgelabz.fundoonotes.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -82,6 +84,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("users/verify/{token}")
+	
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
 		boolean updateUserInfo=userService.updateIsVerify(token);
@@ -130,6 +133,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("users")
+	@Cacheable( value="users")
 	public ResponseEntity<Response> getUsers() {
 		List<User> userList = userService.getUsers();
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));
