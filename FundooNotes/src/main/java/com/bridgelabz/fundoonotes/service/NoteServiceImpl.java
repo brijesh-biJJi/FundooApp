@@ -24,12 +24,15 @@ import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * 
  * @author Brijesh A Kanchan
  *
  */
+@Slf4j
 @Service
 public class NoteServiceImpl implements INoteService {
 
@@ -44,6 +47,9 @@ public class NoteServiceImpl implements INoteService {
 	private BCryptPasswordEncoder encrypt;
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private IElasticSearchService elasticSearchService;
 	
 	User userInfo=new User();
 	
@@ -66,6 +72,14 @@ public class NoteServiceImpl implements INoteService {
 			noteInfo.setTrashed(false);
 			noteInfo.setColour("white");
 			NoteInformation note = noteRepo.saveNote(noteInfo);
+			try {
+				elasticSearchService.createNote(noteInfo);
+			}
+			catch(Exception e)
+			{
+				log.info(e.getMessage());
+			}
+			
 		}
 		return noteInfo;
 	}

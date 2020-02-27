@@ -97,8 +97,8 @@ private User userInfo = new User();
 			mailObj.setSubject("Verification");
 			mailObj.setMessage(mailResponse);
 			
-			rabbitMqSender.send(mailObj);
-			//MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
+			//rabbitMqSender.send(mailObj);
+			MailServiceProvider.sendEmail(mailObj.getEmail(), mailObj.getSubject(), mailObj.getMessage());
 			return userInfo;
 		} 
 		else
