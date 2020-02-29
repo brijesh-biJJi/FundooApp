@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+
+@Data
 @Entity
 public class Profile {
 	@Id
@@ -20,12 +23,12 @@ public class Profile {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "userId")
-	private User userLabel;
+	private User userInfo;
 
 	public Profile(String profilePicName, User user) {
 		super();
 		this.profilePicName = profilePicName;
-		this.userLabel = user;
+		this.userInfo = user;
 	}
 
 	public Profile() {

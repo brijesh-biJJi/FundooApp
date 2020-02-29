@@ -25,12 +25,13 @@ import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.IUserServices;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
+import io.swagger.annotations.ApiOperation;
 
 
 /**
  * 
  * @author Brijesh A Kanchan
- *
+ *@Purpose Controller class is to handle requests coming from the client. Then, the controller invokes a business class to process business-related tasks, and then redirects the client to a logical view name
  */
 @RestController
 public class UserController {
@@ -46,8 +47,10 @@ public class UserController {
 	 * register is a Handler method that communicates with Service layer in order to perform Registration Operation
 	 * @param info
 	 * @return
-	 */
+	 */	
 	@PostMapping("/users/register")
+	@ApiOperation(value="Register User", response = Response.class)
+	@CachePut(value="user", key="#token")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
 		User userInfo = userService.register(registerDtoInfo);
@@ -67,6 +70,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("/users/login")
+	@ApiOperation(value="Login User", response = Response.class)
 	public ResponseEntity<Response> login(@RequestBody LoginDto loginDtoInfo)
 	{
 		User userInfo = userService.login(loginDtoInfo);
@@ -84,7 +88,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("users/verify/{token}")
-	
+	@ApiOperation(value="User Verification", response = Response.class)
 	public ResponseEntity<Response> userVerification(@PathVariable ("token") String token)
 	{
 		boolean updateUserInfo=userService.updateIsVerify(token);
@@ -101,6 +105,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("users/forgotpassword")
+	@ApiOperation(value="Forgot Password", response = Response.class)
 	public ResponseEntity<Response> forgotPassword(@RequestParam("email") String email)
 	{
 		boolean res = userService.isUserExist(email);
@@ -118,6 +123,7 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping("users/updatePassword/{token}")
+	@ApiOperation(value="Update Password", response = Response.class)
 	public ResponseEntity<Response> update(@PathVariable("token") String token, @RequestBody UpdatePassword passwordUpdateInfo) {
 		boolean res = userService.updatePassword(passwordUpdateInfo, token);
 		if (res) {
@@ -133,6 +139,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("users")
+	@ApiOperation(value="Get User", response = Response.class)
 	@Cacheable( value="users")
 	public ResponseEntity<Response> getUsers() {
 		List<User> userList = userService.getUsers();
@@ -147,6 +154,7 @@ public class UserController {
 	 * @return
 	 */
 	@PostMapping("collaborator/add")
+	@ApiOperation(value="Collaborate User", response = Response.class)
 	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
 		NoteInformation noteInfo=userService.addCollab(token,email,noteId);
 		if(noteInfo != null)
@@ -163,6 +171,7 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping("collaborators")
+	@ApiOperation(value="Get Collaborated User", response = Response.class)
 	public ResponseEntity<Response> getCollab(@RequestHeader("token") String token,@RequestParam("noteid") long noteId){
 		List<User> collabList=userService.getCollab(token,noteId);
 		if(collabList != null)
@@ -180,6 +189,7 @@ public class UserController {
 	 * @return
 	 */
 	@PutMapping("collaborators/remove")
+	@ApiOperation(value="Remove Collaborated  User", response = Response.class)
 	public ResponseEntity<Response> removeCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
 		NoteInformation noteInfo=userService.removeCollab(token,email,noteId);
 		if(noteInfo != null)

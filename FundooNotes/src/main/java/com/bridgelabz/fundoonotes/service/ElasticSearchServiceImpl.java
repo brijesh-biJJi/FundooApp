@@ -66,11 +66,11 @@ public class ElasticSearchServiceImpl implements IElasticSearchService
 	public List<NoteInformation> searchByTitle(String title) {
 		log.info("Title "+title);
 		SearchRequest searchrequest = new SearchRequest("springboot");
-		SearchSourceBuilder searchsource = new SearchSourceBuilder();
+		SearchSourceBuilder searchsourceBuilder = new SearchSourceBuilder();
 		log.info("search request "+searchrequest);
 		
-		searchsource.query(QueryBuilders.matchQuery("title",title));
-		searchrequest.source(searchsource);
+		searchsourceBuilder.query(QueryBuilders.matchQuery("title",title));
+		searchrequest.source(searchsourceBuilder);
 		SearchResponse searchresponse = null;
 		try {
 			searchresponse = elasticSearchConfig.client().search(searchrequest, RequestOptions.DEFAULT);

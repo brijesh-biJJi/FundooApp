@@ -23,10 +23,12 @@ import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.INoteService;
 
+import io.swagger.annotations.ApiOperation;
+
 /**
  * 
  * @author Brijesh A Kanchan
- *
+ *@Purpose Controller class is to handle requests coming from the client. Then, the controller invokes a business class to process business-related tasks, and then redirects the client to a logical view name
  */
 @RestController
 public class NoteController {
@@ -38,6 +40,7 @@ public class NoteController {
 	 * @return
 	 */
 	@PostMapping("notes/create")
+	@ApiOperation(value="Note Creation", response = Response.class)
 	public ResponseEntity<Response> createNote(@RequestBody NoteDto noteDtoInfo,@RequestHeader("token") String token)
 	{
 		NoteInformation noteInfo=noteService.createNote(noteDtoInfo, token);
@@ -54,6 +57,7 @@ public class NoteController {
 	 * @return
 	 */
 	@PutMapping("/note/update")
+	@ApiOperation(value="Note Updation", response = Response.class)
 	public ResponseEntity<Response> updateNote(@RequestBody UpdateNotes updateNoteinfo, @RequestHeader("token") String token) {
 		noteService.updateNote(updateNoteinfo, token);
 		return ResponseEntity.status(HttpStatus.OK).body(new Response("Note Updated successfully..!", updateNoteinfo));
@@ -66,6 +70,7 @@ public class NoteController {
 	 * @return
 	 */
 	@PutMapping("/note/pin/{id}")
+	@ApiOperation(value="Pin Note", response = Response.class)
 	public ResponseEntity<Response> pinNote(@PathVariable Long id, @RequestHeader("token") String token) {
 		boolean res=noteService.pinNote(id, token);
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is pinned successfully....!", token))
@@ -79,6 +84,7 @@ public class NoteController {
 	 * @return
 	 */
 	@PutMapping("note/archive/{id}")
+	@ApiOperation(value="Archive Note", response = Response.class)
 	public ResponseEntity<Response> archiveNote(@PathVariable Long id,@RequestHeader("token") String token )
 	{
 		boolean res=noteService.archiveNote(id, token);
@@ -94,6 +100,7 @@ public class NoteController {
 	 * @return
 	 */
 	@DeleteMapping("note/delete/{id}")
+	@ApiOperation(value="Move the Note to Trash", response = Response.class)
 	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token) throws Exception
 	{
 		boolean res=noteService.moveToTrash(id,token);
@@ -108,6 +115,7 @@ public class NoteController {
 	 * @return
 	 */
 	 @DeleteMapping("note/deletePermanently/{id}")
+	 @ApiOperation(value="Note Deletion", response = Response.class)
 	 public ResponseEntity<Response> deleteNotePermanently(@PathVariable Long id,@RequestHeader("token") String token)
 	 {
 		 boolean res=noteService.deleteNotePermanently(id,token);
@@ -123,6 +131,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @PutMapping("note/changecolor")
+	 @ApiOperation(value="Change Color", response = Response.class)
 	 public ResponseEntity<Response> changeColor(@RequestParam("noteId") Long noteId,@RequestParam("color") String color,@RequestHeader("token") String token)
 	 {
 		boolean res=noteService.changeColor(noteId,color,token);
@@ -136,6 +145,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @GetMapping("/note/getAllNotes")
+	 @ApiOperation(value="Get All Notes", response = Response.class)
 	 public ResponseEntity<Response> getAllNotes(@RequestHeader("token") String token)
 	 {
 
@@ -152,6 +162,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @GetMapping("note/getTrashedNotes")
+	 @ApiOperation(value="Get Trashed Notes", response = Response.class)
 	 public ResponseEntity<Response> getTrashedNote(@RequestHeader("token") String token)
 	 {
 		 List<NoteInformation> notesList = noteService.getTrashedNotes(token);
@@ -167,6 +178,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @GetMapping("note/getArchivedNotes")
+	 @ApiOperation(value="Get Archived Notes", response = Response.class)
 	 public ResponseEntity<Response> getArchivedNote(@RequestHeader("token") String token)
 	 {
 		 List<NoteInformation> noteList=noteService.getArchivedNotes(token);
@@ -183,6 +195,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @GetMapping("note/getPinnedNotes")
+	 @ApiOperation(value="Get Pinned Notes", response = Response.class)
 	 public ResponseEntity<Response> getPinnedNote(@RequestHeader("token") String token)
 	 {
 		 List<NoteInformation> noteList=noteService.getPinnedNotes(token);
@@ -201,6 +214,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @PutMapping("note/addReminder")
+	 @ApiOperation(value="Add Reminder", response = Response.class)
 	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		 boolean res=noteService.addReminder(token,noteId,reminderDtoInfo);
@@ -216,6 +230,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @PutMapping("note/removeReminder")
+	 @ApiOperation(value="Remove Reminder", response = Response.class)
 	 public ResponseEntity<Response> removeReminder(@RequestHeader("token") String token, @RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		boolean res=noteService.removeReminder(token,noteId,reminderDtoInfo);
@@ -230,6 +245,7 @@ public class NoteController {
 	  * @return
 	  */
 	 @GetMapping("note/retrieveLabels")
+	 @ApiOperation(value="Get All Labels", response = Response.class)
 	 public ResponseEntity<Response> retrieveLabels(@RequestHeader("token") String token,@RequestParam long noteId)
 	{
 		List<LabelInformation> labelList=noteService.retrieveLabels(token,noteId);
@@ -247,6 +263,7 @@ public class NoteController {
 	  * @return
 	  */
 	@GetMapping("/note/search")
+	 @ApiOperation(value="Search Notes", response = Response.class)
 	public ResponseEntity<Response> search(@RequestParam("title") String title,
 				 @RequestHeader("token") String token)
 	{

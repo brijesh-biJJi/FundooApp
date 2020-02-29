@@ -22,10 +22,12 @@ import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.service.ILabelService;
 
+import io.swagger.annotations.ApiOperation;
+
 /**
  * 
  * @author Brijesh A Kanchan
- *
+ * @Purpose Controller class is to handle requests coming from the client. Then, the controller invokes a business class to process business-related tasks, and then redirects the client to a logical view name
  */
 @RestController
 public class Labelcontroller {
@@ -40,6 +42,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@PostMapping("label/createLable")
+	@ApiOperation(value="Label Creation", response = Response.class)
 	public ResponseEntity<Response> createLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo)
 	{
 		LabelInformation labelInfo=labelService.createLabel(token,labelDtoInfo);
@@ -58,6 +61,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@PutMapping("label/addMapLabel")
+	@ApiOperation(value="Add label", response = Response.class)
 	public ResponseEntity<Response> addMapLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
 	{
 		LabelInformation labelInfo=labelService.addMapLabel(token,labelDtoInfo,noteId);
@@ -76,6 +80,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@PutMapping("label/removeNoteLabel")
+	@ApiOperation(value="Remove Note Label", response = Response.class)
 	public ResponseEntity<Response> removeNoteLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
 	{
 		LabelInformation labelInfo=labelService.removeNoteLabel(token,labelDtoInfo,noteId);
@@ -94,6 +99,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@DeleteMapping("label/deleteUserLabel")
+	@ApiOperation(value="Delete Label Permanently", response = Response.class)
 	public ResponseEntity<Response> deleteUserLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
 	{
 		LabelInformation labelInfo=labelService.deleteUserLabel(token,labelDtoInfo,noteId);
@@ -111,6 +117,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@PutMapping("label/editLabel")
+	@ApiOperation(value="Edit label", response = Response.class)
 	public ResponseEntity<Response> editLabel(@RequestHeader("token") String token,@RequestBody EditLabel editlabelInfo)
 	{
 		LabelInformation labelInfo=labelService.editLabel(token,editlabelInfo);
@@ -128,6 +135,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@GetMapping("label/retrieveNotes")
+	@ApiOperation(value="Get All Notes", response = Response.class)
 	public ResponseEntity<Response> retrieveNotes(@RequestHeader("token") String token,@RequestParam String labelName)
 	{
 		List<NoteInformation> noteList=labelService.retrieveNotes(token,labelName);
@@ -144,6 +152,7 @@ public class Labelcontroller {
 	 * @return
 	 */
 	@GetMapping("label/getLabelsWrtUser")
+	@ApiOperation(value="Get All Labels", response = Response.class)
 	public ResponseEntity<Response> getLabelsWrtUser(@RequestHeader("token") String token)
 	{
 		List<LabelInformation> labelList=labelService.getLabelsWrtUser(token);
