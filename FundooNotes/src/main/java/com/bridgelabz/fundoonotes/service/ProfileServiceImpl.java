@@ -2,6 +2,8 @@ package com.bridgelabz.fundoonotes.service;
 
 import java.io.IOException;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -96,6 +98,40 @@ public class ProfileServiceImpl implements IProfileService {
 		}
 		else
 			throw new UserNotFoundException("User Not found.");
+	}
+
+
+	@Transactional
+	@Override
+	public Profile updateProfilePic(MultipartFile file, String originalFilename, String contentType, String token) {
+		long userId=jwtGenerator.parseToken(token);
+		User userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			Profile profileInfo=profileRepo.findByUserId(userId);
+			if(profileInfo != null)
+			{
+				ObjectMetadata objectMetaData=new ObjectMetadata();
+				objectMetaData.setContentType(contentType);
+				objectMetaData.setContentLength(file.getSize());
+				 
+				try {
+					amazonS3.putObject(bucketName, originalFilename, file.getInputStream(), objectMetaData);
+					int val=profileRepo.updateByUserId(originalFilename, userId);
+					if(val>0) {
+						Profile profileInfo1=profileRepo.findByUserId(userId);
+						return profileInfo1;
+					}
+				} catch (AmazonClientException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else
+				throw new ProfileNotFoundException("Profile Not Found..");
+		}
+		else
+			throw new UserNotFoundException("User Not found.");
+		return null;		
 	}
 
 //	@Override

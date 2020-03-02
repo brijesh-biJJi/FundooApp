@@ -16,4 +16,8 @@ public interface ProfileRepo extends JpaRepository<Profile, Long> {
 	
 	@Query("from Profile where user_id=:id")
 	Profile findByUserId(long id);
+	
+	@Modifying
+	@Query("update from Profile set profile_pic_name=:name where user_id=:id")
+	int updateByUserId(String name,long id);
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,5 +58,15 @@ public class ProfileController {
 		S3Object profileInfo = 	profileService.getProfilePic(token);
 		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("profile pic", profileInfo))
 				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("no profile pic ",profileInfo));
+	}
+	
+	@PutMapping("/updateProfilepic")
+	@ApiOperation(value = "Api to update profile pic of User for Fundoonotes", response = Response.class)
+	public ResponseEntity<Response> updateProfilePic(@ModelAttribute MultipartFile file , @RequestHeader("token") String token){
+		Profile profileInfo = profileService.updateProfilePic(file, file.getOriginalFilename(), file.getContentType(),
+				token);
+		return profileInfo != null
+				? ResponseEntity.status(HttpStatus.OK).body(new Response("ProfilePic updated succussefully",  profileInfo))
+				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic not updated ", profileInfo));
 	}
 }
