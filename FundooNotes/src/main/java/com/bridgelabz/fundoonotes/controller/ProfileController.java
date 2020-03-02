@@ -42,14 +42,14 @@ public class ProfileController {
 				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not added", profileInfo));
 	}
 	
-//	@DeleteMapping("/removeProfilePic")
-//	@ApiOperation(value = "Remove ProfilePic", response = Response.class)
-//	public ResponseEntity<Response> removeProfilePic(@RequestHeader("token") String token) {
-//		Profile profile = profileService.removeProfilePic(token);
-//		return profile.getUserInfo() == null
-//				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic removed succussefully", profile))
-//				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not removed", profile));
-//	}
+	@DeleteMapping("/removeProfilePic")
+	@ApiOperation(value = "Remove ProfilePic", response = Response.class)
+	public ResponseEntity<Response> removeProfilePic(@RequestHeader("token") String token) {
+		Profile profile = profileService.removeProfilePic(token);
+		return profile.getUserInfo() != null
+				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic removed succussefully", profile))
+				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not removed", profile));
+	}
 	
 	@GetMapping("/getprofilepic")
 	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)

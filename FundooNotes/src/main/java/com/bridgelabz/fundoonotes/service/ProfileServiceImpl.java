@@ -134,17 +134,31 @@ public class ProfileServiceImpl implements IProfileService {
 		return null;		
 	}
 
-//	@Override
-//	public Profile removeProfilePic(String token) {
-//		long userId=jwtGenerator.parseToken(token);
-//		User userInfo=userRepo.findUserById(userId);
-//		if(userInfo != null)
-//		{
-//			profileRepo.deleteByUserId(userId);		
-//		}
-//		else
-//			throw new UserNotFoundException("User Not found.");
-//		return null;
-//	}
+	@Transactional
+	@Override
+	public Profile removeProfilePic(String token) {
+		long userId=jwtGenerator.parseToken(token);
+		User userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			Profile profileInfo=profileRepo.findByUserId(userId);
+			if(profileInfo != null)
+			{
+				try {
+					amazonS3.deleteObject(bucketName, profileInfo.getProfilePicName());
+				} catch (AmazonServiceException serviceException) {
+					log.error(serviceException.getErrorMessage());
+				} catch (AmazonClientException clientException) {
+					log.error(clientException.getMessage());
+				}
+				profileRepo.deleteByUserId(userId);	
+				return profileInfo;
+			}
+			else
+				throw new ProfileNotFoundException("Profile Not Found..");
+		}
+		else
+			throw new UserNotFoundException("User Not found.");
+	}
 
 }

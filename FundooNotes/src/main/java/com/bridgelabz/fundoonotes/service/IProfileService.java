@@ -9,7 +9,7 @@ public interface IProfileService {
 
 	Profile uploadProfilePic(MultipartFile file, String originalFilename, String contentType, String token);
 
-	//Profile removeProfilePic(String token);
+	Profile removeProfilePic(String token);
 
 	S3Object getProfilePic(String token);
 
