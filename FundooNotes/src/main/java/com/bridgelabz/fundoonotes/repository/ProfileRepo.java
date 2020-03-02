@@ -7,6 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoonotes.entity.Profile;
 
+/**
+ * 
+ * @author Brijesh A kanchan
+ *
+ */
 @Repository
 public interface ProfileRepo extends JpaRepository<Profile, Long> {
 

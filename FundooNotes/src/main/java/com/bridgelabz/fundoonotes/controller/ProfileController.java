@@ -26,7 +26,7 @@ public class ProfileController {
 	private IProfileService profileService;
 
 	/**
-	 * Api for uploading profile picture of User 
+	 * API for uploading profile picture of specified User 
 	 * @param file
 	 * @param token
 	 * @return
@@ -37,31 +37,47 @@ public class ProfileController {
 			@RequestHeader("token") String token) {
 		Profile profileInfo = profileService.uploadProfilePic(file, file.getOriginalFilename(), file.getContentType(),
 				token);
-		return profileInfo.getUserInfo() != null
+		return profileInfo != null
 				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic added succussefully", profileInfo))
 				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not added", profileInfo));
 	}
 	
+	/**
+	 * API for removing profile picture of specified User
+	 * @param token
+	 * @return
+	 */
 	@DeleteMapping("/removeProfilePic")
 	@ApiOperation(value = "Remove ProfilePic", response = Response.class)
 	public ResponseEntity<Response> removeProfilePic(@RequestHeader("token") String token) {
 		Profile profile = profileService.removeProfilePic(token);
-		return profile.getUserInfo() != null
+		return profile != null
 				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic removed succussefully", profile))
 				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not removed", profile));
 	}
 	
+	/**
+	 * API for retrieving profile picture of specified User
+	 * @param token
+	 * @return
+	 */
 	@GetMapping("/getprofilepic")
 	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)
 	public ResponseEntity<Response> getProfilePic(@RequestHeader("token") String token){
 	
 		S3Object profileInfo = 	profileService.getProfilePic(token);
-		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("profile pic", profileInfo))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("no profile pic ",profileInfo));
+		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("Profile Pic Details....", profileInfo))
+				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic Not Found",profileInfo));
 	}
 	
+	/**
+	 * API for updating profile picture of specified User
+	 * @param file
+	 * @param token
+	 * @return
+	 */
 	@PutMapping("/updateProfilepic")
-	@ApiOperation(value = "Api to update profile pic of User for Fundoonotes", response = Response.class)
+	@ApiOperation(value = "Update ProfilePic", response = Response.class)
 	public ResponseEntity<Response> updateProfilePic(@ModelAttribute MultipartFile file , @RequestHeader("token") String token){
 		Profile profileInfo = profileService.updateProfilePic(file, file.getOriginalFilename(), file.getContentType(),
 				token);

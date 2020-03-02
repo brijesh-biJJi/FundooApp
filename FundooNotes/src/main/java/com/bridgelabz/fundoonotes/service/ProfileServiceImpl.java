@@ -25,6 +25,11 @@ import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 
+ * @author Brijesh A Kanchan
+ *
+ */
 @Slf4j
 @Service
 public class ProfileServiceImpl implements IProfileService {
@@ -44,6 +49,9 @@ public class ProfileServiceImpl implements IProfileService {
 	@Value("${aws.bucketName}")
 	private String bucketName;
 	
+	/**
+	 * Method is used to Upload ProfilePic Specified User
+	 */
 	@Override
 	public Profile uploadProfilePic(MultipartFile file, String originalFilename, String contentType, String token)
 	{
@@ -70,7 +78,9 @@ public class ProfileServiceImpl implements IProfileService {
 	}
 
 	
-
+	/**
+	 * Method is used to Retrieving the ProfilePic of Specified User
+	 */
 	@Override
 	public S3Object getProfilePic(String token) {
 		long userId=jwtGenerator.parseToken(token);
@@ -100,7 +110,9 @@ public class ProfileServiceImpl implements IProfileService {
 			throw new UserNotFoundException("User Not found.");
 	}
 
-
+	/**
+	 * Method is used to Update the ProfilePic od Specified User
+	 */
 	@Transactional
 	@Override
 	public Profile updateProfilePic(MultipartFile file, String originalFilename, String contentType, String token) {
@@ -134,6 +146,9 @@ public class ProfileServiceImpl implements IProfileService {
 		return null;		
 	}
 
+	/**
+	 * Method is used to Remove the ProfilePic of Specified User
+	 */
 	@Transactional
 	@Override
 	public Profile removeProfilePic(String token) {
