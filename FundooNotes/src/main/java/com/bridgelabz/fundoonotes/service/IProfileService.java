@@ -8,4 +8,6 @@ public interface IProfileService {
 
 	Profile uploadProfilePic(MultipartFile file, String originalFilename, String contentType, String token);
 
+	Profile removeProfilePic(String token);
+
 }
