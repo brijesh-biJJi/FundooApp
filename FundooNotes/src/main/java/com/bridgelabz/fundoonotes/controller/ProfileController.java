@@ -31,58 +31,58 @@ public class ProfileController {
 	 * @param token
 	 * @return
 	 */
-	@PostMapping("/uploadProfilePic")
-	@ApiOperation(value = "Upload ProfilePic", response = Response.class)
-	public ResponseEntity<Response> uploadProfilePic(@ModelAttribute MultipartFile file,
-			@RequestHeader("token") String token) {
-		Profile profileInfo = profileService.uploadProfilePic(file, file.getOriginalFilename(), file.getContentType(),
-				token);
-		return profileInfo != null
-				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic added succussefully", profileInfo))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not added", profileInfo));
-	}
+//	@PostMapping("/uploadProfilePic")
+//	@ApiOperation(value = "Upload ProfilePic", response = Response.class)
+//	public ResponseEntity<Response> uploadProfilePic(@ModelAttribute MultipartFile file,
+//			@RequestHeader("token") String token) {
+//		Profile profileInfo = profileService.uploadProfilePic(file, file.getOriginalFilename(), file.getContentType(),
+//				token);
+//		return profileInfo != null
+//				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic added succussefully", profileInfo))
+//				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not added", profileInfo));
+//	}
 	
-	/**
-	 * API for removing profile picture of specified User
-	 * @param token
-	 * @return
-	 */
-	@DeleteMapping("/removeProfilePic")
-	@ApiOperation(value = "Remove ProfilePic", response = Response.class)
-	public ResponseEntity<Response> removeProfilePic(@RequestHeader("token") String token) {
-		Profile profile = profileService.removeProfilePic(token);
-		return profile != null
-				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic removed succussefully", profile))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not removed", profile));
-	}
+//	/**
+//	 * API for removing profile picture of specified User
+//	 * @param token
+//	 * @return
+//	 */
+//	@DeleteMapping("/removeProfilePic")
+//	@ApiOperation(value = "Remove ProfilePic", response = Response.class)
+//	public ResponseEntity<Response> removeProfilePic(@RequestHeader("token") String token) {
+//		Profile profile = profileService.removeProfilePic(token);
+//		return profile != null
+//				? ResponseEntity.status(HttpStatus.OK).body(new Response("Profile pic removed succussefully", profile))
+//				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Profile pic not removed", profile));
+//	}
 	
-	/**
-	 * API for retrieving profile picture of specified User
-	 * @param token
-	 * @return
-	 */
-	@GetMapping("/getprofilepic")
-	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)
-	public ResponseEntity<Response> getProfilePic(@RequestHeader("token") String token){
+//	/**
+//	 * API for retrieving profile picture of specified User
+//	 * @param token
+//	 * @return
+//	 */
+//	@GetMapping("/getprofilepic")
+//	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)
+//	public ResponseEntity<Response> getProfilePic(@RequestHeader("token") String token){
+//	
+//		S3Object profileInfo = 	profileService.getProfilePic(token);
+//		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("Profile Pic Details....", profileInfo))
+//				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic Not Found",profileInfo));
+//	}
 	
-		S3Object profileInfo = 	profileService.getProfilePic(token);
-		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("Profile Pic Details....", profileInfo))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic Not Found",profileInfo));
-	}
-	
-	/**
-	 * API for updating profile picture of specified User
-	 * @param file
-	 * @param token
-	 * @return
-	 */
-	@PutMapping("/updateProfilepic")
-	@ApiOperation(value = "Update ProfilePic", response = Response.class)
-	public ResponseEntity<Response> updateProfilePic(@ModelAttribute MultipartFile file , @RequestHeader("token") String token){
-		Profile profileInfo = profileService.updateProfilePic(file, file.getOriginalFilename(), file.getContentType(),
-				token);
-		return profileInfo != null
-				? ResponseEntity.status(HttpStatus.OK).body(new Response("ProfilePic updated succussefully",  profileInfo))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic not updated ", profileInfo));
-	}
+//	/**
+//	 * API for updating profile picture of specified User
+//	 * @param file
+//	 * @param token
+//	 * @return
+//	 */
+//	@PutMapping("/updateProfilepic")
+//	@ApiOperation(value = "Update ProfilePic", response = Response.class)
+//	public ResponseEntity<Response> updateProfilePic(@ModelAttribute MultipartFile file , @RequestHeader("token") String token){
+//		Profile profileInfo = profileService.updateProfilePic(file, file.getOriginalFilename(), file.getContentType(),
+//				token);
+//		return profileInfo != null
+//				? ResponseEntity.status(HttpStatus.OK).body(new Response("ProfilePic updated succussefully",  profileInfo))
+//				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic not updated ", profileInfo));
+//	}
 }

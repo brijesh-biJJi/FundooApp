@@ -13,7 +13,7 @@ import com.bridgelabz.fundoonotes.entity.Profile;
  *
  */
 @Repository
-public interface ProfileRepo extends JpaRepository<Profile, Long> {
+public interface UserJpaRepo extends JpaRepository<Profile, Long> {
 
 	@Modifying
 	@Query("delete from Profile where user_id=:id")
