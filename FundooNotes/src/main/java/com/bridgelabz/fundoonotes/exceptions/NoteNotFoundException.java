@@ -10,10 +10,10 @@ import lombok.Data;
  *
  */
 @Data
-public class LabelNotFoundException extends RuntimeException{
+public class NoteNotFoundException extends RuntimeException {
 	private String message;
 	private HttpStatus httpstatus;
-	public LabelNotFoundException(String message,HttpStatus httpstatus) 
+	public NoteNotFoundException(String message,HttpStatus httpstatus) 
 	{
 		this.message = message;
 		this.httpstatus=httpstatus;

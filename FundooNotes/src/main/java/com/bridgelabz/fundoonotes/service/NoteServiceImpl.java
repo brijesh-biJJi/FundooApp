@@ -19,7 +19,7 @@ import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
-import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
@@ -113,7 +113,7 @@ public class NoteServiceImpl implements INoteService {
 					noteRepo.saveNote(noteInfo);
 				}
 				else
-					throw new NoteIdNotFoundException("Note Id is not found");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -146,7 +146,7 @@ public class NoteServiceImpl implements INoteService {
 					return true;
 				}
 				else
-					throw new NoteIdNotFoundException("Note Id is not found");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -179,7 +179,7 @@ public class NoteServiceImpl implements INoteService {
 					return true;
 				}
 				else
-					throw new NoteIdNotFoundException("Note Id is not found");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);			
@@ -213,7 +213,7 @@ public class NoteServiceImpl implements INoteService {
 					return true;
 				}
 				else
-					throw new NoteIdNotFoundException("Note Id is not found");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -267,7 +267,7 @@ public class NoteServiceImpl implements INoteService {
 				return true;
 			}
 			else
-				throw new NoteIdNotFoundException("Note Id is not found");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else 
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -361,7 +361,7 @@ public class NoteServiceImpl implements INoteService {
 				return true;
 			}
 			else
-				throw new NoteIdNotFoundException("Note Id Not Found..");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -386,7 +386,7 @@ public class NoteServiceImpl implements INoteService {
 				return true;
 			}
 			else
-				throw new NoteIdNotFoundException("Not not found..!");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -408,7 +408,7 @@ public class NoteServiceImpl implements INoteService {
 				return listLabels;
 			}
 			else
-				throw new NoteIdNotFoundException("Not not found..!");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);

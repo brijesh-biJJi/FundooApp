@@ -33,6 +33,8 @@ public interface IUserServices {
 
 	NoteInformation removeCollab(String token, String email,long noteId);
 
+	User getUserById(String token);
+
 	
 	
 	

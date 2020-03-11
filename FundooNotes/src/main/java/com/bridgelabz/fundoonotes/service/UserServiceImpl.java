@@ -19,7 +19,7 @@ import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.EmailNotFoundException;
-import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserAlreadyExistsException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotVerifiedException;
@@ -225,7 +225,7 @@ private User userInfo = new User();
 					return noteInfo;
 				}
 				else 
-					throw new NoteIdNotFoundException("Note Id Not Found..!");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -252,7 +252,7 @@ private User userInfo = new User();
 				return collabList;
 			}
 			else 
-				throw new NoteIdNotFoundException("Note Id Not Found..!");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -280,7 +280,7 @@ private User userInfo = new User();
 					return noteInfo;
 				}
 				else 
-					throw new NoteIdNotFoundException("Note Id Not Found..!");
+					throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 			}
 			else
 				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -288,6 +288,22 @@ private User userInfo = new User();
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
+
+	@Override
+	public User getUserById(String token)
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
+			return userInfo;
+		}
+		else
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
+	}
+
+	
+
 
 
 }

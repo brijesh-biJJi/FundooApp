@@ -16,7 +16,7 @@ import com.bridgelabz.fundoonotes.entity.LabelInformation;
 import com.bridgelabz.fundoonotes.entity.NoteInformation;
 import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
-import com.bridgelabz.fundoonotes.exceptions.NoteIdNotFoundException;
+import com.bridgelabz.fundoonotes.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
 import com.bridgelabz.fundoonotes.repository.ILabelJpaRepo;
 import com.bridgelabz.fundoonotes.repository.ILabelRepo;
@@ -122,7 +122,7 @@ public class LabelServiceImpl implements ILabelService {
 				}
 			}
 			else
-				throw new NoteIdNotFoundException("Note Id is not found");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -156,7 +156,7 @@ public class LabelServiceImpl implements ILabelService {
 				}
 			}
 			else
-				throw new NoteIdNotFoundException("Note Id is not found");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -188,10 +188,10 @@ public class LabelServiceImpl implements ILabelService {
 					return labelInfo;
 				}
 				else
-					throw new LabelNotFoundException("Label Not Found...");
+					throw new LabelNotFoundException("Label Not Found...",HttpStatus.NOT_FOUND);
 			}
 			else
-				throw new NoteIdNotFoundException("Note Id is not found");
+				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
@@ -220,7 +220,7 @@ public class LabelServiceImpl implements ILabelService {
 				}
 			}
 			else
-				throw new LabelNotFoundException("Label Not Found...");
+				throw new LabelNotFoundException("Label Not Found...",HttpStatus.NOT_FOUND);
 			
 		}
 		else
@@ -247,7 +247,7 @@ public class LabelServiceImpl implements ILabelService {
 				return noteList;
 			}
 			else
-				throw new LabelNotFoundException("Label Not Found...");
+				throw new LabelNotFoundException("Label Not Found...",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);

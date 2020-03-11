@@ -146,6 +146,15 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));
 	}
 	
+	
+	@GetMapping("user")
+	@ApiOperation(value="Get User By Id", response = Response.class)
+	//@Cacheable( value="users")
+	public ResponseEntity<Response> getUserById(@RequestHeader("token") String token) {
+		User user = userService.getUserById(token);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User details", user));
+	}
+	
 	/**
 	 * API for adding collaborator
 	 * @param token
