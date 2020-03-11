@@ -72,6 +72,7 @@ public class NoteServiceImpl implements INoteService {
 			noteInfo.setTrashed(false);
 			noteInfo.setColour("white");
 			NoteInformation note = noteRepo.saveNote(noteInfo);
+			
 			try {
 				elasticSearchService.createNote(noteInfo);
 			}
@@ -79,9 +80,10 @@ public class NoteServiceImpl implements INoteService {
 			{
 				log.info(e.getMessage());
 			}
-			
+			return noteInfo;
 		}
-		return noteInfo;
+		else
+			throw new UserNotFoundException("User not found..!");	
 	}
 
 	/**
@@ -91,24 +93,32 @@ public class NoteServiceImpl implements INoteService {
 	@Override
 	public void updateNote(UpdateNotes updateNoteinfo, String token) 
 	{
-		try {
+		try 
+		{
 			Long userid = (Long) jwtGenerate.parseToken(token);
-
 			userInfo = userRepo.findUserById(userid);
-			NoteInformation noteInfo = noteRepo.findNoteById(updateNoteinfo.getNoteid());
-			if (noteInfo != null) {
-				noteInfo.setNoteid(updateNoteinfo.getNoteid());
-				noteInfo.setDescription(updateNoteinfo.getDescription());
-				noteInfo.setTitle(updateNoteinfo.getTitle());
-				noteInfo.setPinned(updateNoteinfo.isPinned());
-				noteInfo.setTrashed(updateNoteinfo.isTrashed());
-				noteInfo.setArchieved(updateNoteinfo.isArchieved());
-				noteInfo.setUpdatedAt(updateNoteinfo.getUpdatedAt());
-				noteRepo.saveNote(noteInfo);
-
+			if(userInfo != null)
+			{
+				NoteInformation noteInfo = noteRepo.findNoteById(updateNoteinfo.getNoteid());
+				if (noteInfo != null) 
+				{
+					noteInfo.setNoteid(updateNoteinfo.getNoteid());
+					noteInfo.setDescription(updateNoteinfo.getDescription());
+					noteInfo.setTitle(updateNoteinfo.getTitle());
+					noteInfo.setPinned(updateNoteinfo.isPinned());
+					noteInfo.setTrashed(updateNoteinfo.isTrashed());
+					noteInfo.setArchieved(updateNoteinfo.isArchieved());
+					noteInfo.setUpdatedAt(updateNoteinfo.getUpdatedAt());
+					noteRepo.saveNote(noteInfo);
+				}
+				else
+					throw new NoteIdNotFoundException("Note Id is not found");
 			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			else
+				throw new UserNotFoundException("User not found..!");	
+		} 
+		catch (Exception e) {
+			log.info(e.getMessage());
 		}
 	}
 
@@ -125,15 +135,22 @@ public class NoteServiceImpl implements INoteService {
 			Long userid = (Long) jwtGenerate.parseToken(token);
 
 			userInfo = userRepo.findUserById(userid);
-			NoteInformation noteInfo = noteRepo.findNoteById(id);
-			if (noteInfo != null) {
-				noteInfo.setArchieved(false);
-				noteInfo.setPinned(!noteInfo.isPinned());
-				noteRepo.saveNote(noteInfo);
-				return true;
+			if(userInfo != null)
+			{
+				NoteInformation noteInfo = noteRepo.findNoteById(id);
+				if (noteInfo != null) {
+					noteInfo.setArchieved(false);
+					noteInfo.setPinned(!noteInfo.isPinned());
+					noteRepo.saveNote(noteInfo);
+					return true;
+				}
+				else
+					throw new NoteIdNotFoundException("Note Id is not found");
 			}
+			else
+				throw new UserNotFoundException("User not found..!");	
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return false;
 	}
@@ -149,17 +166,26 @@ public class NoteServiceImpl implements INoteService {
 		try
 		{
 			Long userId=jwtGenerate.parseToken(token);
-			NoteInformation noteInfo=noteRepo.findNoteById(id);
-			if(noteInfo !=null)
+			userInfo = userRepo.findUserById(userId);
+			if(userInfo != null)
 			{
-				noteInfo.setPinned(false);
-				noteInfo.setArchieved(!noteInfo.isArchieved());
-				noteRepo.saveNote(noteInfo);
-				return true;
+				NoteInformation noteInfo=noteRepo.findNoteById(id);
+				if(noteInfo !=null)
+				{
+					noteInfo.setPinned(false);
+					noteInfo.setArchieved(!noteInfo.isArchieved());
+					noteRepo.saveNote(noteInfo);
+					return true;
+				}
+				else
+					throw new NoteIdNotFoundException("Note Id is not found");
 			}
-		}catch(Exception e)
+			else
+				throw new UserNotFoundException("User not found..!");			
+		}
+		catch(Exception e)
 		{
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return false;
 	}
@@ -175,15 +201,24 @@ public class NoteServiceImpl implements INoteService {
 		try
 		{
 			long userId=jwtGenerate.parseToken(token);
-			NoteInformation nnoteId,color,oteInfo=noteRepo.findNoteById(id);
-			if(noteInfo != null)
+			userInfo = userRepo.findUserById(userId);
+			if(userInfo != null)
 			{
-				noteInfo.setTrashed(!noteInfo.isTrashed());
-				noteRepo.saveNote(noteInfo);
-				return true;
+				NoteInformation nnoteId,color,oteInfo=noteRepo.findNoteById(id);
+				if(noteInfo != null)
+				{
+					noteInfo.setTrashed(!noteInfo.isTrashed());
+					noteRepo.saveNote(noteInfo);
+					return true;
+				}
+				else
+					throw new NoteIdNotFoundException("Note Id is not found");
 			}
-		}catch(Exception e) {
-		System.out.println(e.getMessage());
+			else
+				throw new UserNotFoundException("User not found..!");	
+		}
+		catch(Exception e) {
+			log.info(e.getMessage());
 		}
 		return false;
 	}
@@ -206,7 +241,7 @@ public class NoteServiceImpl implements INoteService {
 				return true;
 			}
 		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 		}
 		return false;
 	}
@@ -252,10 +287,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		else
-			//throw new UserNotFoundException("User not found..!");
-			return null;
-		
-		
+			throw new UserNotFoundException("User not found..!");
 	}
 
 	/**
@@ -271,7 +303,8 @@ public class NoteServiceImpl implements INoteService {
 			List<NoteInformation> noteList=noteRepo.getTrashedNotes(userId);
 			return noteList;
 		}
-		return null;
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
 
 	/**
@@ -287,7 +320,8 @@ public class NoteServiceImpl implements INoteService {
 			List<NoteInformation> noteList=noteRepo.getArchivedNotes(userId);
 			return noteList;
 		}
-		return null;
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
 
 	/**
@@ -302,7 +336,8 @@ public class NoteServiceImpl implements INoteService {
 			List<NoteInformation> noteList=noteRepo.getPinnedNotes(userId);
 			return noteList;
 		}
-		return null;
+		else
+			throw new UserNotFoundException("User not found..!");
 	}
 
 	/**

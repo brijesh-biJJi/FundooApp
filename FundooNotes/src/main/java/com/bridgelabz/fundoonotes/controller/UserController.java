@@ -50,7 +50,7 @@ public class UserController {
 	 */	
 	@PostMapping("/users/register")
 	@ApiOperation(value="Register User", response = Response.class)
-	@CachePut(value="user", key="#token")
+	//@CachePut(value="user", key="#token")
 	public ResponseEntity<Response> register(@RequestBody RegisterDto registerDtoInfo)
 	{
 		User userInfo = userService.register(registerDtoInfo);
@@ -140,7 +140,7 @@ public class UserController {
 	 */
 	@GetMapping("users")
 	@ApiOperation(value="Get User", response = Response.class)
-	@Cacheable( value="users")
+	//@Cacheable( value="users")
 	public ResponseEntity<Response> getUsers() {
 		List<User> userList = userService.getUsers();
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));

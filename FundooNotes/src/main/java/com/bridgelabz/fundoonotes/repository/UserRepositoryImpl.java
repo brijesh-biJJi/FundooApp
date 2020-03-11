@@ -13,11 +13,14 @@ import org.springframework.stereotype.Repository;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
 import com.bridgelabz.fundoonotes.entity.User;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 
  * @author Brijesh A Kanchan
  *
  */
+@Slf4j
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
@@ -59,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
 			return true;
 		}catch(Exception e)
 		{
-			System.out.println(e.getMessage());
+			log.info(e.getMessage());
 			
 		}
 		return false;

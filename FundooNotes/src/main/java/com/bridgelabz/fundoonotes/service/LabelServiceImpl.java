@@ -63,12 +63,10 @@ public class LabelServiceImpl implements ILabelService {
 	@Override
 	public LabelInformation createLabel(String token, LabelDto labelDtoInfo)
 	{
-		log.info("hello inside creatte");
 		long userId=jwtGenerator.parseToken(token);
 		userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
 		{
-			//LabelInformation labelInfo=labelRepo.checkLabel(userId,labelDtoInfo.getName());
 			LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
 			if(labelInfo == null)
 			{
@@ -76,11 +74,9 @@ public class LabelServiceImpl implements ILabelService {
 				labelInfo.getLabelId();
 				labelInfo.getLabelName();
 				labelInfo.setUserId(userInfo.getUserid());
-				//LabelInformation label=labelRepo.save(labelInfo);
 				labelJpaRepo.save(labelInfo);
 				return labelInfo;
 			}
-			
 		}
 		else
 			throw new UserNotFoundException("User not found..!");
@@ -102,7 +98,6 @@ public class LabelServiceImpl implements ILabelService {
 			if(noteInfo != null)
 			{
 				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
-				System.out.println("check1"+labelInfo);
 				if(labelInfo!=null)
 				{
 					labelInfo.getNotelist().add(noteInfo);
@@ -188,7 +183,6 @@ public class LabelServiceImpl implements ILabelService {
 					noteInfo.getLabelList().remove(labelInfo);
 					//delete from label_note where (label_id) in (select label_id from labelinfo where label_name=?)
 					noteRepo.saveNote(noteInfo);
-					System.out.println("Label Check 1 "+labelInfo);
 					labelJpaRepo.deleteByName(labelInfo.getLabelName());
 					return labelInfo;
 				}
