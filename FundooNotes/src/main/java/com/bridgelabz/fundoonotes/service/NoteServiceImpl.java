@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +84,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteInfo;
 		}
 		else
-			throw new UserNotFoundException("User not found..!");	
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class NoteServiceImpl implements INoteService {
 					throw new NoteIdNotFoundException("Note Id is not found");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");	
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		} 
 		catch (Exception e) {
 			log.info(e.getMessage());
@@ -148,7 +149,7 @@ public class NoteServiceImpl implements INoteService {
 					throw new NoteIdNotFoundException("Note Id is not found");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");	
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			log.info(e.getMessage());
 		}
@@ -181,7 +182,7 @@ public class NoteServiceImpl implements INoteService {
 					throw new NoteIdNotFoundException("Note Id is not found");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");			
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);			
 		}
 		catch(Exception e)
 		{
@@ -215,7 +216,7 @@ public class NoteServiceImpl implements INoteService {
 					throw new NoteIdNotFoundException("Note Id is not found");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");	
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		}
 		catch(Exception e) {
 			log.info(e.getMessage());
@@ -269,7 +270,7 @@ public class NoteServiceImpl implements INoteService {
 				throw new NoteIdNotFoundException("Note Id is not found");
 		}
 		else 
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -287,7 +288,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -304,7 +305,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -321,7 +322,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -337,7 +338,7 @@ public class NoteServiceImpl implements INoteService {
 			return noteList;
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -363,7 +364,7 @@ public class NoteServiceImpl implements INoteService {
 				throw new NoteIdNotFoundException("Note Id Not Found..");
 		}
 		else
-			throw new UserNotFoundException("User Not Found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -388,7 +389,7 @@ public class NoteServiceImpl implements INoteService {
 				throw new NoteIdNotFoundException("Not not found..!");
 		}
 		else
-			throw new UserNotFoundException("User Not Found....!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -410,7 +411,7 @@ public class NoteServiceImpl implements INoteService {
 				throw new NoteIdNotFoundException("Not not found..!");
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**

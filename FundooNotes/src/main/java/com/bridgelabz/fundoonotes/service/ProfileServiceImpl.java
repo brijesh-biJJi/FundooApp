@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,7 +74,7 @@ public class ProfileServiceImpl implements IProfileService {
 			}
 		}
 		else
-			throw new UserNotFoundException("User Not found.");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		return null;
 	}
 
@@ -107,7 +108,7 @@ public class ProfileServiceImpl implements IProfileService {
 				throw new ProfileNotFoundException("Profile Not Found..");
 		}
 		else
-			throw new UserNotFoundException("User Not found.");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -142,7 +143,7 @@ public class ProfileServiceImpl implements IProfileService {
 				throw new ProfileNotFoundException("Profile Not Found..");
 		}
 		else
-			throw new UserNotFoundException("User Not found.");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		return null;		
 	}
 
@@ -173,7 +174,7 @@ public class ProfileServiceImpl implements IProfileService {
 				throw new ProfileNotFoundException("Profile Not Found..");
 		}
 		else
-			throw new UserNotFoundException("User Not found.");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 }

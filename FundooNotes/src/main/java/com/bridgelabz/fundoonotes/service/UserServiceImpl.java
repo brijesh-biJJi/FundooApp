@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -227,10 +228,10 @@ private User userInfo = new User();
 					throw new NoteIdNotFoundException("Note Id Not Found..!");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**
@@ -254,7 +255,7 @@ private User userInfo = new User();
 				throw new NoteIdNotFoundException("Note Id Not Found..!");
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	
 	}
 
@@ -282,10 +283,10 @@ private User userInfo = new User();
 					throw new NoteIdNotFoundException("Note Id Not Found..!");
 			}
 			else
-				throw new UserNotFoundException("User not found..!");
+				throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
-			throw new UserNotFoundException("User not found..!");
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 
