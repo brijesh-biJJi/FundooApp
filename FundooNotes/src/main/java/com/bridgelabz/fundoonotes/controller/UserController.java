@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.model.S3Object;
+import com.bridgelabz.fundoonotes.dto.ForgotPasswordDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
@@ -84,7 +85,7 @@ public class UserController {
 		if(userInfo != null) 
 		{
 			String token=jwtGenerator.createToken(userInfo.getUserid());
-			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token,  loginDtoInfo));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token,200,  loginDtoInfo));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!",  loginDtoInfo));
 	}
@@ -113,13 +114,13 @@ public class UserController {
 	 */
 	@PostMapping("users/forgotpassword")
 	@ApiOperation(value="Forgot Password", response = Response.class)
-	public ResponseEntity<Response> forgotPassword(@RequestParam("email") String email)
+	public ResponseEntity<Response> forgotPassword(@RequestBody ForgotPasswordDto forgotDtoInfo)
 	{
-		boolean res = userService.isUserExist(email);
+		boolean res = userService.isUserExist(forgotDtoInfo.getEmail());
 		if (res) {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User Exist", email));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User Exist", forgotDtoInfo.getEmail()));
 		}
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User does not Exist", email));
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User does not Exist", forgotDtoInfo.getEmail()));
 
 	}
 	
@@ -129,9 +130,12 @@ public class UserController {
 	 * @param update
 	 * @return
 	 */
-	@PutMapping("users/updatePassword/{token}")
-	@ApiOperation(value="Update Password", response = Response.class)
-	public ResponseEntity<Response> update(@PathVariable("token") String token, @RequestBody UpdatePassword passwordUpdateInfo) {
+	             
+	@PutMapping("users/changePassword")
+	@ApiOperation(value="Change Password", response = Response.class)
+	public ResponseEntity<Response> update(@RequestHeader("token") String token, @RequestBody UpdatePassword passwordUpdateInfo) {
+		System.out.println(token);
+		System.out.println(passwordUpdateInfo);
 		boolean res = userService.updatePassword(passwordUpdateInfo, token);
 		if (res) {
 			return ResponseEntity.status(HttpStatus.ACCEPTED)

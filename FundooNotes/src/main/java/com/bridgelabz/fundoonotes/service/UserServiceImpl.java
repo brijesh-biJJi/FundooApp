@@ -41,6 +41,7 @@ import com.bridgelabz.fundoonotes.repository.UserJpaRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.response.MailObject;
 import com.bridgelabz.fundoonotes.response.MailResponse;
+import com.bridgelabz.fundoonotes.response.Response;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
 import com.bridgelabz.fundoonotes.utility.MailServiceProvider;
 
@@ -195,8 +196,9 @@ private User userInfo = new User();
 			User userInfo = userRepo.getUser(email);
 			if (userInfo.isVerified() == true) 
 			{
-				String mailResposne = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
-				MailServiceProvider.sendEmail(userInfo.getEmail(), "Verification", mailResposne);
+				//String mailResposne = response.mergeMsg("http://localhost:8080/verify",jwtGenerate.createToken(userInfo.getUserid()));
+				String mailResponse=response.sendUrl("FundooNotes Verification link... http://localhost:4200/changePassword");
+				MailServiceProvider.sendEmail(userInfo.getEmail(), "FundooNotes Verification", mailResponse);
 				return true;
 			} 
 		} catch (Exception e) {
@@ -211,17 +213,16 @@ private User userInfo = new User();
 	@Transactional
 	@Override
 	public boolean updatePassword(UpdatePassword passwordUpdateInfo, String token) {
-		Long id = null;
-		try {
-			id = (long)jwtGenerate.parseToken(token);
+		long userId=jwtGenerate.parseToken(token);
+		userInfo = userRepo.findUserById(userId);
+		if (userInfo != null)
+		{
 			String epassword = encrypt.encode(passwordUpdateInfo.getConfirmPassword());
 			passwordUpdateInfo.setConfirmPassword(epassword);
-			return userRepo.updatePass(passwordUpdateInfo, id);
-
-		} catch (Exception e) {
-			log.info(e.getMessage());
+			return userRepo.updatePass(passwordUpdateInfo, userId);
 		}
-		return false;
+		else
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
 	/**

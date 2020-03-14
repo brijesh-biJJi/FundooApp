@@ -13,4 +13,9 @@ public class MailResponse
 	public String mergeMsg(String url, String token) {
 		return url + "/" + token;
 	}
+	
+	public String sendUrl(String url)
+	{
+		return url;
+	}
 }

@@ -13,6 +13,7 @@ public class Response {
 	private String message;
 	private String token;
 	private Object obj;
+	private int statusCode;
 	public Response(String msg,String token) {
 		super();
 		this.message = msg;
@@ -22,5 +23,11 @@ public class Response {
 		super();
 		this.message = msg;
 		this.obj = obj;
+	}
+	public Response(String token, int statusCode,Object obj) {
+		super();
+		this.token=token;
+		this.obj = obj;
+		this.statusCode=statusCode;
 	}
 }
