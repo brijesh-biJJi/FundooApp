@@ -38,4 +38,38 @@ public class LabelInformation {
 	@JsonBackReference
 	private List<NoteInformation> notelist;
 
+	public long getLabelId() {
+		return labelId;
+	}
+
+	public void setLabelId(long labelId) {
+		this.labelId = labelId;
+	}
+
+	public String getLabelName() {
+		return labelName;
+	}
+
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public List<NoteInformation> getNotelist() {
+		return notelist;
+	}
+
+	public void setNotelist(List<NoteInformation> notelist) {
+		this.notelist = notelist;
+	}
+	
+	
+
 }

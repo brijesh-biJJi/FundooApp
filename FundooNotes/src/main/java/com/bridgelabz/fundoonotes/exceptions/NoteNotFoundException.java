@@ -18,4 +18,18 @@ public class NoteNotFoundException extends RuntimeException {
 		this.message = message;
 		this.httpstatus=httpstatus;
 	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public HttpStatus getHttpstatus() {
+		return httpstatus;
+	}
+	public void setHttpstatus(HttpStatus httpstatus) {
+		this.httpstatus = httpstatus;
+	}
+	
+	
 }

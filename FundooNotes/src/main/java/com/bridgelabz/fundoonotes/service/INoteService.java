@@ -27,7 +27,7 @@ public interface INoteService {
 
 	boolean changeColor(Long id, String color, String token);
 
-	List<NoteInformation> getAllNotes(String token);
+	List<NoteInformation> getOtherNotes(String token);
 
 	List<NoteInformation> getTrashedNotes(String token);
 
@@ -37,9 +37,14 @@ public interface INoteService {
 
 	boolean addReminder(String token, long noteId,ReminderDto reminderDtoInfo);
 
-	boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo);
+	boolean removeReminder(String token, long noteId);
 
 	List<LabelInformation> retrieveLabels(String token, long noteId);
 
 	List<NoteInformation> searchByTitle(String title);
+
+	/**
+	 * Method is used to return list of Notes
+	 */
+	List<NoteInformation> getAllNotes(String token);
 }

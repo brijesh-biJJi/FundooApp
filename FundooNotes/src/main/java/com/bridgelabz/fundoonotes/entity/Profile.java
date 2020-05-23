@@ -33,4 +33,30 @@ public class Profile {
 
 	public Profile() {
 	}
+
+	public Long getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(Long profileId) {
+		this.profileId = profileId;
+	}
+
+	public String getProfilePicName() {
+		return profilePicName;
+	}
+
+	public void setProfilePicName(String profilePicName) {
+		this.profilePicName = profilePicName;
+	}
+
+	public User getUserInfo() {
+		return userInfo;
+	}
+
+	public void setUserInfo(User userInfo) {
+		this.userInfo = userInfo;
+	}
+	
+	
 }

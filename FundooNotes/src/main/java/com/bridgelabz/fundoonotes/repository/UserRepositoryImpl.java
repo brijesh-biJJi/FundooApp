@@ -8,6 +8,8 @@ import javax.persistence.TypedQuery;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
@@ -23,6 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Repository
 public class UserRepositoryImpl implements UserRepository {
+	
+	
+	private static final Logger log = LoggerFactory.getLogger(UserRepositoryImpl.class);
+
 
 	@PersistenceContext
 	private EntityManager entityManager;

@@ -68,7 +68,7 @@ public class LabelServiceImpl implements ILabelService {
 		userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
 		{
-			LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
+			LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getLabelName(),userInfo.getUserid());
 			if(labelInfo == null)
 			{
 				labelInfo=modelMapper.map(labelDtoInfo, LabelInformation.class);
@@ -98,7 +98,7 @@ public class LabelServiceImpl implements ILabelService {
 			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 			if(noteInfo != null)
 			{
-				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
+				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getLabelName(),userInfo.getUserid());
 				if(labelInfo!=null)
 				{
 					labelInfo.getNotelist().add(noteInfo);
@@ -143,7 +143,7 @@ public class LabelServiceImpl implements ILabelService {
 			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 			if(noteInfo != null)
 			{
-				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
+				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getLabelName(),userInfo.getUserid());
 				if(labelInfo!=null)
 				{
 					noteInfo.getLabelList().remove(labelInfo);
@@ -168,30 +168,31 @@ public class LabelServiceImpl implements ILabelService {
 	 * Method is used to delete the Label from User as well as from Note
 	 */
 	@Override
-	public LabelInformation deleteUserLabel(String token, LabelDto labelDtoInfo, long noteId) 
+	public boolean deleteUserLabel(String token, String labelName) 
 	{
 		long userId=jwtGenerator.parseToken(token);
 		userInfo = userRepo.findUserById(userId);
 		if (userInfo != null)
 		{
-			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
-			if(noteInfo != null)
-			{
-				LabelInformation labelInfo=labelJpaRepo.findByName(labelDtoInfo.getName(),userInfo.getUserid());
+//			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
+//			if(noteInfo != null)
+//			{
+			System.out.println("delete label "+labelName);
+				LabelInformation labelInfo=labelJpaRepo.findByName(labelName,userInfo.getUserid());
 				if(labelInfo!=null)
 				{
-					
-					noteInfo.getLabelList().remove(labelInfo);
+				System.out.println("delete label "+labelInfo.getLabelName());	
+//					noteInfo.getLabelList().remove(labelInfo);
 					//delete from label_note where (label_id) in (select label_id from labelinfo where label_name=?)
-					noteRepo.saveNote(noteInfo);
+//					noteRepo.saveNote(noteInfo);
 					labelJpaRepo.deleteByName(labelInfo.getLabelName());
-					return labelInfo;
+					return true;
 				}
 				else
 					throw new LabelNotFoundException("Label Not Found...",HttpStatus.NOT_FOUND);
-			}
-			else
-				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
+//			}
+//			else
+//				throw new NoteNotFoundException("Note not found..!",HttpStatus.NOT_FOUND);
 		}
 		else
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);

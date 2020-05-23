@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,10 +44,12 @@ public class Labelcontroller {
 	 * @param labelDtoInfo
 	 * @return
 	 */
-	@PostMapping("label/createLable")
+	@PostMapping("label/createLabel")
 	@ApiOperation(value="Label Creation", response = Response.class)
 	public ResponseEntity<Response> createLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo)
 	{
+	
+		System.out.println("Check Label "+labelDtoInfo.getLabelName());
 		LabelInformation labelInfo=labelService.createLabel(token,labelDtoInfo);
 		if(labelInfo != null)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Label is created successfully",  labelInfo));
@@ -81,9 +84,9 @@ public class Labelcontroller {
 	 * @param noteId
 	 * @return
 	 */
-	@PutMapping("label/removeNoteLabel")
+	@PutMapping("label/removeNoteLabel/{noteId}")
 	@ApiOperation(value="Remove Note Label", response = Response.class)
-	public ResponseEntity<Response> removeNoteLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
+	public ResponseEntity<Response> removeNoteLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@PathVariable long noteId)
 	{
 		LabelInformation labelInfo=labelService.removeNoteLabel(token,labelDtoInfo,noteId);
 		if(labelInfo != null)
@@ -100,15 +103,15 @@ public class Labelcontroller {
 	 * @param noteId
 	 * @return
 	 */
-	@DeleteMapping("label/deleteUserLabel")
+	@DeleteMapping("label/deleteUserLabel/{labelName}")
 	@ApiOperation(value="Delete Label Permanently", response = Response.class)
-	public ResponseEntity<Response> deleteUserLabel(@RequestHeader("token") String token,@RequestBody LabelDto labelDtoInfo,@RequestParam long noteId)
+	public ResponseEntity<Response> deleteUserLabel(@RequestHeader("token") String token,@PathVariable String labelName)
 	{
-		LabelInformation labelInfo=labelService.deleteUserLabel(token,labelDtoInfo,noteId);
-		if(labelInfo != null)
-			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label deleted successfully...",  labelInfo));
+		boolean res=labelService.deleteUserLabel(token,labelName);
+		if(res)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label deleted successfully...",  token));
 		else
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", labelInfo));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Label doesn't Exist", token));
 	
 	}
 	
@@ -120,9 +123,12 @@ public class Labelcontroller {
 	 */
 	@PutMapping("label/editLabel")
 	@ApiOperation(value="Edit label", response = Response.class)
-	public ResponseEntity<Response> editLabel(@RequestHeader("token") String token,@RequestBody EditLabel editlabelInfo)
+	public ResponseEntity<Response> editLabel(@RequestBody EditLabel editlabelInfo,@RequestHeader("token") String token)
 	{
+		System.out.println("BCheck LName "+editlabelInfo.getLabelName());
+		System.out.println("BCheck LId "+editlabelInfo.getLabelId());
 		LabelInformation labelInfo=labelService.editLabel(token,editlabelInfo);
+		System.out.println("Label repo"+labelInfo.getLabelName());
 		if(labelInfo!=null)
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("Label Edited successfully...",  labelInfo));
 		else
@@ -136,9 +142,9 @@ public class Labelcontroller {
 	 * @param labelName
 	 * @return
 	 */
-	@GetMapping("label/retrieveNotes")
+	@GetMapping("label/retrieveNotes/{labelName}")
 	@ApiOperation(value="Get All Notes", response = Response.class)
-	public ResponseEntity<Response> retrieveNotes(@RequestHeader("token") String token,@RequestParam String labelName)
+	public ResponseEntity<Response> retrieveNotes(@RequestHeader("token") String token,@PathVariable String labelName)
 	{
 		List<NoteInformation> noteList=labelService.retrieveNotes(token,labelName);
 		if(noteList!=null)
@@ -153,7 +159,7 @@ public class Labelcontroller {
 	 * @param token
 	 * @return
 	 */
-	@GetMapping("label/getLabelsWrtUser")
+	@GetMapping("label/getAllLabel")
 	@ApiOperation(value="Get All Labels", response = Response.class)
 	public ResponseEntity<Response> getLabelsWrtUser(@RequestHeader("token") String token)
 	{

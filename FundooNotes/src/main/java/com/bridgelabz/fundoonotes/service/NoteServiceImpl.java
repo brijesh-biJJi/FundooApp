@@ -7,6 +7,8 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +23,7 @@ import com.bridgelabz.fundoonotes.entity.User;
 import com.bridgelabz.fundoonotes.exceptions.LabelNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.NoteNotFoundException;
 import com.bridgelabz.fundoonotes.exceptions.UserNotFoundException;
+import com.bridgelabz.fundoonotes.repository.INoteJpaRepo;
 import com.bridgelabz.fundoonotes.repository.INoteRepo;
 import com.bridgelabz.fundoonotes.repository.UserRepository;
 import com.bridgelabz.fundoonotes.utility.JWTGenerator;
@@ -36,6 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NoteServiceImpl implements INoteService {
+	
+	
+	private static final Logger log = LoggerFactory.getLogger(NoteServiceImpl.class);
+
 
 	@Autowired
 	private INoteRepo noteRepo;
@@ -49,9 +56,12 @@ public class NoteServiceImpl implements INoteService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@Autowired
-	private IElasticSearchService elasticSearchService;
+	@Autowired 
+	private INoteJpaRepo noteJpaRepo;
 	
+//	@Autowired
+//	private IElasticSearchService elasticSearchService;
+//	
 	User userInfo=new User();
 	
 	/**
@@ -75,7 +85,7 @@ public class NoteServiceImpl implements INoteService {
 			NoteInformation note = noteRepo.saveNote(noteInfo);
 			
 			try {
-				elasticSearchService.createNote(noteInfo);
+//				elasticSearchService.createNote(noteInfo);
 			}
 			catch(Exception e)
 			{
@@ -205,10 +215,12 @@ public class NoteServiceImpl implements INoteService {
 			userInfo = userRepo.findUserById(userId);
 			if(userInfo != null)
 			{
-				NoteInformation nnoteId,color,oteInfo=noteRepo.findNoteById(id);
+				NoteInformation noteInfo=noteRepo.findNoteById(id);
 				if(noteInfo != null)
 				{
 					noteInfo.setTrashed(!noteInfo.isTrashed());
+					noteInfo.setPinned(false);
+					noteInfo.setArchieved(false);
 					noteRepo.saveNote(noteInfo);
 					return true;
 				}
@@ -238,7 +250,7 @@ public class NoteServiceImpl implements INoteService {
 			if(noteInfo != null)
 			{
 				noteRepo.deleteNotePermanently(id);
-				elasticSearchService.deleteNote(noteInfo);
+//				elasticSearchService.deleteNote(noteInfo);
 				return true;
 			}
 		}catch(Exception e) {
@@ -273,6 +285,27 @@ public class NoteServiceImpl implements INoteService {
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
+	
+	
+	/**
+	 * Method is used to return list of Other Notes
+	 */
+	@Override
+	public List<NoteInformation> getOtherNotes(String token) 
+	{
+		long userId=jwtGenerate.parseToken(token);
+		userInfo=userRepo.findUserById(userId);
+		if(userInfo != null)
+		{
+			
+//			List<NoteInformation> noteList=noteRepo.getAllNotes(userId);
+			List<NoteInformation> noteList=noteJpaRepo.findByUserId(userId);
+			return noteList;
+		}
+		else
+			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
+	}
+	
 	/**
 	 * Method is used to return list of Notes
 	 */
@@ -284,7 +317,8 @@ public class NoteServiceImpl implements INoteService {
 		if(userInfo != null)
 		{
 			
-			List<NoteInformation> noteList=noteRepo.getAllNotes(userId);
+//			List<NoteInformation> noteList=noteRepo.getAllNotes(userId);
+			List<NoteInformation> noteList=noteJpaRepo.findNoteByUserId(userId);
 			return noteList;
 		}
 		else
@@ -356,6 +390,7 @@ public class NoteServiceImpl implements INoteService {
 			NoteInformation noteInfo=noteRepo.findNoteById(noteId);
 			if(noteInfo != null)
 			{
+				System.out.println("check reminder "+reminderDtoInfo.getReminder());
 				noteInfo.setReminder(reminderDtoInfo.getReminder());
 				noteRepo.saveNote(noteInfo);
 				return true;
@@ -372,7 +407,7 @@ public class NoteServiceImpl implements INoteService {
 	 */
 	@Transactional
 	@Override
-	public boolean removeReminder(String token, long noteId, ReminderDto reminderDtoInfo) 
+	public boolean removeReminder(String token, long noteId) 
 	{
 		long userId=jwtGenerate.parseToken(token);
 		userInfo=userRepo.findUserById(userId);
@@ -414,17 +449,23 @@ public class NoteServiceImpl implements INoteService {
 			throw new UserNotFoundException("User not found..!",HttpStatus.NOT_FOUND);
 	}
 
+	@Override
+	public List<NoteInformation> searchByTitle(String title) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Method is used to Search the Note by title
 	 */
-	@Override
-	public List<NoteInformation> searchByTitle(String title) {
-		List<NoteInformation> notes=elasticSearchService.searchByTitle(title);
-		if(notes!=null) {
-		return notes;
-		}
-		else {
-			return null;
-		}
-	}
+//	@Override
+//	public List<NoteInformation> searchByTitle(String title) {
+//		List<NoteInformation> notes=elasticSearchService.searchByTitle(title);
+//		if(notes!=null) {
+//		return notes;
+//		}
+//		else {
+//			return null;
+//		}
+//	}
 }

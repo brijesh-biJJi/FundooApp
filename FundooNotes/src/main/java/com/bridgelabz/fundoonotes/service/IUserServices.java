@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.model.S3Object;
+//import com.amazonaws.services.s3.model.S3Object;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
 import com.bridgelabz.fundoonotes.dto.UpdatePassword;
@@ -45,7 +45,7 @@ public interface IUserServices {
 
 	Profile removeProfilePic(String token);
 
-	S3Object getProfilePic(String token);
+//	S3Object getProfilePic(String token);
 
 	Profile updateProfilePic(MultipartFile file, String originalFilename, String contentType, String token);
 	

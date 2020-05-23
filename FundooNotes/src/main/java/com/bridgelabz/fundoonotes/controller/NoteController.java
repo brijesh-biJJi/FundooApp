@@ -39,13 +39,16 @@ public class NoteController {
 	 * @param noteDtoInfo
 	 * @return
 	 */
-	@PostMapping("notes/create")
+	@PostMapping("note/create")
 	@ApiOperation(value="Note Creation", response = Response.class)
 	public ResponseEntity<Response> createNote(@RequestBody NoteDto noteDtoInfo,@RequestHeader("token") String token)
 	{
+		
+		System.out.println("Inside NOte "+noteDtoInfo);
 		NoteInformation noteInfo=noteService.createNote(noteDtoInfo, token);
-		if(noteInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note is created successfully",  noteDtoInfo));
+		if(noteInfo != null) {
+			System.out.println("Succes");
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Note is created successfully",  noteDtoInfo));}
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Something went wrong", noteInfo));
 	}
@@ -72,6 +75,7 @@ public class NoteController {
 	@PutMapping("/note/pin/{id}")
 	@ApiOperation(value="Pin Note", response = Response.class)
 	public ResponseEntity<Response> pinNote(@PathVariable Long id, @RequestHeader("token") String token) {
+		System.out.println("Hit Pin");
 		boolean res=noteService.pinNote(id, token);
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note is pinned successfully....!", token))
 				 : ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new Response("Note doesn't Pinned...!",  token));
@@ -103,6 +107,7 @@ public class NoteController {
 	@ApiOperation(value="Move the Note to Trash", response = Response.class)
 	public ResponseEntity<Response> deleteNote(@PathVariable Long id,@RequestHeader("token") String token) throws Exception
 	{
+		
 		boolean res=noteService.moveToTrash(id,token);
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Note successfull moved to the Trash ..!!", token))
 					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Note ID is not Available..!!", token));	
@@ -140,6 +145,24 @@ public class NoteController {
 	 }
 	 
 	 /**
+	  * API for retrieving Other Notes
+	  * @param token
+	  * @return
+	  */
+	 @GetMapping("/note/getOtherNotes")
+	 @ApiOperation(value="Get All Notes", response = Response.class)
+	 public ResponseEntity<Response> getOtherNotes(@RequestHeader("token") String token)
+	 {
+		 System.out.println("Back Note b");
+		List<NoteInformation> notesList = noteService.getOtherNotes(token);
+		 System.out.println("Back Note af "+notesList);
+		if(notesList != null)
+			return ResponseEntity.status(HttpStatus.OK).body(new Response("The Other notes are",  notesList));
+		else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("No Notes Found..!",  notesList));
+	 }
+	 
+	 /**
 	  * API for retrieving all the Notes
 	  * @param token
 	  * @return
@@ -148,8 +171,9 @@ public class NoteController {
 	 @ApiOperation(value="Get All Notes", response = Response.class)
 	 public ResponseEntity<Response> getAllNotes(@RequestHeader("token") String token)
 	 {
-
+		 System.out.println("Back Note b");
 		List<NoteInformation> notesList = noteService.getAllNotes(token);
+		 System.out.println("Back Note af "+notesList);
 		if(notesList != null)
 			return ResponseEntity.status(HttpStatus.OK).body(new Response("The notes are",  notesList));
 		else
@@ -165,6 +189,7 @@ public class NoteController {
 	 @ApiOperation(value="Get Trashed Notes", response = Response.class)
 	 public ResponseEntity<Response> getTrashedNote(@RequestHeader("token") String token)
 	 {
+		 System.out.println("check trashed note");
 		 List<NoteInformation> notesList = noteService.getTrashedNotes(token);
 		 if(notesList != null)
 				return ResponseEntity.status(HttpStatus.OK).body(new Response("Trashed notes are",  notesList));
@@ -181,6 +206,7 @@ public class NoteController {
 	 @ApiOperation(value="Get Archived Notes", response = Response.class)
 	 public ResponseEntity<Response> getArchivedNote(@RequestHeader("token") String token)
 	 {
+		 System.out.println("Archive");
 		 List<NoteInformation> noteList=noteService.getArchivedNotes(token);
 		 if(noteList !=null)
 			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Archived notes are", noteList));
@@ -198,6 +224,7 @@ public class NoteController {
 	 @ApiOperation(value="Get Pinned Notes", response = Response.class)
 	 public ResponseEntity<Response> getPinnedNote(@RequestHeader("token") String token)
 	 {
+		 System.out.println("Pin");
 		 List<NoteInformation> noteList=noteService.getPinnedNotes(token);
 		 if(noteList !=null)
 			 return ResponseEntity.status(HttpStatus.OK).body(new Response("Pinned notes are",  noteList));
@@ -213,9 +240,9 @@ public class NoteController {
 	  * @param reminderDtoInfo
 	  * @return
 	  */
-	 @PutMapping("note/addReminder")
+	 @PutMapping("note/addReminder/{noteId}")
 	 @ApiOperation(value="Add Reminder", response = Response.class)
-	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
+	 public ResponseEntity<Response> addReminder(@RequestHeader("token") String token,@PathVariable("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
 	 {
 		 boolean res=noteService.addReminder(token,noteId,reminderDtoInfo);
 			return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder added successfully", token))
@@ -229,11 +256,11 @@ public class NoteController {
 	  * @param reminderDtoInfo
 	  * @return
 	  */
-	 @PutMapping("note/removeReminder")
+	 @PutMapping("note/removeReminder/{noteId}")
 	 @ApiOperation(value="Remove Reminder", response = Response.class)
-	 public ResponseEntity<Response> removeReminder(@RequestHeader("token") String token, @RequestParam("noteId") long noteId,@RequestBody ReminderDto reminderDtoInfo)
+	 public ResponseEntity<Response> removeReminder(@RequestHeader("token") String token, @PathVariable long noteId)
 	 {
-		boolean res=noteService.removeReminder(token,noteId,reminderDtoInfo);
+		boolean res=noteService.removeReminder(token,noteId);
 		return (res) ? ResponseEntity.status(HttpStatus.OK).body(new Response("Reminder removed successfully", token))
 					 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response("Reminder not removed", token));
 	 }

@@ -67,7 +67,7 @@ public class NoteRepoImpl implements INoteRepo
 	public List<NoteInformation> getAllNotes(long userId) 
 	{
 		Session session=entityManager.unwrap(Session.class);
-		return session.createQuery("from NoteInformation where user_id='" + userId + "'" + " and is_trashed=false and is_archieved=false ORDER BY id DESC")
+		return session.createQuery("from NoteInformation where user_id='" + userId + "'" + " and is_trashed=false and is_pinned=false and is_archieved=false ORDER BY id DESC")
 				.getResultList();
 		
 	}
@@ -79,7 +79,7 @@ public class NoteRepoImpl implements INoteRepo
 	public List<NoteInformation> getTrashedNotes(long userId)
 	{
 		Session session=entityManager.unwrap(Session.class);
-		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_trashed=true").getResultList();
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_trashed=true and is_archieved=false and is_pinned=false").getResultList();
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class NoteRepoImpl implements INoteRepo
 	public List<NoteInformation> getArchivedNotes(long userId) 
 	{
 		Session session=entityManager.unwrap(Session.class);
-		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_archieved=true").getResultList();
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_archieved=true and is_trashed=false and is_pinned=false").getResultList();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class NoteRepoImpl implements INoteRepo
 	@Override
 	public List<NoteInformation> getPinnedNotes(long userId) {
 		Session session=entityManager.unwrap(Session.class);
-		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_pinned=true").getResultList();
+		return session.createQuery("from NoteInformation where user_id='" +userId+"'" +"and is_pinned=true and is_archieved=false and is_trashed=false").getResultList();
 	}
 
 }

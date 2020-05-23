@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.model.S3Object;
+//import com.amazonaws.services.s3.model.S3Object;
 import com.bridgelabz.fundoonotes.dto.ForgotPasswordDto;
 import com.bridgelabz.fundoonotes.dto.LoginDto;
 import com.bridgelabz.fundoonotes.dto.RegisterDto;
@@ -85,6 +85,7 @@ public class UserController {
 		if(userInfo != null) 
 		{
 			String token=jwtGenerator.createToken(userInfo.getUserid());
+			System.out.println("hello");
 			return ResponseEntity.status(HttpStatus.ACCEPTED).header("Login Successfully",userInfo.getEmail()).body(new Response(token,200,  loginDtoInfo));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Invalid User...!",  loginDtoInfo));
@@ -152,9 +153,11 @@ public class UserController {
 	@GetMapping("users")
 	@ApiOperation(value="Get User", response = Response.class)
 	//@Cacheable( value="users")
-	public ResponseEntity<Response> getUsers() {
+	public List<User> getUsers() {
 		List<User> userList = userService.getUsers();
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));
+		System.out.println("UserList "+userList);
+		return userList;
+//		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("List of all Users.", userList));
 	}
 	
 	
@@ -162,7 +165,9 @@ public class UserController {
 	@ApiOperation(value="Get User By Id", response = Response.class)
 	//@Cacheable( value="users")
 	public ResponseEntity<Response> getUserById(@RequestHeader("token") String token) {
+		System.out.println("Iside get User ");
 		User user = userService.getUserById(token);
+		System.out.println("User "+user);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("User details", user));
 	}
 	
@@ -173,9 +178,9 @@ public class UserController {
 	 * @param noteId
 	 * @return
 	 */
-	@PostMapping("collaborator/add")
+	@PostMapping("users/addcollab/{email}/{noteId}")
 	@ApiOperation(value="Collaborate User", response = Response.class)
-	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
+	public ResponseEntity<Response> addCollab(@RequestHeader("token") String token,@PathVariable String email,@PathVariable long noteId){
 		NoteInformation noteInfo=userService.addCollab(token,email,noteId);
 		if(noteInfo != null)
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  noteInfo));
@@ -190,12 +195,12 @@ public class UserController {
 	 * @param noteId
 	 * @return
 	 */
-	@GetMapping("collaborators")
+	@GetMapping("users/collaborator/{noteId}")
 	@ApiOperation(value="Get Collaborated User", response = Response.class)
-	public ResponseEntity<Response> getCollab(@RequestHeader("token") String token,@RequestParam("noteid") long noteId){
+	public ResponseEntity<Response> getCollab(@RequestHeader("token") String token,@PathVariable long noteId){
 		List<User> collabList=userService.getCollab(token,noteId);
 		if(collabList != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  collabList));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator List",  collabList));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",collabList));
 	
@@ -208,12 +213,12 @@ public class UserController {
 	 * @param noteId
 	 * @return
 	 */
-	@PutMapping("collaborators/remove")
+	@PutMapping("users/removecollab/{email}/{noteId}")
 	@ApiOperation(value="Remove Collaborated  User", response = Response.class)
-	public ResponseEntity<Response> removeCollab(@RequestHeader("token") String token,@RequestParam("email") String email,@RequestParam("noteid") long noteId){
+	public ResponseEntity<Response> removeCollab(@RequestHeader("token") String token,@PathVariable String email,@PathVariable long noteId){
 		NoteInformation noteInfo=userService.removeCollab(token,email,noteId);
 		if(noteInfo != null)
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is created successfully",  noteInfo));
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Collaborator is removed successfully",  noteInfo));
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("Collaborator already exists",noteInfo));
 	
@@ -258,14 +263,14 @@ public class UserController {
 	 * @param token
 	 * @return
 	 */
-	@GetMapping("/getprofilepic")
-	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)
-	public ResponseEntity<Response> getProfilePic(@RequestHeader("token") String token){
-	
-		S3Object profileInfo = 	userService.getProfilePic(token);
-		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("Profile Pic Details....", profileInfo))
-				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic Not Found",profileInfo));
-	}
+//	@GetMapping("/getprofilepic")
+//	@ApiOperation(value = "Retrieve ProfilePic", response = Response.class)
+//	public ResponseEntity<Response> getProfilePic(@RequestHeader("token") String token){
+//	
+////		S3Object profileInfo = 	userService.getProfilePic(token);
+////		return profileInfo!=null ?  ResponseEntity.status(HttpStatus.OK).body(new Response("Profile Pic Details....", profileInfo))
+////				: ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Response("ProfilePic Not Found",profileInfo));
+//	}
 	
 	/**
 	 * API for updating profile picture of specified User
